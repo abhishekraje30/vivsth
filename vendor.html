@@ -119,6 +119,24 @@
         </section>
 
         <section class="detail-section">
+          <h2>Contact ${v.name.split(" ")[0]}</h2>
+          <div class="contact-row">
+            <a class="contact-btn wa" id="c-wa" href="#" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" class="ico"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Z"/><path d="M8.5 7.5c.3 0 .6 0 .8.5l.8 1.8c.1.3 0 .5-.1.7l-.6.7c-.2.2-.2.4 0 .7a7 7 0 0 0 3 3c.3.2.5.2.7 0l.7-.7c.2-.2.4-.2.7-.1l1.8.8c.4.2.5.5.5.8 0 1-1 2-2.2 2A8.5 8.5 0 0 1 6.5 9.7C6.5 8.5 7.5 7.5 8.5 7.5Z" fill="#fff" stroke="none"/></svg>
+              WhatsApp
+            </a>
+            <a class="contact-btn call" id="c-call" href="${vsTelLink(v)}">
+              <svg viewBox="0 0 24 24" class="ico"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11 11 0 0 0 3.4.55 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11 11 0 0 0 .55 3.4 1 1 0 0 1-.25 1Z"/></svg>
+              Call
+            </a>
+            <button class="contact-btn inq" id="c-inq" type="button">
+              <svg viewBox="0 0 24 24" class="ico"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              Inquiry
+            </button>
+          </div>
+        </section>
+
+        <section class="detail-section">
           <h2>Packages</h2>
           <div class="pkg-list">
             ${v.packages.map(p => `
@@ -130,15 +148,39 @@
         </section>
 
         <section class="detail-section">
-          <h2>Reviews</h2>
-          ${reviews.map(r => `
-            <div class="review">
-              <div class="review-top">
-                <span class="review-avatar">${r.name[0]}</span>
-                <div><div class="review-name">${r.name}</div><div class="review-stars">${stars(r.stars)}</div></div>
+          <h2>Check availability</h2>
+          <div class="cal" id="cal"><!-- rendered by JS --></div>
+          <div class="cal-legend">
+            <span><i class="cdot avail"></i> Available</span>
+            <span><i class="cdot booked"></i> Booked</span>
+            <span class="cal-hint">Tap an available date to request it</span>
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <div class="reviews-head">
+            <h2>Reviews</h2>
+            <span class="reviews-avg" id="rev-avg"></span>
+          </div>
+          <div id="reviews-list"><!-- rendered by JS --></div>
+          <button class="btn btn-outline" id="rev-add-btn" type="button" style="margin-top:0.75rem;">✍ Write a review</button>
+          <form id="rev-form" class="register-form" hidden style="margin-top:1rem;">
+            <div class="field">
+              <label>Your rating</label>
+              <div class="star-input" id="star-input" role="radiogroup" aria-label="Your rating">
+                ${[1, 2, 3, 4, 5].map(n => `<button type="button" class="star" data-star="${n}" aria-label="${n} star">★</button>`).join("")}
               </div>
-              <p>${r.text}</p>
-            </div>`).join("")}
+            </div>
+            <div class="field"><label for="rev-name">Your name</label><input id="rev-name" type="text" placeholder="Full name" required /></div>
+            <div class="field"><label for="rev-text">Your review</label><textarea id="rev-text" rows="3" placeholder="Share your experience…" required></textarea></div>
+            <div class="field"><label for="rev-photo">Add a photo (optional)</label><input id="rev-photo" type="file" accept="image/*" /></div>
+            <button type="submit" class="btn btn-block btn-lg">Submit review</button>
+          </form>
+        </section>
+
+        <section class="detail-section" id="similar-sec" hidden>
+          <h2>Similar vendors</h2>
+          <div class="cards" id="similar-list"><!-- rendered by JS --></div>
         </section>
 
         <div style="height:0.5rem;"></div>
@@ -197,9 +239,137 @@
         setTimeout(() => toast.classList.remove("show"), 2600);
         document.getElementById("book-form").reset();
         pkgSel.innerHTML = v.packages.map(p => `<option value="${p.name}">${p.name} — ${vsFormatPrice(p.price)}</option>`).join("");
+        if (typeof renderCal === "function") renderCal(); // reflect the new booking on the calendar
+        vsTrack(v.id, "bookings");
       });
 
       document.addEventListener("keydown", e => { if (e.key === "Escape") modal.classList.remove("open"); });
+
+      /* ============ Feature enhancements ============ */
+
+      // Profile-view tracking (feeds the future vendor dashboard)
+      vsTrack(v.id, "views");
+
+      // Shared toast helper
+      const toastEl = document.getElementById("toast");
+      function showToast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add("show");
+        setTimeout(() => toastEl.classList.remove("show"), 2600);
+      }
+
+      // ---------- Quick contact: WhatsApp / Call / Inquiry ----------
+      const waBtn = document.getElementById("c-wa");
+      waBtn.href = vsWaLink(v, `Hi, I'm interested in ${v.name} (${cat ? cat.name : ""}) on Vivah Spot. Could you share availability and pricing?`);
+      waBtn.addEventListener("click", () => vsTrack(v.id, "whatsapp"));
+      document.getElementById("c-call").addEventListener("click", () => vsTrack(v.id, "calls"));
+      document.getElementById("c-inq").addEventListener("click", () => {
+        vsTrack(v.id, "leads");
+        const leads = JSON.parse(localStorage.getItem("vs_inquiries") || "[]");
+        leads.unshift({ vendorId: v.id, vendor: v.name, at: new Date().toISOString() });
+        localStorage.setItem("vs_inquiries", JSON.stringify(leads));
+        showToast("Inquiry sent ✓  The vendor will get back to you");
+      });
+
+      // ---------- Availability calendar ----------
+      const calEl = document.getElementById("cal");
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      let calY = today.getFullYear(), calM = today.getMonth();
+      const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const pad2 = n => String(n).padStart(2, "0");
+      const isoOf = (y, m, d) => `${y}-${pad2(m + 1)}-${pad2(d)}`;
+      function renderCal() {
+        const first = new Date(calY, calM, 1).getDay();
+        const days = new Date(calY, calM + 1, 0).getDate();
+        const atStart = (calY === today.getFullYear() && calM === today.getMonth());
+        let cells = "";
+        for (let i = 0; i < first; i++) cells += `<span class="cal-cell empty"></span>`;
+        for (let d = 1; d <= days; d++) {
+          const dateISO = isoOf(calY, calM, d);
+          const past = new Date(calY, calM, d) < today;
+          if (past) { cells += `<span class="cal-cell past">${d}</span>`; continue; }
+          const booked = vsIsBooked(v.id, dateISO);
+          cells += `<button type="button" class="cal-cell ${booked ? "booked" : "avail"}" data-date="${dateISO}" ${booked ? "disabled" : ""}>${d}</button>`;
+        }
+        calEl.innerHTML = `
+          <div class="cal-nav">
+            <button type="button" class="cal-arrow" id="cal-prev" ${atStart ? "disabled" : ""} aria-label="Previous month">‹</button>
+            <span class="cal-title">${MONTHS[calM]} ${calY}</span>
+            <button type="button" class="cal-arrow" id="cal-next" aria-label="Next month">›</button>
+          </div>
+          <div class="cal-grid">
+            ${["S", "M", "T", "W", "T", "F", "S"].map(d => `<span class="cal-dow">${d}</span>`).join("")}
+            ${cells}
+          </div>`;
+        const prevB = document.getElementById("cal-prev");
+        if (prevB && !atStart) prevB.addEventListener("click", () => { calM--; if (calM < 0) { calM = 11; calY--; } renderCal(); });
+        document.getElementById("cal-next").addEventListener("click", () => { calM++; if (calM > 11) { calM = 0; calY++; } renderCal(); });
+        calEl.querySelectorAll(".cal-cell.avail").forEach(c => {
+          c.addEventListener("click", () => {
+            document.getElementById("b-date").value = c.dataset.date;
+            modal.classList.add("open");
+          });
+        });
+      }
+      renderCal();
+
+      // ---------- Reviews & ratings ----------
+      const revListEl = document.getElementById("reviews-list");
+      const revAvgEl = document.getElementById("rev-avg");
+      const allReviews = () => [...vsGetReviews(v.id), ...reviews];
+      function renderReviews() {
+        const all = allReviews();
+        const avg = all.reduce((s, r) => s + r.stars, 0) / all.length;
+        revAvgEl.textContent = `★ ${avg.toFixed(1)} · ${all.length} review${all.length === 1 ? "" : "s"}`;
+        revListEl.innerHTML = all.map(r => `
+          <div class="review">
+            <div class="review-top">
+              <span class="review-avatar">${(r.name || "?")[0].toUpperCase()}</span>
+              <div><div class="review-name">${r.name}${r.mine ? ` <span class="review-you">You</span>` : ""}</div><div class="review-stars">${stars(r.stars)}</div></div>
+            </div>
+            <p>${r.text}</p>
+            ${r.photo ? `<img class="review-photo" src="${r.photo}" alt="Review photo" loading="lazy" />` : ""}
+          </div>`).join("");
+      }
+      renderReviews();
+
+      const revForm = document.getElementById("rev-form");
+      const revAddBtn = document.getElementById("rev-add-btn");
+      let revStars = 0;
+      const starBtns = document.querySelectorAll("#star-input .star");
+      const paintStars = n => starBtns.forEach(b => b.classList.toggle("on", +b.dataset.star <= n));
+      starBtns.forEach(b => {
+        b.addEventListener("mouseenter", () => paintStars(+b.dataset.star));
+        b.addEventListener("click", () => { revStars = +b.dataset.star; paintStars(revStars); });
+      });
+      document.getElementById("star-input").addEventListener("mouseleave", () => paintStars(revStars));
+      revAddBtn.addEventListener("click", () => {
+        revForm.hidden = !revForm.hidden;
+        if (!revForm.hidden) revForm.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+      revForm.addEventListener("submit", () => {
+        const name = document.getElementById("rev-name").value.trim();
+        const text = document.getElementById("rev-text").value.trim();
+        if (!revStars) { showToast("Please pick a star rating"); return; }
+        if (!name || !text) return;
+        const save = photo => {
+          vsAddReview(v.id, { name, stars: revStars, text, photo: photo || "", mine: true });
+          renderReviews();
+          revForm.reset(); revStars = 0; paintStars(0); revForm.hidden = true;
+          showToast("Thanks! Your review was added ✓");
+        };
+        const file = document.getElementById("rev-photo").files[0];
+        if (file) { const fr = new FileReader(); fr.onload = () => save(fr.result); fr.readAsDataURL(file); }
+        else { save(""); }
+      });
+
+      // ---------- Similar recommendations ----------
+      const similar = vsVendorsByCat(v.cat).filter(x => x.id !== v.id).slice(0, 4);
+      if (similar.length) {
+        document.getElementById("similar-sec").hidden = false;
+        document.getElementById("similar-list").innerHTML = similar.map(vsVendorCard).join("");
+        vsSyncFavs();
+      }
     }
   </script>
 </body>

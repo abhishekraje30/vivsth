@@ -754,7 +754,7 @@ body {
 
 /* ===== Desktop "web view": real website layout (document scroll) ===== */
 @media (min-width: 1024px) {
-  html, body { height: auto; overflow: auto; overscroll-behavior: auto; }
+  html, body { height: auto; overflow-y: auto; overflow-x: hidden; overscroll-behavior: auto; }
   body { background: var(--bg); display: block; }
 
   .app {
@@ -828,3 +828,74 @@ body {
 @media (min-width: 1500px) {
   .screen { max-width: 1320px; }
 }
+
+/* ===== Feature enhancements (vendor profile) ===== */
+
+/* Quick contact buttons */
+.contact-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.contact-btn {
+  flex: 1; min-width: 110px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
+  padding: 0.7rem 0.9rem; border-radius: 12px; cursor: pointer;
+  font-size: 0.88rem; font-weight: 700; font-family: inherit;
+  border: 1.5px solid var(--border); background: var(--surface); color: var(--text);
+  text-decoration: none; transition: transform 0.12s ease, filter 0.2s ease, background-color 0.2s ease;
+}
+.contact-btn .ico { width: 18px; height: 18px; }
+.contact-btn:active { transform: translateY(1px); }
+.contact-btn.wa { background: #25d366; border-color: #25d366; color: #fff; }
+.contact-btn.wa .ico { stroke: #fff; }
+.contact-btn.call { background: var(--accent); border-color: var(--accent); color: #fff; }
+.contact-btn.call:hover, .contact-btn.wa:hover { filter: brightness(1.05); }
+.contact-btn.inq:hover { background: var(--accent-soft); border-color: var(--accent); }
+
+/* Availability calendar */
+.cal { border: 1px solid var(--border); border-radius: 16px; padding: 0.75rem; background: var(--surface); max-width: 340px; overflow: hidden; }
+.cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+.cal-title { font-weight: 800; font-size: 0.95rem; color: var(--text); }
+.cal-arrow {
+  width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text); font-size: 1.1rem; line-height: 1; cursor: pointer;
+}
+.cal-arrow:disabled { opacity: 0.35; cursor: default; }
+.cal-arrow:not(:disabled):hover { border-color: var(--accent); color: var(--accent); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.cal-dow { text-align: center; font-size: 0.7rem; font-weight: 700; color: var(--text-soft); padding-bottom: 0.2rem; }
+.cal-cell {
+  min-width: 0; aspect-ratio: 1 / 1; display: grid; place-items: center;
+  border: none; border-radius: 9px; font-size: 0.8rem; font-weight: 600; font-family: inherit;
+  background: transparent; color: var(--text);
+}
+.cal-cell.empty { background: transparent; }
+.cal-cell.past { color: var(--text-soft); opacity: 0.4; }
+.cal-cell.avail { background: rgba(43, 182, 115, 0.14); color: #1c8a55; cursor: pointer; }
+.cal-cell.avail:hover { background: var(--c-green); color: #fff; }
+.cal-cell.booked { background: rgba(239, 77, 90, 0.14); color: #c4313d; cursor: not-allowed; text-decoration: line-through; }
+.cal-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem; margin-top: 0.6rem; font-size: 0.78rem; color: var(--text-soft); }
+.cal-legend .cdot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 0.3rem; vertical-align: middle; }
+.cal-legend .cdot.avail { background: var(--c-green); }
+.cal-legend .cdot.booked { background: var(--c-red); }
+.cal-hint { margin-left: auto; font-style: italic; }
+
+/* Reviews & ratings */
+.reviews-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
+.reviews-avg { font-size: 0.85rem; font-weight: 700; color: var(--accent-dark); white-space: nowrap; }
+.review-you {
+  font-size: 0.65rem; font-weight: 700; color: var(--accent-dark);
+  background: var(--accent-soft); padding: 0.05rem 0.4rem; border-radius: 999px; margin-left: 0.3rem;
+}
+.review-photo { margin-top: 0.5rem; width: 100%; max-width: 220px; border-radius: 12px; display: block; }
+.star-input { display: inline-flex; gap: 0.2rem; }
+.star-input .star {
+  background: none; border: none; cursor: pointer; padding: 0;
+  font-size: 1.7rem; line-height: 1; color: var(--border);
+  transition: color 0.12s ease, transform 0.12s ease;
+}
+.star-input .star.on { color: var(--c-gold); }
+.star-input .star:hover { transform: scale(1.12); }
+#rev-form textarea {
+  width: 100%; border: 1px solid var(--border); background: var(--bg);
+  border-radius: 12px; padding: 0.7rem 0.85rem; font-family: inherit; font-size: 0.92rem;
+  color: var(--text); resize: vertical;
+}
+#rev-form textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }

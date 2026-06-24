@@ -242,3 +242,53 @@ function vsSyncFavs() {
     b.classList.toggle("active", vsIsFav(b.getAttribute("data-fav")));
   });
 }
+
+/* ---- contact (mock; no backend) ---- */
+const VS_DEMO_PHONE = "919112233445"; // shared demo number for the prototype
+function vsVendorPhone(v) { return (v && v.phone) || VS_DEMO_PHONE; }
+function vsWaLink(v, msg) {
+  return "https://wa.me/" + vsVendorPhone(v) + "?text=" + encodeURIComponent(msg || "");
+}
+function vsTelLink(v) { return "tel:+" + vsVendorPhone(v); }
+
+/* ---- lightweight analytics for the (future) vendor dashboard ---- */
+function vsTrack(vendorId, metric) {
+  if (!vendorId || !metric) return;
+  const k = "vs_stats_" + vendorId;
+  let s = {};
+  try { s = JSON.parse(localStorage.getItem(k) || "{}"); } catch { s = {}; }
+  s[metric] = (s[metric] || 0) + 1;
+  localStorage.setItem(k, JSON.stringify(s));
+}
+function vsGetStats(vendorId) {
+  try { return JSON.parse(localStorage.getItem("vs_stats_" + vendorId) || "{}"); }
+  catch { return {}; }
+}
+
+/* ---- availability (deterministic mock + real bookings) ---- */
+function vsHashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; }
+  return h;
+}
+/* dateISO = "YYYY-MM-DD". ~20% of future dates show as booked, deterministically per vendor,
+   plus any dates the user has already requested for this vendor. */
+function vsIsBooked(vendorId, dateISO) {
+  const bookings = (() => {
+    try { return JSON.parse(localStorage.getItem("vs_bookings") || "[]"); }
+    catch { return []; }
+  })();
+  if (bookings.some(b => b.vendorId === vendorId && b.date === dateISO)) return true;
+  return vsHashStr(vendorId + "|" + dateISO) % 5 === 0;
+}
+
+/* ---- user reviews (persisted in localStorage, no backend) ---- */
+function vsGetReviews(vendorId) {
+  try { return JSON.parse(localStorage.getItem("vs_reviews_" + vendorId) || "[]"); }
+  catch { return []; }
+}
+function vsAddReview(vendorId, review) {
+  const list = vsGetReviews(vendorId);
+  list.unshift(review);
+  localStorage.setItem("vs_reviews_" + vendorId, JSON.stringify(list));
+}

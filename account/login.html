@@ -144,7 +144,24 @@
 
     /* On desktop the screen scrolls with the document — keep the card centred */
     @media (min-width: 1024px) {
-      .login-screen { min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: safe center; overflow: visible; }
+      .login-screen {
+        min-height: calc(100vh - 130px);   /* fill area below sticky header + nav */
+        display: flex; align-items: center; justify-content: safe center;
+        overflow: visible;
+        padding-top: 1rem; padding-bottom: 1rem;
+      }
+      /* Tighten spacing so the whole card fits a laptop window without vertical scroll */
+      .login-card { padding: 1.25rem 1.5rem; }
+      .login-card .auth-logo { width: 52px; height: 52px; margin-bottom: 0.55rem; }
+      .login-card .auth-logo svg { width: 26px; height: 26px; }
+      .login-head { margin-bottom: 0.85rem; }
+      .login-head h1 { font-size: 1.4rem; }
+      .lform { gap: 0.6rem; }
+      .ifield input { padding-top: 0.7rem; padding-bottom: 0.7rem; }
+      .auth-divider { margin: 0.8rem 0; }
+      .social-row { gap: 0.5rem; }
+      .social-btn { padding-top: 0.6rem; padding-bottom: 0.6rem; }
+      .login-card .vendor-cta { margin-top: 0.8rem; }
     }
   </style>
 </head>
