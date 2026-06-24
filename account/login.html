@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#b08d83" />
+  <title>Log In — Vivah Spot</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <!-- Page-scoped modern login styling (uses shared design tokens; no framework) -->
+  <style>
+    /* Centre the card and give the screen a soft festive wash behind it */
+    .login-screen {
+      position: relative;
+      padding: 1.5rem 1.25rem 2.5rem;
+      overflow-x: hidden;            /* clip decorative blobs sideways; vertical scroll stays enabled */
+      justify-content: safe center;  /* center when it fits; top-align & scroll when taller than the screen */
+    }
+    /* Decorative blurred colour blobs in the background */
+    .login-screen::before,
+    .login-screen::after {
+      content: "";
+      position: absolute;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .login-screen::before { top: -90px; right: -70px; background: radial-gradient(circle, var(--c-pink), transparent 70%); }
+    .login-screen::after  { bottom: -110px; left: -80px; background: radial-gradient(circle, var(--c-orange), transparent 70%); }
+
+    .login-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 380px;
+      background: rgba(255, 255, 255, 0.82);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 24px;
+      padding: 1.75rem 1.5rem 1.5rem;
+      box-shadow: 0 18px 50px rgba(180, 50, 110, 0.18);
+      animation: login-rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    @keyframes login-rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* Logo + heading */
+    .login-card .auth-logo { margin-bottom: 0.9rem; }
+    .login-head { text-align: center; margin-bottom: 1.4rem; }
+    .login-head h1 {
+      font-size: 1.55rem; font-weight: 800; letter-spacing: -0.01em;
+      margin-bottom: 0.3rem;
+    }
+    .login-head p { font-size: 0.86rem; color: var(--text-soft); }
+
+    /* Icon-led input fields */
+    .lform { display: flex; flex-direction: column; gap: 0.85rem; }
+    .ifield {
+      position: relative;
+      display: flex; align-items: center;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .ifield:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-soft);
+    }
+    .ifield > .ico-lead {
+      width: 20px; height: 20px; margin: 0 0.2rem 0 0.85rem;
+      color: var(--text-soft); flex: 0 0 auto;
+      transition: color 0.18s ease;
+    }
+    .ifield:focus-within > .ico-lead { color: var(--accent); }
+    .ifield input {
+      flex: 1; min-width: 0;
+      border: none; background: transparent; outline: none;
+      padding: 0.9rem 0.85rem 0.9rem 0.65rem;
+      font-size: 0.92rem; color: var(--text); font-family: inherit;
+    }
+    .ifield input::placeholder { color: var(--text-soft); opacity: 0.85; }
+
+    /* Password show/hide toggle */
+    .pw-toggle {
+      flex: 0 0 auto;
+      display: grid; place-items: center;
+      width: 42px; height: 100%;
+      background: none; border: none; cursor: pointer;
+      color: var(--text-soft); padding: 0 0.55rem 0 0;
+    }
+    .pw-toggle:hover { color: var(--accent); }
+    .pw-toggle .ico { width: 20px; height: 20px; }
+    .pw-toggle .eye-off { display: none; }
+    .pw-toggle.show .eye-on { display: none; }
+    .pw-toggle.show .eye-off { display: block; }
+
+    /* Remember + forgot row */
+    .lrow {
+      display: flex; align-items: center; justify-content: space-between;
+      margin: 0.15rem 0 0.3rem;
+    }
+    .remember {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-size: 0.8rem; color: var(--text-soft); cursor: pointer; user-select: none;
+    }
+    .remember input {
+      width: 17px; height: 17px; accent-color: var(--accent); cursor: pointer;
+    }
+    .lrow a { font-size: 0.8rem; font-weight: 700; color: var(--accent); text-decoration: none; }
+    .lrow a:hover { color: var(--accent-dark); }
+
+    /* Gradient primary button */
+    .btn-grad {
+      background: var(--grad); color: #fff;
+      box-shadow: 0 8px 20px rgba(226, 62, 122, 0.35);
+      border: none;
+      transition: transform 0.12s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+    .btn-grad:hover { filter: brightness(1.05); box-shadow: 0 10px 26px rgba(226, 62, 122, 0.42); }
+    .btn-grad:active { transform: translateY(1px); }
+
+    /* Social / alternative sign-in */
+    .social-row { display: flex; flex-direction: column; gap: 0.6rem; }
+    .social-btn {
+      display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+      width: 100%; padding: 0.75rem 1rem;
+      background: var(--surface); color: var(--text);
+      border: 1.5px solid var(--border); border-radius: 12px;
+      font-size: 0.88rem; font-weight: 700; font-family: inherit; cursor: pointer;
+      transition: border-color 0.18s ease, background-color 0.18s ease, transform 0.12s ease;
+    }
+    .social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .social-btn:active { transform: translateY(1px); }
+    .social-btn .gico, .social-btn .ico { width: 19px; height: 19px; flex: 0 0 auto; }
+
+    .login-card .vendor-cta { margin-top: 1.25rem; }
+
+    /* On desktop the screen scrolls with the document — keep the card centred */
+    @media (min-width: 1024px) {
+      .login-screen { min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: safe center; overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#login-card">Skip to login</a>
+  <div class="app">
+
+    <!-- ===== Top app bar ===== -->
+    <header class="appbar">
+      <a href="../index.html" class="back-btn" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <div class="appbar-brand appbar-brand--logo appbar-brand--center">
+        <span class="brand-copy">
+          <span class="brand-name"><span class="bn-1">Vivah</span><span class="bn-2">Spot</span></span>
+          <span class="brand-tagline">Big day, sorted.</span>
+        </span>
+      </div>
+      <span class="appbar-spacer" aria-hidden="true"></span>
+    </header>
+
+    <!-- ===== Login screen ===== -->
+    <main class="screen screen-center login-screen">
+      <section class="auth login-card" id="login-card">
+        <div class="auth-logo">
+          <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>
+        </div>
+        <div class="login-head">
+          <h1>Welcome back</h1>
+          <p>Log in to manage your bookings and saved vendors.</p>
+        </div>
+
+        <form class="lform" onsubmit="return false;">
+          <!-- Email / mobile -->
+          <label class="ifield">
+            <svg viewBox="0 0 24 24" class="ico ico-lead"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            <input type="text" name="user" placeholder="Email or mobile number"
+                   aria-label="Email or mobile number" autocomplete="username" required />
+          </label>
+
+          <!-- Password with show/hide -->
+          <label class="ifield">
+            <svg viewBox="0 0 24 24" class="ico ico-lead"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            <input type="password" id="pw" name="password" placeholder="Password"
+                   aria-label="Password" autocomplete="current-password" required />
+            <button type="button" class="pw-toggle" id="pw-toggle" aria-label="Show password" aria-pressed="false">
+              <svg viewBox="0 0 24 24" class="ico eye-on"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg viewBox="0 0 24 24" class="ico eye-off"><path d="M3 3l18 18"/><path d="M10.6 6.2A9.7 9.7 0 0 1 12 6c6.5 0 10 6 10 6a17 17 0 0 1-3.2 3.9M6.1 6.2A17 17 0 0 0 2 12s3.5 6 10 6a9.6 9.6 0 0 0 3.2-.5"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+            </button>
+          </label>
+
+          <div class="lrow">
+            <label class="remember">
+              <input type="checkbox" name="remember" /> Remember me
+            </label>
+            <a href="login.html">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-block btn-grad">Log In</button>
+        </form>
+
+        <div class="auth-divider"><span>or continue with</span></div>
+
+        <div class="social-row">
+          <button type="button" class="social-btn">
+            <svg viewBox="0 0 48 48" class="gico" aria-hidden="true">
+              <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.5 0 20-7.6 20-21 0-1.2-.1-2.4-.4-3.5Z"/>
+              <path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 7.1 29.6 5 24 5 16 5 9.1 9.5 6.3 14.7Z"/>
+              <path fill="#4CAF50" d="M24 45c5.5 0 10.4-2.1 14.1-5.5l-6.5-5.5C29.5 35.5 26.9 36.5 24 36.5c-5.3 0-9.7-3.4-11.3-8.1l-6.6 5.1C9.1 40.4 16 45 24 45Z"/>
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4-4 5.3l6.5 5.5C41.9 35.8 45 30.5 45 24c0-1.2-.1-2.4-.4-3.5Z"/>
+            </svg>
+            Continue with Google
+          </button>
+          <button type="button" class="social-btn">
+            <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>
+            Continue with OTP
+          </button>
+        </div>
+
+        <p class="vendor-cta">New to Vivah Spot? <a href="../index.html#register">Create an account →</a></p>
+      </section>
+    </main>
+
+    <!-- ===== Bottom tab bar ===== -->
+    <nav class="tabbar">
+      <a href="../index.html#home" class="tab">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+        <span>Home</span>
+      </a>
+      <a href="../index.html#services" class="tab">
+        <svg viewBox="0 0 24 24" class="ico"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        <span>Services</span>
+      </a>
+      <a href="../index.html#register" class="tab">
+        <svg viewBox="0 0 24 24" class="ico"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        <span>Register</span>
+      </a>
+      <a href="login.html" class="tab active">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 4v16"/></svg>
+        <span>Login</span>
+      </a>
+      <a href="../index.html#about" class="tab">
+        <svg viewBox="0 0 24 24" class="ico"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.5" r="0.6" fill="currentColor"/></svg>
+        <span>About</span>
+      </a>
+    </nav>
+  </div>
+
+  <script>
+    // Password show/hide toggle (vanilla; no framework)
+    (function () {
+      var toggle = document.getElementById('pw-toggle');
+      var pw = document.getElementById('pw');
+      if (!toggle || !pw) return;
+      toggle.addEventListener('click', function () {
+        var show = pw.type === 'password';
+        pw.type = show ? 'text' : 'password';
+        toggle.classList.toggle('show', show);
+        toggle.setAttribute('aria-pressed', String(show));
+        toggle.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+        pw.focus();
+      });
+    })();
+  </script>
+</body>
+</html>

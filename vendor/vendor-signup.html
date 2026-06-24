@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#e23e7a" />
+  <title>Become a Partner — Vivah Spot</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <!-- Page-scoped modern styling (uses shared design tokens; no framework) -->
+  <style>
+    /* Soft festive wash behind the long form */
+    .vendor-screen { position: relative; overflow-x: clip; }  /* clip blobs so they can't cause sideways scroll */
+    .vendor-screen::before,
+    .vendor-screen::after {
+      content: "";
+      position: absolute; z-index: 0;
+      width: 320px; height: 320px; border-radius: 50%;
+      filter: blur(80px); opacity: 0.4; pointer-events: none;
+    }
+    .vendor-screen::before { top: -60px; right: -90px; background: radial-gradient(circle, var(--c-pink), transparent 70%); }
+    .vendor-screen::after  { top: 420px; left: -110px; background: radial-gradient(circle, var(--c-orange), transparent 70%); }
+    .vendor-screen > * { position: relative; z-index: 1; }
+
+    /* Frosted glass section cards with a subtle staggered entrance */
+    .vendor-form .form-section {
+      background: rgba(255, 255, 255, 0.84);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 20px;
+      box-shadow: 0 12px 34px rgba(180, 50, 110, 0.1);
+      animation: vs-rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .vendor-form .form-section:nth-child(2) { animation-delay: 0.04s; }
+    .vendor-form .form-section:nth-child(3) { animation-delay: 0.08s; }
+    .vendor-form .form-section:nth-child(4) { animation-delay: 0.12s; }
+    @keyframes vs-rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* Section heading: larger gradient number badge + hairline divider */
+    .vendor-form .form-section h3 {
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .vendor-form .sec-no {
+      width: 28px; height: 28px; font-size: 0.85rem;
+      box-shadow: 0 4px 12px rgba(226, 62, 122, 0.32);
+    }
+
+    /* Password fields with show/hide toggle */
+    .pw-wrap { position: relative; }
+    .pw-wrap input { padding-right: 2.6rem; }
+    .pw-toggle {
+      position: absolute; top: 0; right: 0;
+      display: grid; place-items: center;
+      width: 42px; height: 100%;
+      background: none; border: none; cursor: pointer; color: var(--text-soft);
+    }
+    .pw-toggle:hover { color: var(--accent); }
+    .pw-toggle .ico { width: 19px; height: 19px; }
+    .pw-toggle .eye-off { display: none; }
+    .pw-toggle.show .eye-on { display: none; }
+    .pw-toggle.show .eye-off { display: block; }
+
+    /* Gradient submit button to match the auth pages */
+    .vendor-form .btn-grad {
+      background: var(--grad); color: #fff; border: none;
+      box-shadow: 0 8px 20px rgba(226, 62, 122, 0.35);
+      transition: transform 0.12s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+    .vendor-form .btn-grad:hover { filter: brightness(1.05); box-shadow: 0 10px 26px rgba(226, 62, 122, 0.42); }
+    .vendor-form .btn-grad:active { transform: translateY(1px); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#partner-form">Skip to form</a>
+  <div class="app">
+
+    <!-- ===== Top app bar ===== -->
+    <header class="appbar">
+      <a href="../index.html" class="back-btn" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <div class="appbar-brand appbar-brand--logo appbar-brand--center">
+        <span class="brand-copy">
+          <span class="brand-name"><span class="bn-1">Vivah</span><span class="bn-2">Spot</span></span>
+          <span class="brand-tagline">Partner Registration</span>
+        </span>
+      </div>
+      <span class="appbar-spacer" aria-hidden="true"></span>
+    </header>
+
+    <!-- ===== Scrollable form screen ===== -->
+    <main class="screen vendor-screen">
+
+      <!-- Intro -->
+      <div class="vendor-intro">
+        <h1>Become a Partner</h1>
+        <p>List your service on Vivah Spot and reach thousands of couples planning their big day.</p>
+      </div>
+
+      <form class="vendor-form" id="partner-form" onsubmit="return false;">
+
+        <!-- 1. Business information -->
+        <section class="form-section">
+          <h3><span class="sec-no">1</span> Business Information</h3>
+
+          <div class="field">
+            <label for="biz-name">Business / Brand name <span class="req">*</span></label>
+            <input id="biz-name" type="text" placeholder="e.g. Green Meadows Lawn" required />
+          </div>
+
+          <div class="field">
+            <label for="owner-name">Owner / Contact person <span class="req">*</span></label>
+            <input id="owner-name" type="text" placeholder="Full name" required />
+          </div>
+
+          <div class="field">
+            <label for="category">Service category <span class="req">*</span></label>
+            <select id="category" required>
+              <option value="" disabled selected>Select a category</option>
+              <option>Lawns &amp; Venues</option>
+              <option>Catering</option>
+              <option>Decoration</option>
+              <option>Photography &amp; Videography</option>
+              <option>Makeup &amp; Mehndi</option>
+              <option>DJ &amp; Music</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="services">Services offered</label>
+            <input id="services" type="text" placeholder="e.g. Veg & Non-veg buffet, live counters" />
+            <small class="hint">Comma-separated list of what you offer.</small>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="est-year">Established year</label>
+              <input id="est-year" type="number" min="1900" max="2026" placeholder="2015" />
+            </div>
+            <div class="field">
+              <label for="team-size">Team size</label>
+              <input id="team-size" type="number" min="1" placeholder="10" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="about">About your business</label>
+            <textarea id="about" rows="3" placeholder="Tell couples what makes your service special…"></textarea>
+          </div>
+        </section>
+
+        <!-- 2. Contact details -->
+        <section class="form-section">
+          <h3><span class="sec-no">2</span> Contact Details</h3>
+
+          <div class="field">
+            <label for="mobile">Mobile number <span class="req">*</span></label>
+            <div class="input-prefix">
+              <span>+91</span>
+              <input id="mobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile" required />
+            </div>
+            <small class="hint">We'll send an OTP to verify this number.</small>
+          </div>
+
+          <div class="field">
+            <label for="alt-phone">Alternate phone</label>
+            <input id="alt-phone" type="tel" placeholder="Optional" />
+          </div>
+
+          <div class="field">
+            <label for="email">Email address <span class="req">*</span></label>
+            <input id="email" type="email" placeholder="business@email.com" required />
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="website">Website</label>
+              <input id="website" type="url" placeholder="https://" />
+            </div>
+            <div class="field">
+              <label for="instagram">Instagram</label>
+              <input id="instagram" type="text" placeholder="@handle" />
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Location & service area -->
+        <section class="form-section">
+          <h3><span class="sec-no">3</span> Location &amp; Service Area</h3>
+
+          <div class="field">
+            <label for="address">Business address <span class="req">*</span></label>
+            <input id="address" type="text" placeholder="Shop / building, street, area" required />
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="city">City <span class="req">*</span></label>
+              <input id="city" type="text" placeholder="Pune" required />
+            </div>
+            <div class="field">
+              <label for="pincode">Pincode <span class="req">*</span></label>
+              <input id="pincode" type="text" inputmode="numeric" maxlength="6" placeholder="411001" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="state">State <span class="req">*</span></label>
+            <select id="state" required>
+              <option value="" disabled selected>Select state</option>
+              <option>Maharashtra</option>
+              <option>Delhi</option>
+              <option>Karnataka</option>
+              <option>Gujarat</option>
+              <option>Rajasthan</option>
+              <option>Tamil Nadu</option>
+              <option>Telangana</option>
+              <option>Uttar Pradesh</option>
+              <option>West Bengal</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="service-area">Cities / areas you serve</label>
+            <input id="service-area" type="text" placeholder="e.g. Pune, PCMC, Lonavala" />
+            <small class="hint">Where can couples book you?</small>
+          </div>
+        </section>
+
+        <!-- 4. Services & pricing -->
+        <section class="form-section">
+          <h3><span class="sec-no">4</span> Pricing</h3>
+
+          <div class="field">
+            <label for="price-model">Pricing model</label>
+            <select id="price-model">
+              <option value="" disabled selected>Select</option>
+              <option>Per plate</option>
+              <option>Per day</option>
+              <option>Per event</option>
+              <option>Per hour</option>
+              <option>Package based</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="price-min">Starting price (₹)</label>
+              <input id="price-min" type="number" min="0" placeholder="25000" />
+            </div>
+            <div class="field">
+              <label for="capacity">Capacity</label>
+              <input id="capacity" type="number" min="0" placeholder="e.g. 500 guests" />
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Legal & verification (KYC) -->
+        <section class="form-section">
+          <h3><span class="sec-no">5</span> Legal &amp; Verification (KYC)</h3>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="gst">GST number</label>
+              <input id="gst" type="text" maxlength="15" placeholder="22AAAAA0000A1Z5" />
+            </div>
+            <div class="field">
+              <label for="pan">PAN number <span class="req">*</span></label>
+              <input id="pan" type="text" maxlength="10" placeholder="ABCDE1234F" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="id-type">Owner ID proof</label>
+            <select id="id-type">
+              <option value="" disabled selected>Select ID type</option>
+              <option>Aadhaar card</option>
+              <option>Passport</option>
+              <option>Voter ID</option>
+              <option>Driving licence</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="id-doc">Upload ID document <span class="req">*</span></label>
+            <label class="file-drop" for="id-doc">
+              <svg viewBox="0 0 24 24" class="ico"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+              <span>Tap to upload (PDF / JPG / PNG)</span>
+            </label>
+            <input id="id-doc" type="file" accept=".pdf,.jpg,.jpeg,.png" class="visually-hidden" required />
+          </div>
+
+          <div class="field">
+            <label for="biz-license">Business licence / registration</label>
+            <label class="file-drop" for="biz-license">
+              <svg viewBox="0 0 24 24" class="ico"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+              <span>Tap to upload (optional)</span>
+            </label>
+            <input id="biz-license" type="file" accept=".pdf,.jpg,.jpeg,.png" class="visually-hidden" />
+          </div>
+        </section>
+
+        <!-- 6. Bank details -->
+        <section class="form-section">
+          <h3><span class="sec-no">6</span> Bank Details (Payouts)</h3>
+
+          <div class="field">
+            <label for="acc-name">Account holder name <span class="req">*</span></label>
+            <input id="acc-name" type="text" placeholder="As per bank records" required />
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="acc-no">Account number <span class="req">*</span></label>
+              <input id="acc-no" type="text" inputmode="numeric" placeholder="Account number" required />
+            </div>
+            <div class="field">
+              <label for="ifsc">IFSC code <span class="req">*</span></label>
+              <input id="ifsc" type="text" maxlength="11" placeholder="HDFC0001234" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="upi">UPI ID</label>
+            <input id="upi" type="text" placeholder="name@bank (optional)" />
+          </div>
+        </section>
+
+        <!-- 7. Portfolio / media -->
+        <section class="form-section">
+          <h3><span class="sec-no">7</span> Portfolio &amp; Media</h3>
+
+          <div class="field">
+            <label for="logo">Business logo</label>
+            <label class="file-drop" for="logo">
+              <svg viewBox="0 0 24 24" class="ico"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+              <span>Upload logo</span>
+            </label>
+            <input id="logo" type="file" accept="image/*" class="visually-hidden" />
+          </div>
+
+          <div class="field">
+            <label for="portfolio">Work photos / portfolio</label>
+            <label class="file-drop file-drop--lg" for="portfolio">
+              <svg viewBox="0 0 24 24" class="ico"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+              <span>Add up to 10 photos of your work</span>
+            </label>
+            <input id="portfolio" type="file" accept="image/*" multiple class="visually-hidden" />
+          </div>
+        </section>
+
+        <!-- 8. Account security -->
+        <section class="form-section">
+          <h3><span class="sec-no">8</span> Account Security</h3>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="password">Password <span class="req">*</span></label>
+              <div class="pw-wrap">
+                <input id="password" type="password" placeholder="Create password" autocomplete="new-password" required />
+                <button type="button" class="pw-toggle" data-pw="password" aria-label="Show password" aria-pressed="false">
+                  <svg viewBox="0 0 24 24" class="ico eye-on"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg viewBox="0 0 24 24" class="ico eye-off"><path d="M3 3l18 18"/><path d="M10.6 6.2A9.7 9.7 0 0 1 12 6c6.5 0 10 6 10 6a17 17 0 0 1-3.2 3.9M6.1 6.2A17 17 0 0 0 2 12s3.5 6 10 6a9.6 9.6 0 0 0 3.2-.5"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="confirm">Confirm <span class="req">*</span></label>
+              <div class="pw-wrap">
+                <input id="confirm" type="password" placeholder="Re-enter" autocomplete="new-password" required />
+                <button type="button" class="pw-toggle" data-pw="confirm" aria-label="Show password" aria-pressed="false">
+                  <svg viewBox="0 0 24 24" class="ico eye-on"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg viewBox="0 0 24 24" class="ico eye-off"><path d="M3 3l18 18"/><path d="M10.6 6.2A9.7 9.7 0 0 1 12 6c6.5 0 10 6 10 6a17 17 0 0 1-3.2 3.9M6.1 6.2A17 17 0 0 0 2 12s3.5 6 10 6a9.6 9.6 0 0 0 3.2-.5"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Agreements -->
+        <div class="agree">
+          <label class="check">
+            <input type="checkbox" required />
+            <span>I confirm the above details are accurate and I'm authorised to represent this business.</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" required />
+            <span>I agree to the <a href="vendor-signup.html">Partner Terms</a> &amp; <a href="vendor-signup.html">Privacy Policy</a>.</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-block btn-lg btn-grad">Submit for Verification</button>
+        <p class="vendor-cta">Already a partner? <a href="../account/login.html">Log in →</a></p>
+      </form>
+
+      <footer class="foot">
+        <p>© 2026 Vivah Spot · Big day, sorted.</p>
+      </footer>
+    </main>
+
+    <!-- ===== Bottom tab bar ===== -->
+    <nav class="tabbar">
+      <a href="../index.html#home" class="tab">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+        <span>Home</span>
+      </a>
+      <a href="../index.html#services" class="tab">
+        <svg viewBox="0 0 24 24" class="ico"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        <span>Services</span>
+      </a>
+      <a href="../index.html#register" class="tab active">
+        <svg viewBox="0 0 24 24" class="ico"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        <span>Register</span>
+      </a>
+      <a href="../account/login.html" class="tab">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 4v16"/></svg>
+        <span>Login</span>
+      </a>
+      <a href="../index.html#about" class="tab">
+        <svg viewBox="0 0 24 24" class="ico"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.5" r="0.6" fill="currentColor"/></svg>
+        <span>About</span>
+      </a>
+    </nav>
+  </div>
+
+  <script>
+    // Password show/hide toggles
+    document.querySelectorAll('.pw-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const input = document.getElementById(toggle.dataset.pw);
+        if (!input) return;
+        const show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        toggle.classList.toggle('show', show);
+        toggle.setAttribute('aria-pressed', String(show));
+        toggle.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+        input.focus();
+      });
+    });
+
+    // Show selected file name(s) on the upload tiles.
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+      input.addEventListener('change', () => {
+        const drop = document.querySelector('label[for="' + input.id + '"] span');
+        if (!drop) return;
+        if (input.files.length === 1) drop.textContent = input.files[0].name;
+        else if (input.files.length > 1) drop.textContent = input.files.length + ' files selected';
+      });
+    });
+  </script>
+</body>
+</html>

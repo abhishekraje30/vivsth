@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#e23e7a" />
+  <meta name="description" content="Vendor details, packages and reviews on Vivah Spot." />
+  <title>Vendor — Vivah Spot</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <div class="app">
+
+    <header class="appbar">
+      <a href="javascript:history.back()" class="back-btn" aria-label="Go back">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <div class="appbar-brand appbar-brand--center">
+        <span class="page-title">Vendor details</span>
+      </div>
+      <button class="back-btn" id="fav-btn" type="button" aria-label="Save to favourites" style="border-radius:50%;">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>
+      </button>
+    </header>
+
+    <main class="screen screen-narrow" id="main"><!-- rendered by JS --></main>
+
+    <!-- Sticky book bar -->
+    <div class="bookbar" id="bookbar" hidden>
+      <span class="bb-price">Starting from<strong id="bb-price">—</strong></span>
+      <button class="btn btn-block" id="open-book" type="button">Book Now</button>
+    </div>
+
+    <!-- Booking modal -->
+    <div class="modal-overlay" id="book-modal" role="dialog" aria-modal="true" aria-label="Book vendor">
+      <div class="modal">
+        <span class="modal-handle" aria-hidden="true"></span>
+        <h3>Request a booking</h3>
+        <p class="modal-sub" id="modal-vendor">—</p>
+        <form id="book-form" class="register-form" onsubmit="return false;">
+          <div class="field">
+            <label for="b-date">Event date</label>
+            <input id="b-date" type="date" required />
+          </div>
+          <div class="field">
+            <label for="b-pkg">Package</label>
+            <select id="b-pkg" required></select>
+          </div>
+          <div class="field">
+            <label for="b-name">Your name</label>
+            <input id="b-name" type="text" placeholder="Full name" required />
+          </div>
+          <div class="field">
+            <label for="b-phone">Mobile number</label>
+            <input id="b-phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile" required />
+          </div>
+          <button type="submit" class="btn btn-block btn-lg">Confirm booking</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">Booking request sent ✓</div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script>
+    window.IMG_BASE = "";
+    const v = vsVendor(vsParam("id"));
+    const main = document.getElementById("main");
+
+    if (!v) {
+      document.getElementById("bookbar").hidden = true;
+      main.innerHTML = `
+        <div class="empty">
+          <span class="empty-ico"><svg viewBox="0 0 24 24" class="ico"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><circle cx="12" cy="16" r="0.5" fill="currentColor"/></svg></span>
+          <h3>Vendor not found</h3>
+          <p>This listing may have been removed.</p>
+          <a class="btn btn-block" href="index.html" style="max-width:260px;margin:0 auto;">Back to home</a>
+        </div>`;
+    } else {
+      document.title = v.name + " — Vivah Spot";
+      const cat = vsCategory(v.cat);
+      const reviews = [
+        { name: "Priya & Rohan", stars: 5, text: "Absolutely wonderful experience from start to finish. Highly professional and exactly what we wanted for our big day." },
+        { name: "Sneha Kulkarni", stars: 5, text: "Punctual, courteous and great value. Our guests are still talking about it!" },
+        { name: "Amit Deshmukh", stars: 4, text: "Really good service overall. Communication could be a little quicker, but the quality was top-notch." },
+      ];
+      const stars = n => "★".repeat(n) + "☆".repeat(5 - n);
+
+      main.innerHTML = `
+        <div class="gallery">
+          <div class="gallery-main"><img id="g-main" src="images/${v.gallery[0]}" alt="${v.name}" /></div>
+          <div class="gallery-thumbs">
+            ${v.gallery.map((g, i) => `<img src="images/${g}" alt="${v.name} photo ${i + 1}" class="${i === 0 ? "active" : ""}" data-src="images/${g}" />`).join("")}
+          </div>
+        </div>
+
+        <div class="detail-head">
+          <div>
+            <h1>${v.name}</h1>
+            <div class="detail-meta">
+              ${v.verified ? `<span class="badge-verified">✓ Verified</span>` : ""}
+              <span class="mi"><svg viewBox="0 0 24 24" class="ico"><path d="M12 21s-7-6.1-7-11a7 7 0 1 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>${v.city}</span>
+              <span class="mi">${cat ? cat.name : ""}</span>
+            </div>
+          </div>
+          <div class="detail-rating"><strong>${v.rating}</strong><span>${v.reviews} reviews</span></div>
+        </div>
+
+        <section class="detail-section">
+          <h2>About</h2>
+          <p>${v.about}</p>
+        </section>
+
+        <section class="detail-section">
+          <h2>What's included</h2>
+          <div class="amenities">${v.amenities.map(a => `<span class="amenity">${a}</span>`).join("")}</div>
+        </section>
+
+        <section class="detail-section">
+          <h2>Packages</h2>
+          <div class="pkg-list">
+            ${v.packages.map(p => `
+              <div class="pkg">
+                <div class="pkg-top"><h4>${p.name}</h4><span class="pkg-price">${vsFormatPrice(p.price)}<small style="font-weight:600;color:var(--text-soft);font-size:0.72rem;"> / ${v.unit}</small></span></div>
+                <ul class="pkg-features">${p.features.map(f => `<li>${f}</li>`).join("")}</ul>
+              </div>`).join("")}
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <h2>Reviews</h2>
+          ${reviews.map(r => `
+            <div class="review">
+              <div class="review-top">
+                <span class="review-avatar">${r.name[0]}</span>
+                <div><div class="review-name">${r.name}</div><div class="review-stars">${stars(r.stars)}</div></div>
+              </div>
+              <p>${r.text}</p>
+            </div>`).join("")}
+        </section>
+
+        <div style="height:0.5rem;"></div>
+      `;
+
+      // Gallery thumb switching
+      const gMain = document.getElementById("g-main");
+      document.querySelectorAll(".gallery-thumbs img").forEach(t => {
+        t.addEventListener("click", () => {
+          gMain.src = t.dataset.src;
+          document.querySelectorAll(".gallery-thumbs img").forEach(x => x.classList.remove("active"));
+          t.classList.add("active");
+        });
+      });
+
+      // Book bar
+      const bar = document.getElementById("bookbar");
+      bar.hidden = false;
+      document.getElementById("bb-price").textContent = vsFormatPrice(v.priceFrom) + " / " + v.unit;
+
+      // Favourite toggle (header heart)
+      const favBtn = document.getElementById("fav-btn");
+      const syncFav = () => favBtn.classList.toggle("active", vsIsFav(v.id));
+      favBtn.style.color = "var(--accent)";
+      syncFav();
+      if (vsIsFav(v.id)) favBtn.querySelector(".ico").style.fill = "var(--accent)";
+      favBtn.addEventListener("click", () => {
+        vsToggleFav(null, v.id); syncFav();
+        favBtn.querySelector(".ico").style.fill = vsIsFav(v.id) ? "var(--accent)" : "none";
+      });
+
+      // Booking modal
+      const modal = document.getElementById("book-modal");
+      const pkgSel = document.getElementById("b-pkg");
+      pkgSel.innerHTML = v.packages.map(p => `<option value="${p.name}">${p.name} — ${vsFormatPrice(p.price)}</option>`).join("");
+      document.getElementById("modal-vendor").textContent = v.name + " · " + (cat ? cat.name : "");
+      document.getElementById("open-book").addEventListener("click", () => modal.classList.add("open"));
+      modal.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("open"); });
+
+      document.getElementById("book-form").addEventListener("submit", () => {
+        const date = document.getElementById("b-date").value;
+        const name = document.getElementById("b-name").value.trim();
+        const phone = document.getElementById("b-phone").value.trim();
+        if (!date || !name || phone.length < 10) return;
+        // Save booking to localStorage (no backend)
+        const bookings = JSON.parse(localStorage.getItem("vs_bookings") || "[]");
+        bookings.unshift({
+          vendorId: v.id, vendor: v.name, img: v.gallery[0], category: cat ? cat.name : "",
+          date, pkg: pkgSel.value, status: "pending"
+        });
+        localStorage.setItem("vs_bookings", JSON.stringify(bookings));
+        modal.classList.remove("open");
+        const toast = document.getElementById("toast");
+        toast.textContent = "Booking requested ✓  See My Bookings";
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2600);
+        document.getElementById("book-form").reset();
+        pkgSel.innerHTML = v.packages.map(p => `<option value="${p.name}">${p.name} — ${vsFormatPrice(p.price)}</option>`).join("");
+      });
+
+      document.addEventListener("keydown", e => { if (e.key === "Escape") modal.classList.remove("open"); });
+    }
+  </script>
+</body>
+</html>
