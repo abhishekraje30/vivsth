@@ -74,6 +74,9 @@ Vivsathi/
 These would require a backend and are intentionally **not** implemented:
 - Real authentication, vendor onboarding storage, payments, and booking confirmation.
 - Server-side validation (PAN/GST/IFSC/OTP), image uploads, and search indexing.
-- Replace placeholder stock photos with licensed/owned media.
+
+Photos in `images/` are sourced from **Pexels** (free for commercial use, no
+attribution required). Swap for owned/branded media anytime by replacing the files
+in place (keep the same filenames).
 
 See `CHANGELOG.md` for the change history.
