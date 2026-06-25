@@ -252,13 +252,14 @@ h1, h2 { line-height: 1.16; }
   transition: opacity 1.2s ease, transform 6s ease;
 }
 .hero-slide.active { opacity: 1; transform: scale(1.12); }
-/* Brand gradient overlay (above the photos, below the text) */
+/* Brand gradient overlay — strong behind the (top-left) text, lighter toward the
+   bottom-right so the changing photo stays clearly visible. */
 .hero::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(135deg, rgba(226, 62, 122, 0.86) 0%, rgba(255, 122, 61, 0.74) 100%);
+  background: linear-gradient(135deg, rgba(226, 62, 122, 0.82) 0%, rgba(226, 62, 122, 0.58) 42%, rgba(255, 122, 61, 0.38) 100%);
 }
-.hero h1 { font-size: 1.7rem; font-weight: 700; line-height: 1.15; margin-bottom: 0.45rem; text-shadow: 0 1px 14px rgba(60, 20, 40, 0.28); }
-.hero p { font-size: 0.9rem; opacity: 0.95; margin-bottom: 1rem; max-width: 90%; text-shadow: 0 1px 10px rgba(60, 20, 40, 0.22); }
+.hero h1 { font-size: 1.7rem; font-weight: 700; line-height: 1.15; margin-bottom: 0.45rem; text-shadow: 0 2px 18px rgba(45, 12, 30, 0.42); }
+.hero p { font-size: 0.9rem; opacity: 0.96; margin-bottom: 1rem; max-width: 90%; text-shadow: 0 1px 12px rgba(45, 12, 30, 0.38); }
 
 /* ===== Buttons ===== */
 .btn {
