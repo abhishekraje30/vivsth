@@ -208,6 +208,7 @@
       <section id="home" class="section">
         <!-- Hero / promo -->
         <div class="hero">
+          <video class="hero-video" muted loop playsinline preload="none" poster="images/hero.jpg" aria-hidden="true"></video>
           <div class="hero-text">
             <h1>Plan your perfect wedding</h1>
             <p>Book trusted vendors for every part of your big day — all in one place.</p>
@@ -436,6 +437,19 @@
   <script>
     // Render featured vendors from mock data (keeps cards/links/favourites consistent)
     window.IMG_BASE = "";
+
+    // Hero background video — load & play only on larger screens and when motion
+    // is allowed, so phones / reduced-motion keep the fast static poster image.
+    (function () {
+      const v = document.querySelector('.hero-video');
+      if (!v) return;
+      const ok = window.matchMedia('(min-width: 768px)').matches
+        && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!ok) return;
+      v.src = 'images/hero.mp4';
+      const play = () => v.play().catch(() => {});
+      if (v.readyState >= 2) play(); else v.addEventListener('loadeddata', play, { once: true });
+    })();
     document.getElementById('featured').innerHTML =
       ['green-meadows', 'annapurna', 'blossom'].map(id => vsVendorCard(vsVendor(id))).join('');
     document.getElementById('trending').innerHTML =

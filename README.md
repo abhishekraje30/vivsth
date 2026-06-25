@@ -75,8 +75,10 @@ These would require a backend and are intentionally **not** implemented:
 - Real authentication, vendor onboarding storage, payments, and booking confirmation.
 - Server-side validation (PAN/GST/IFSC/OTP), image uploads, and search indexing.
 
-Photos in `images/` are sourced from **Pexels** (free for commercial use, no
-attribution required). Swap for owned/branded media anytime by replacing the files
-in place (keep the same filenames).
+Photos in `images/` and the home hero video (`images/hero.mp4`) are sourced from
+**Pexels** (free for commercial use, no attribution required). Swap for owned/branded
+media anytime by replacing the files in place (keep the same filenames). The hero
+video only loads on ≥768px screens with motion allowed; phones and reduced-motion
+users get the static `hero.jpg` poster.
 
 See `CHANGELOG.md` for the change history.
