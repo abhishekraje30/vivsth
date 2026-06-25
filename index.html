@@ -401,6 +401,7 @@
     document.getElementById('featured').innerHTML =
       ['green-meadows', 'annapurna', 'blossom'].map(id => vsVendorCard(vsVendor(id))).join('');
     vsSyncFavs();
+    vsInitCompare();
 
     const tabs = document.querySelectorAll('.tab');
     const map = {};

@@ -225,6 +225,11 @@ function vsVendorCard(v) {
           <svg viewBox="0 0 24 24" class="ico"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>
         </button>
         <span class="rating">★ ${v.rating}</span>
+        <button class="vcard-cmp" type="button" aria-label="Add to compare"
+                data-cmp="${v.id}" onclick="vsCardCompare(event, '${v.id}')">
+          <svg viewBox="0 0 24 24" class="ico"><path d="M7 16V4m0 0L4 7m3-3 3 3"/><path d="M17 8v12m0 0 3-3m-3 3-3-3"/></svg>
+          <span>Compare</span>
+        </button>
       </div>
       <div class="vcard-body">
         ${vsBadgesHTML(v, 2)}
@@ -313,3 +318,88 @@ function vsAddReview(vendorId, review) {
   list.unshift(review);
   localStorage.setItem("vs_reviews_" + vendorId, JSON.stringify(list));
 }
+
+/* ---- lightweight toast (creates #toast if the page doesn't have one) ---- */
+function vsToast(msg) {
+  let t = document.getElementById("toast");
+  if (!t) { t = document.createElement("div"); t.id = "toast"; t.className = "toast"; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(vsToast._t);
+  vsToast._t = setTimeout(() => t.classList.remove("show"), 2400);
+}
+
+/* ---- compare list (persisted, max 3 — no backend) ---- */
+const VS_COMPARE_MAX = 3;
+function vsGetCompare() {
+  try { return JSON.parse(localStorage.getItem("vs_compare") || "[]").filter(id => !!vsVendor(id)); }
+  catch { return []; }
+}
+function vsSetCompare(list) { localStorage.setItem("vs_compare", JSON.stringify(list)); }
+function vsInCompare(id) { return vsGetCompare().includes(id); }
+function vsClearCompare() { localStorage.removeItem("vs_compare"); }
+function vsToggleCompare(id) {
+  const list = vsGetCompare();
+  const i = list.indexOf(id);
+  if (i >= 0) { list.splice(i, 1); }
+  else {
+    if (list.length >= VS_COMPARE_MAX) return { full: true };
+    list.push(id);
+  }
+  vsSetCompare(list);
+  return { full: false, active: list.includes(id) };
+}
+/* Reflect compare state onto any [data-cmp] buttons on the page */
+function vsSyncCompare() {
+  const list = vsGetCompare();
+  document.querySelectorAll("[data-cmp]").forEach(b =>
+    b.classList.toggle("active", list.includes(b.getAttribute("data-cmp"))));
+}
+/* Card compare button handler (cards are links → stop navigation) */
+function vsCardCompare(ev, id) {
+  if (ev) { ev.preventDefault(); ev.stopPropagation(); }
+  const res = vsToggleCompare(id);
+  if (res.full) { vsToast("You can compare up to " + VS_COMPARE_MAX + " vendors"); return false; }
+  vsSyncCompare();
+  vsRenderCompareTray();
+  return false;
+}
+/* Floating compare tray, auto-injected into <body>; shows only when items chosen */
+function vsRenderCompareTray() {
+  const list = vsGetCompare();
+  let tray = document.getElementById("vs-cmp-tray");
+  if (!tray) {
+    tray = document.createElement("div");
+    tray.id = "vs-cmp-tray";
+    tray.className = "cmp-tray";
+    document.body.appendChild(tray);
+  }
+  if (!list.length) { tray.classList.remove("show"); tray.innerHTML = ""; return; }
+  const b = vsBase();
+  const slots = list.map(id => {
+    const v = vsVendor(id);
+    return `<span class="cmp-thumb" title="${v.name}">
+      <img src="${b}images/${v.img}" alt="${v.name}" />
+      <button class="cmp-remove" type="button" aria-label="Remove ${v.name}"
+              onclick="vsToggleCompare('${id}'); vsSyncCompare(); vsRenderCompareTray();">×</button>
+    </span>`;
+  }).join("");
+  const empties = Array.from({ length: VS_COMPARE_MAX - list.length })
+    .map(() => `<span class="cmp-thumb cmp-empty">+</span>`).join("");
+  const ready = list.length >= 2;
+  tray.innerHTML = `
+    <div class="cmp-tray-inner">
+      <div class="cmp-thumbs">${slots}${empties}</div>
+      <div class="cmp-actions">
+        <button class="cmp-clear" type="button"
+                onclick="vsClearCompare(); vsSyncCompare(); vsRenderCompareTray();">Clear</button>
+        <a class="btn cmp-go ${ready ? "" : "is-disabled"}" href="${b}compare.html"
+           ${ready ? "" : 'aria-disabled="true" tabindex="-1"'}>
+          ${ready ? "Compare " + list.length : "Pick 2+"}
+        </a>
+      </div>
+    </div>`;
+  requestAnimationFrame(() => tray.classList.add("show"));
+}
+/* Call once per page that shows vendor cards */
+function vsInitCompare() { vsSyncCompare(); vsRenderCompareTray(); }

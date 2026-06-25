@@ -120,6 +120,7 @@
       empty.hidden = true;
       cards.innerHTML = list.map(vsVendorCard).join("");
       vsSyncFavs();
+      vsInitCompare();
     }
 
     document.querySelectorAll(".chip").forEach(chip => {

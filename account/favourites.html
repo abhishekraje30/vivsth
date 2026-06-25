@@ -55,6 +55,7 @@
       document.getElementById("empty").hidden = list.length > 0;
       cards.innerHTML = list.map(vsVendorCard).join("");
       vsSyncFavs();
+      vsInitCompare();
     }
     draw();
     // Re-draw when a heart is toggled (removes card on un-save)

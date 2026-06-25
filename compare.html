@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#e23e7a" />
+  <meta name="description" content="Compare wedding vendors side by side on Vivah Spot — price, ratings, reviews, services and availability." />
+  <meta name="robots" content="noindex, follow" />
+  <title>Compare Vendors — Vivah Spot</title>
+  <link rel="canonical" href="https://vivahspot.com/compare.html" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <div class="app">
+
+    <header class="appbar">
+      <a href="javascript:history.back()" class="back-btn" aria-label="Go back">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <div class="appbar-brand appbar-brand--center">
+        <span class="page-title">Compare Vendors</span>
+        <span class="page-sub" id="cmp-sub">Side by side</span>
+      </div>
+      <button class="back-btn" id="cmp-clear" type="button" aria-label="Clear all" style="border-radius:10px;">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/></svg>
+      </button>
+    </header>
+
+    <main class="screen" id="main"><!-- rendered by JS --></main>
+
+    <nav class="tabbar">
+      <a href="index.html" class="tab"><svg viewBox="0 0 24 24" class="ico"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></a>
+      <a href="index.html#services" class="tab active"><svg viewBox="0 0 24 24" class="ico"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Services</span></a>
+      <a href="account/register.html" class="tab"><svg viewBox="0 0 24 24" class="ico"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Register</span></a>
+      <a href="account/login.html" class="tab"><svg viewBox="0 0 24 24" class="ico"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 4v16"/></svg><span>Login</span></a>
+      <a href="index.html#about" class="tab"><svg viewBox="0 0 24 24" class="ico"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.5" r="0.6" fill="currentColor"/></svg><span>About</span></a>
+    </nav>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script>
+    window.IMG_BASE = "";
+    const main = document.getElementById("main");
+    const stars = n => "★".repeat(Math.round(n)) + "☆".repeat(5 - Math.round(n));
+
+    // First available date in the next 120 days (skips booked dates).
+    function nextAvailable(id) {
+      const d = new Date(); d.setHours(0, 0, 0, 0);
+      for (let i = 0; i < 120; i++) {
+        const iso = d.toISOString().slice(0, 10);
+        if (!vsIsBooked(id, iso)) {
+          return d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" });
+        }
+        d.setDate(d.getDate() + 1);
+      }
+      return "—";
+    }
+
+    function render() {
+      const ids = vsGetCompare();
+      const vendors = ids.map(vsVendor).filter(Boolean);
+      document.getElementById("cmp-sub").textContent =
+        vendors.length ? vendors.length + " selected" : "Nothing to compare";
+
+      if (vendors.length < 2) {
+        main.innerHTML = `
+          <div class="empty" style="margin-top:2rem;">
+            <span class="empty-ico"><svg viewBox="0 0 24 24" class="ico"><path d="M7 16V4m0 0L4 7m3-3 3 3"/><path d="M17 8v12m0 0 3-3m-3 3-3-3"/></svg></span>
+            <h3>Pick at least 2 vendors</h3>
+            <p>Tap <strong>Compare</strong> on any vendor card, then come back here to see them side by side.</p>
+            <a class="btn btn-block" href="category.html" style="max-width:260px;margin:0 auto;">Browse vendors</a>
+          </div>`;
+        return;
+      }
+
+      const n = vendors.length;
+      const minPrice = Math.min(...vendors.map(v => v.priceFrom));
+      const maxRating = Math.max(...vendors.map(v => v.rating));
+      const maxReviews = Math.max(...vendors.map(v => v.reviews));
+
+      // Build a label cell + one cell per vendor for a row.
+      const row = (label, cells, cls = "") =>
+        `<div class="cmp-rowlabel">${label}</div>` +
+        cells.map(c => `<div class="cmp-cell ${cls}">${c}</div>`).join("");
+
+      const head =
+        `<div class="cmp-rowlabel cmp-corner"></div>` +
+        vendors.map(v => `
+          <div class="cmp-cell cmp-head">
+            <button class="cmp-col-remove" type="button" aria-label="Remove ${v.name}"
+                    onclick="vsToggleCompare('${v.id}'); render();">×</button>
+            <a href="vendor.html?id=${v.id}">
+              <img class="cmp-photo" src="images/${v.img}" alt="${v.name}" />
+              <span class="cmp-name">${v.name}</span>
+            </a>
+          </div>`).join("");
+
+      const grid = `
+        <div class="cmp-grid" style="--n:${n}">
+          ${head}
+          ${row("Category", vendors.map(v => (vsCategory(v.cat) || {}).name || "—"))}
+          ${row("Price from", vendors.map(v =>
+            `<strong>${vsFormatPrice(v.priceFrom)}</strong><small> / ${v.unit}</small>` +
+            (v.priceFrom === minPrice ? ` <span class="cmp-best">Lowest</span>` : "")))}
+          ${row("Rating", vendors.map(v =>
+            `<span class="cmp-stars">${stars(v.rating)}</span> ${v.rating}` +
+            (v.rating === maxRating ? ` <span class="cmp-best">Best</span>` : "")))}
+          ${row("Reviews", vendors.map(v =>
+            `${v.reviews}` + (v.reviews === maxReviews ? ` <span class="cmp-best">Most</span>` : "")))}
+          ${row("Location", vendors.map(v => v.city))}
+          ${row("Badges", vendors.map(v => vsBadgesHTML(v) || "<small>—</small>"))}
+          ${row("Top services", vendors.map(v =>
+            `<ul class="cmp-services">${v.amenities.slice(0, 4).map(a => `<li>${a}</li>`).join("")}</ul>`))}
+          ${row("Next available", vendors.map(v => nextAvailable(v.id)))}
+          ${row("", vendors.map(v =>
+            `<a class="btn btn-block cmp-view" href="vendor.html?id=${v.id}">View</a>`), "cmp-action")}
+        </div>`;
+
+      main.innerHTML = `<div class="cmp-wrap">${grid}</div>`;
+    }
+
+    document.getElementById("cmp-clear").addEventListener("click", () => {
+      vsClearCompare();
+      vsRenderCompareTray();
+      render();
+    });
+    render();
+    // Hide the floating tray on this page (we're already comparing).
+    const tray = document.getElementById("vs-cmp-tray");
+    if (tray) tray.classList.remove("show");
+  </script>
+</body>
+</html>
