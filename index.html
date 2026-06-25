@@ -208,7 +208,12 @@
       <section id="home" class="section">
         <!-- Hero / promo -->
         <div class="hero">
-          <video class="hero-video" muted loop playsinline preload="none" poster="images/hero.jpg" aria-hidden="true"></video>
+          <div class="hero-slides" aria-hidden="true">
+            <span class="hero-slide active" style="background-image:url(images/hero.jpg)"></span>
+            <span class="hero-slide" style="background-image:url(images/feat-decor.jpg)"></span>
+            <span class="hero-slide" style="background-image:url(images/feat-venue.jpg)"></span>
+            <span class="hero-slide" style="background-image:url(images/insp-decor-1.jpg)"></span>
+          </div>
           <div class="hero-text">
             <h1>Plan your perfect wedding</h1>
             <p>Book trusted vendors for every part of your big day — all in one place.</p>
@@ -438,17 +443,18 @@
     // Render featured vendors from mock data (keeps cards/links/favourites consistent)
     window.IMG_BASE = "";
 
-    // Hero background video — load & play only on larger screens and when motion
-    // is allowed, so phones / reduced-motion keep the fast static poster image.
+    // Hero photo slideshow — gentle crossfade between wedding images.
+    // Skipped for prefers-reduced-motion (the first slide stays).
     (function () {
-      const v = document.querySelector('.hero-video');
-      if (!v) return;
-      const ok = window.matchMedia('(min-width: 768px)').matches
-        && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!ok) return;
-      v.src = 'images/hero.mp4';
-      const play = () => v.play().catch(() => {});
-      if (v.readyState >= 2) play(); else v.addEventListener('loadeddata', play, { once: true });
+      const slides = document.querySelectorAll('.hero-slide');
+      if (slides.length < 2) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let i = 0;
+      setInterval(() => {
+        slides[i].classList.remove('active');
+        i = (i + 1) % slides.length;
+        slides[i].classList.add('active');
+      }, 4200);
     })();
     document.getElementById('featured').innerHTML =
       ['green-meadows', 'annapurna', 'blossom'].map(id => vsVendorCard(vsVendor(id))).join('');
