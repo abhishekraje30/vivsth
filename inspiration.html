@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#e23e7a" />
+  <meta name="description" content="Wedding inspiration on Vivah Spot — decoration ideas, photography ideas, wedding themes and bridal looks to spark your big-day planning." />
+  <title>Wedding Inspiration — Vivah Spot</title>
+  <link rel="canonical" href="https://vivahspot.com/inspiration.html" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Vivah Spot" />
+  <meta property="og:title" content="Wedding Inspiration — Vivah Spot" />
+  <meta property="og:description" content="Decoration ideas, photography ideas, wedding themes and bridal looks." />
+  <meta property="og:url" content="https://vivahspot.com/inspiration.html" />
+  <meta property="og:image" content="https://vivahspot.com/images/insp-decor-1.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <div class="app">
+
+    <header class="appbar">
+      <a href="index.html" class="back-btn" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <div class="appbar-brand appbar-brand--center">
+        <span class="page-title">Inspiration</span>
+        <span class="page-sub">Ideas for your big day</span>
+      </div>
+      <span class="appbar-spacer" aria-hidden="true"></span>
+    </header>
+
+    <main class="screen" id="main">
+      <div class="filterbar" role="toolbar" aria-label="Filter inspiration">
+        <button class="chip active" data-f="all">All</button>
+        <button class="chip" data-f="decor">Decoration</button>
+        <button class="chip" data-f="photo">Photography</button>
+        <button class="chip" data-f="theme">Themes</button>
+        <button class="chip" data-f="bridal">Bridal Looks</button>
+      </div>
+
+      <div class="insp-grid" id="insp-grid"><!-- rendered by JS --></div>
+    </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Inspiration image" hidden>
+      <button class="lb-close" id="lb-close" type="button" aria-label="Close">×</button>
+      <figure class="lb-figure">
+        <img id="lb-img" src="" alt="" />
+        <figcaption id="lb-cap"></figcaption>
+      </figure>
+    </div>
+
+    <nav class="tabbar">
+      <a href="index.html" class="tab"><svg viewBox="0 0 24 24" class="ico"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></a>
+      <a href="index.html#services" class="tab"><svg viewBox="0 0 24 24" class="ico"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Services</span></a>
+      <a href="budget.html" class="tab"><svg viewBox="0 0 24 24" class="ico"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 10h2"/><path d="M14 10h2"/><path d="M8 14h2"/><path d="M8 18h2"/></svg><span>Planner</span></a>
+      <a href="account/login.html" class="tab"><svg viewBox="0 0 24 24" class="ico"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 4v16"/></svg><span>Login</span></a>
+      <a href="index.html#about" class="tab"><svg viewBox="0 0 24 24" class="ico"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.5" r="0.6" fill="currentColor"/></svg><span>About</span></a>
+    </nav>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script>
+    window.IMG_BASE = "";
+    const LABELS = { decor: "Decoration", photo: "Photography", theme: "Themes", bridal: "Bridal Looks" };
+    const VENDOR_CAT = { decor: "decoration", photo: "photography", theme: "decoration", bridal: "makeup" };
+    const INSP = [
+      { img: "insp-decor-1.jpg",  cat: "decor",  title: "Floral mandap stage" },
+      { img: "insp-theme-1.jpg",  cat: "theme",  title: "Colour-smoke ceremony" },
+      { img: "insp-bridal-1.jpg", cat: "bridal", title: "Maang tikka & gold" },
+      { img: "insp-photo-1.jpg",  cat: "photo",  title: "Golden-hour couple" },
+      { img: "insp-decor-2.jpg",  cat: "decor",  title: "Chandelier mandap" },
+      { img: "insp-theme-2.jpg",  cat: "theme",  title: "Golden pillars & garlands" },
+      { img: "insp-bridal-2.jpg", cat: "bridal", title: "Bridal henna & glow" },
+      { img: "insp-photo-2.jpg",  cat: "photo",  title: "Heritage fort shoot" },
+      { img: "insp-decor-3.jpg",  cat: "decor",  title: "Royal red & gold stage" },
+      { img: "insp-theme-3.jpg",  cat: "theme",  title: "Palace grandeur" },
+      { img: "insp-bridal-3.jpg", cat: "bridal", title: "Red & gold bridal" },
+      { img: "insp-photo-3.jpg",  cat: "photo",  title: "Mountaintop romance" },
+    ];
+
+    const grid = document.getElementById("insp-grid");
+    grid.innerHTML = INSP.map((it, i) => `
+      <button class="insp-item" type="button" data-cat="${it.cat}" data-i="${i}">
+        <img src="images/${it.img}" alt="${it.title} — ${LABELS[it.cat]} inspiration" loading="lazy" />
+        <span class="insp-cap"><span class="insp-tag">${LABELS[it.cat]}</span>${it.title}</span>
+      </button>`).join("");
+
+    // Filtering
+    document.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        const f = chip.dataset.f;
+        grid.querySelectorAll(".insp-item").forEach(el => {
+          el.hidden = !(f === "all" || el.dataset.cat === f);
+        });
+      });
+    });
+
+    // Lightbox
+    const lb = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lb-img");
+    const lbCap = document.getElementById("lb-cap");
+    function openLb(i) {
+      const it = INSP[i];
+      lbImg.src = "images/" + it.img;
+      lbImg.alt = it.title;
+      lbCap.innerHTML = `<strong>${it.title}</strong><span>${LABELS[it.cat]}</span>
+        <a class="lb-browse" href="category.html?cat=${VENDOR_CAT[it.cat]}">Browse ${LABELS[it.cat]} vendors →</a>`;
+      lb.hidden = false;
+      document.body.style.overflow = "hidden";
+    }
+    function closeLb() { lb.hidden = true; document.body.style.overflow = ""; }
+    grid.addEventListener("click", e => {
+      const item = e.target.closest(".insp-item");
+      if (item) openLb(+item.dataset.i);
+    });
+    document.getElementById("lb-close").addEventListener("click", closeLb);
+    lb.addEventListener("click", e => { if (e.target === lb) closeLb(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && !lb.hidden) closeLb(); });
+  </script>
+</body>
+</html>

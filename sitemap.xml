@@ -43,6 +43,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://vivahspot.com/inspiration.html</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://vivahspot.com/budget.html</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>monthly</changefreq>
