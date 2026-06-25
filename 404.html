@@ -6,7 +6,8 @@
   <meta name="theme-color" content="#e23e7a" />
   <meta name="description" content="Page not found — Vivah Spot." />
   <title>Page not found — Vivah Spot</title>
-  <link rel="stylesheet" href="styles.css" />
+  <!-- Root-relative so the page styles correctly even when served for a deep unknown URL -->
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <div class="app">
@@ -26,8 +27,8 @@
         </div>
         <h1 class="auth-title" style="font-size:2.4rem;">404</h1>
         <p class="auth-sub">We couldn't find that page. Let's get you back to planning.</p>
-        <a class="btn btn-block" href="index.html">Back to home</a>
-        <p class="vendor-cta">Looking for vendors? <a href="category.html">Browse services →</a></p>
+        <a class="btn btn-block" href="/">Back to home</a>
+        <p class="vendor-cta">Looking for vendors? <a href="/category.html">Browse services →</a></p>
       </section>
     </main>
   </div>

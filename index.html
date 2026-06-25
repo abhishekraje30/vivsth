@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#b08d83" />
+  <meta name="description" content="Vivah Spot connects couples with trusted wedding-service vendors — venues, catering, decoration, photography, makeup & mehndi and DJ. Big day, sorted." />
   <title>Vivah Spot — Big day, sorted</title>
   <link rel="stylesheet" href="styles.css" />
 
@@ -281,7 +282,7 @@
           <div class="reg-card">
             <h3>Create your account</h3>
             <p>It's free — takes less than a minute.</p>
-            <form class="reg-form" onsubmit="return false;">
+            <form class="reg-form" id="home-reg-form" onsubmit="return false;">
               <label class="ifield">
                 <svg viewBox="0 0 24 24" class="ico ico-lead"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
                 <input type="text" placeholder="Full name" aria-label="Full name" autocomplete="name" required />
@@ -348,6 +349,8 @@
     </nav>
   </div>
 
+  <div class="toast" id="toast">Account created ✓</div>
+
   <script src="assets/data.js"></script>
   <script>
     // Render featured vendors from mock data (keeps cards/links/favourites consistent)
@@ -407,6 +410,17 @@
         if (el) { ev.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
       });
     });
+
+    // Home "Join" form: confirm with a toast and reset (UI-only demo, no backend).
+    const homeReg = document.getElementById('home-reg-form');
+    if (homeReg) {
+      homeReg.addEventListener('submit', () => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2600);
+        homeReg.reset();
+      });
+    }
   </script>
 </body>
 </html>
