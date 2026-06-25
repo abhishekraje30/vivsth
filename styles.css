@@ -440,6 +440,41 @@ body {
 .funnel-val { font-size: 0.8rem; font-weight: 700; text-align: right; }
 .dash-muted { font-size: 0.82rem; color: var(--text-soft); line-height: 1.5; }
 .dash-muted a { color: var(--accent-dark); font-weight: 600; }
+
+/* ===== Budget planner ===== */
+.bp-intro { padding-top: 1rem; }
+.bp-intro h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.01em; }
+.bp-intro p { font-size: 0.9rem; color: var(--text-soft); margin-top: 0.3rem; }
+.bp-form { margin-top: 1rem; }
+.bp-form .field { margin-bottom: 0.9rem; }
+.bp-form input[type="range"] { width: 100%; accent-color: var(--accent); }
+.bp-summary { display: flex; gap: 0.7rem; margin: 0.5rem 0 0.25rem; }
+.bp-stat { flex: 1; text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0.85rem 0.4rem; box-shadow: var(--shadow); }
+.bp-stat strong { display: block; font-size: 1.05rem; font-weight: 800; color: var(--accent-dark); line-height: 1.1; }
+.bp-stat span { font-size: 0.7rem; color: var(--text-soft); font-weight: 600; }
+.bp-rows { display: flex; flex-direction: column; gap: 0.5rem; }
+.bp-row { display: grid; grid-template-columns: 12px minmax(0, 1fr) minmax(0, 1.2fr) auto auto; align-items: center; gap: 0.6rem; text-decoration: none; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.7rem 0.8rem; transition: border-color 0.15s ease, transform 0.1s ease; }
+.bp-row:hover { border-color: var(--accent); }
+.bp-row:active { transform: scale(0.995); }
+.bp-row--static { cursor: default; }
+.bp-dot { width: 12px; height: 12px; border-radius: 50%; }
+.bp-label { font-size: 0.85rem; font-weight: 700; }
+.bp-label small { color: var(--text-soft); font-weight: 600; font-size: 0.72rem; }
+.bp-bar { height: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
+.bp-fill { display: block; height: 100%; border-radius: 999px; transition: width 0.4s ease; }
+.bp-amt { text-align: right; font-size: 0.9rem; font-weight: 800; color: var(--text); display: flex; flex-direction: column; line-height: 1.15; }
+.bp-amt small { font-size: 0.66rem; font-weight: 600; color: var(--text-soft); }
+.bp-chev { width: 18px; height: 18px; color: var(--text-soft); fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.bp-note { font-size: 0.76rem; color: var(--text-soft); margin-top: 0.7rem; line-height: 1.5; }
+
+/* ===== Promo banner (home → budget planner) ===== */
+.promo { display: flex; align-items: center; justify-content: space-between; gap: 1rem; text-decoration: none; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 20%, #fff); border-radius: 18px; padding: 1.1rem 1.25rem; transition: transform 0.12s ease, box-shadow 0.2s ease; }
+.promo:hover { box-shadow: 0 10px 24px rgba(226, 62, 122, 0.16); transform: translateY(-2px); }
+.promo-text h3 { font-size: 1.05rem; font-weight: 800; color: var(--accent-dark); }
+.promo-text p { font-size: 0.82rem; color: var(--text); margin-top: 0.2rem; }
+.promo-cta { display: inline-block; margin-top: 0.5rem; font-size: 0.82rem; font-weight: 800; color: var(--accent-dark); }
+.promo-ico { flex: 0 0 auto; width: 54px; height: 54px; border-radius: 14px; display: grid; place-items: center; background: var(--accent); color: #fff; box-shadow: 0 6px 16px rgba(226, 62, 122, 0.3); }
+.promo-ico .ico { width: 26px; height: 26px; }
 .vcard-meta { font-size: 0.78rem; color: var(--text-soft); display: flex; align-items: center; gap: 0.3rem; }
 .vcard-meta .ico { width: 13px; height: 13px; flex: 0 0 auto; color: var(--accent); }
 .vcard-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 0.45rem; }
