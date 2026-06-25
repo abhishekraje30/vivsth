@@ -203,10 +203,7 @@
           </form>
         </section>
 
-        <section class="detail-section" id="similar-sec" hidden>
-          <h2>Similar vendors</h2>
-          <div class="cards" id="similar-list"><!-- rendered by JS --></div>
-        </section>
+        <div id="rails"><!-- recommendation rails rendered by JS --></div>
 
         <div style="height:0.5rem;"></div>
       `;
@@ -388,14 +385,15 @@
         else { save(""); }
       });
 
-      // ---------- Similar recommendations ----------
-      const similar = vsVendorsByCat(v.cat).filter(x => x.id !== v.id).slice(0, 4);
-      if (similar.length) {
-        document.getElementById("similar-sec").hidden = false;
-        document.getElementById("similar-list").innerHTML = similar.map(vsVendorCard).join("");
-        vsSyncFavs();
-        vsInitCompare();
-      }
+      // ---------- Recommendation rails ----------
+      const cityName = vsCityKey(v.city);
+      document.getElementById("rails").innerHTML =
+        vsRailHTML("Similar vendors", vsVendorsByCat(v.cat).filter(x => x.id !== v.id).slice(0, 8)) +
+        vsRailHTML("Top rated in " + cityName, vsTopRatedInCity(v, 8)) +
+        vsRailHTML("People also viewed", vsAlsoViewed(v, 8)) +
+        vsRailHTML("Trending now", vsTrending(v.id, 8));
+      vsSyncFavs();
+      vsInitCompare();
     }
   </script>
 </body>

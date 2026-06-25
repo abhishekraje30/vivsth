@@ -257,6 +257,15 @@
         <div class="cards" id="featured"></div>
       </section>
 
+      <!-- Trending -->
+      <section class="section">
+        <div class="section-head">
+          <h2>Trending now</h2>
+          <a href="category.html" class="link-more">See all</a>
+        </div>
+        <div class="rail" id="trending"></div>
+      </section>
+
       <!-- How it works -->
       <section class="section">
         <div class="section-head"><h2>How it works</h2></div>
@@ -400,6 +409,8 @@
     window.IMG_BASE = "";
     document.getElementById('featured').innerHTML =
       ['green-meadows', 'annapurna', 'blossom'].map(id => vsVendorCard(vsVendor(id))).join('');
+    document.getElementById('trending').innerHTML =
+      vsTrending(null, 8).map(vsVendorCard).join('');
     vsSyncFavs();
     vsInitCompare();
 

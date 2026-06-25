@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#e23e7a" />
+  <meta name="description" content="Vendor dashboard on Vivah Spot — track profile views, WhatsApp & call clicks, leads and booking requests." />
+  <meta name="robots" content="noindex, follow" />
+  <title>Vendor Dashboard — Vivah Spot</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <div class="app">
+
+    <header class="appbar">
+      <a href="../account/profile.html" class="back-btn" aria-label="Back">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <div class="appbar-brand appbar-brand--center">
+        <span class="page-title">Vendor Dashboard</span>
+        <span class="page-sub">Your performance at a glance</span>
+      </div>
+      <span class="appbar-spacer" aria-hidden="true"></span>
+    </header>
+
+    <main class="screen" id="main">
+      <!-- Vendor selector (demo: stands in for the logged-in vendor) -->
+      <div class="field" style="padding-top:1rem;">
+        <label for="dash-vendor">Viewing as</label>
+        <select id="dash-vendor"></select>
+        <small class="hint">Demo view — figures combine sample baselines with activity tracked on this device.</small>
+      </div>
+
+      <div class="dash-metrics" id="metrics"><!-- rendered by JS --></div>
+
+      <section class="detail-section">
+        <h2>Conversion funnel</h2>
+        <div class="funnel" id="funnel"><!-- rendered by JS --></div>
+      </section>
+
+      <section class="detail-section">
+        <h2>Booking requests</h2>
+        <div id="dash-bookings"></div>
+      </section>
+
+      <section class="detail-section">
+        <h2>Recent leads</h2>
+        <div id="dash-leads"></div>
+      </section>
+
+      <div style="height:0.5rem;"></div>
+    </main>
+
+    <nav class="tabbar">
+      <a href="../index.html" class="tab"><svg viewBox="0 0 24 24" class="ico"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></a>
+      <a href="../index.html#services" class="tab"><svg viewBox="0 0 24 24" class="ico"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Services</span></a>
+      <a href="vendor-signup.html" class="tab"><svg viewBox="0 0 24 24" class="ico"><path d="M3 9l1.5-5h15L21 9"/><path d="M3 9h18v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9Z"/><path d="M9 21v-6h6v6"/></svg><span>Partner</span></a>
+      <a href="../account/login.html" class="tab"><svg viewBox="0 0 24 24" class="ico"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 4v16"/></svg><span>Login</span></a>
+      <a href="../account/profile.html" class="tab"><svg viewBox="0 0 24 24" class="ico"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Account</span></a>
+    </nav>
+  </div>
+
+  <script src="../assets/data.js"></script>
+  <script>
+    window.IMG_BASE = "../";
+    const sel = document.getElementById("dash-vendor");
+    sel.innerHTML = VENDORS.map(v =>
+      `<option value="${v.id}">${v.name} · ${(vsCategory(v.cat) || {}).name || ""}</option>`).join("");
+
+    const METRICS = [
+      { key: "views",    label: "Profile Views",    color: "var(--c-blue)",   icon: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>' },
+      { key: "whatsapp", label: "WhatsApp Clicks",  color: "var(--c-green)",  icon: '<path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Z"/>' },
+      { key: "calls",    label: "Call Clicks",      color: "var(--c-orange)", icon: '<path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11 11 0 0 0 3.4.55 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11 11 0 0 0 .55 3.4 1 1 0 0 1-.25 1Z"/>' },
+      { key: "leads",    label: "Leads Generated",  color: "var(--c-purple)", icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>' },
+      { key: "bookings", label: "Booking Requests", color: "var(--c-pink)",   icon: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>' },
+    ];
+    const nf = n => n.toLocaleString("en-IN");
+
+    function relTime(iso) {
+      const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+      if (diff < 60) return "just now";
+      if (diff < 3600) return Math.floor(diff / 60) + "m ago";
+      if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
+      return Math.floor(diff / 86400) + "d ago";
+    }
+
+    function render() {
+      const v = vsVendor(sel.value);
+      if (!v) return;
+      const s = vsDashStats(v);
+
+      document.getElementById("metrics").innerHTML = METRICS.map(m => `
+        <div class="dash-card">
+          <span class="dash-ico" style="--mc:${m.color}">
+            <svg viewBox="0 0 24 24">${m.icon}</svg>
+          </span>
+          <strong>${nf(s[m.key])}</strong>
+          <span class="dash-label">${m.label}</span>
+        </div>`).join("");
+
+      // Funnel relative to views
+      const steps = [
+        { label: "Views", val: s.views },
+        { label: "WhatsApp", val: s.whatsapp },
+        { label: "Calls", val: s.calls },
+        { label: "Leads", val: s.leads },
+        { label: "Bookings", val: s.bookings },
+      ];
+      const max = Math.max(1, s.views);
+      document.getElementById("funnel").innerHTML = steps.map(st => `
+        <div class="funnel-row">
+          <span class="funnel-label">${st.label}</span>
+          <span class="funnel-bar"><span class="funnel-fill" style="width:${Math.max(4, (st.val / max) * 100)}%"></span></span>
+          <span class="funnel-val">${nf(st.val)}</span>
+        </div>`).join("");
+
+      // Booking requests for this vendor (from localStorage)
+      const bookings = (() => { try { return JSON.parse(localStorage.getItem("vs_bookings") || "[]"); } catch { return []; } })()
+        .filter(b => b.vendorId === v.id);
+      const bk = document.getElementById("dash-bookings");
+      bk.innerHTML = bookings.length ? bookings.map(b => `
+        <div class="list-row" style="cursor:default;">
+          <div class="lr-body">
+            <h4>${b.pkg || "Booking"}</h4>
+            <p>📅 ${b.date}</p>
+          </div>
+          <span class="status ${b.status || "pending"}">${(b.status === "confirmed") ? "Confirmed" : "Pending"}</span>
+        </div>`).join("")
+        : `<p class="dash-muted">No booking requests yet for this vendor on this device. Request one from the <a href="../vendor.html?id=${v.id}">vendor page</a> to see it here.</p>`;
+
+      // Recent leads/inquiries for this vendor
+      const leads = (() => { try { return JSON.parse(localStorage.getItem("vs_inquiries") || "[]"); } catch { return []; } })()
+        .filter(l => l.vendorId === v.id);
+      const ld = document.getElementById("dash-leads");
+      ld.innerHTML = leads.length ? leads.map(l => `
+        <div class="list-row" style="cursor:default;">
+          <div class="lr-body">
+            <h4>New inquiry</h4>
+            <p>${relTime(l.at)}</p>
+          </div>
+          <span class="status confirmed">Lead</span>
+        </div>`).join("")
+        : `<p class="dash-muted">No leads yet. Tap “Inquiry” on the <a href="../vendor.html?id=${v.id}">vendor page</a> to generate one.</p>`;
+    }
+
+    // Preselect from ?id= if present
+    const qid = vsParam("id");
+    if (qid && vsVendor(qid)) sel.value = qid;
+    sel.addEventListener("change", render);
+    render();
+  </script>
+</body>
+</html>

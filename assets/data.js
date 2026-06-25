@@ -403,3 +403,45 @@ function vsRenderCompareTray() {
 }
 /* Call once per page that shows vendor cards */
 function vsInitCompare() { vsSyncCompare(); vsRenderCompareTray(); }
+
+/* ---- recommendation rails (derived; deterministic) ---- */
+function vsCityKey(city) { return (city || "").split(",").pop().trim(); }
+function vsTopRatedInCity(v, n) {
+  const key = vsCityKey(v.city);
+  return VENDORS.filter(x => x.id !== v.id && vsCityKey(x.city) === key)
+    .sort((a, b) => b.rating - a.rating).slice(0, n || 8);
+}
+function vsTrending(excludeId, n) {
+  // proxy for "trending": most-reviewed (most booked) vendors
+  return VENDORS.filter(x => x.id !== excludeId)
+    .slice().sort((a, b) => b.reviews - a.reviews).slice(0, n || 8);
+}
+function vsAlsoViewed(v, n) {
+  const sameCat = VENDORS.filter(x => x.cat === v.cat && x.id !== v.id);
+  const sameCity = VENDORS.filter(x => vsCityKey(x.city) === vsCityKey(v.city) && x.id !== v.id && x.cat !== v.cat);
+  const seen = new Set();
+  return [...sameCat, ...sameCity].filter(x => (seen.has(x.id) ? false : seen.add(x.id))).slice(0, n || 8);
+}
+/* Renders a titled horizontal rail of vendor cards (returns "" if empty) */
+function vsRailHTML(title, vendors) {
+  if (!vendors || !vendors.length) return "";
+  return `
+    <section class="detail-section rail-sec">
+      <h2>${title}</h2>
+      <div class="rail">${vendors.map(vsVendorCard).join("")}</div>
+    </section>`;
+}
+
+/* ---- vendor dashboard metrics (real tracked counts + deterministic baseline) ---- */
+function vsDashStats(v) {
+  const real = vsGetStats(v.id);
+  const seed = vsHashStr(v.id);
+  const views = v.reviews * 7 + (seed % 240) + (real.views || 0);
+  return {
+    views,
+    whatsapp: Math.round(views * 0.18) + (real.whatsapp || 0),
+    calls: Math.round(views * 0.09) + (real.calls || 0),
+    leads: Math.round(views * 0.06) + (real.leads || 0),
+    bookings: Math.round(views * 0.03) + (real.bookings || 0),
+  };
+}

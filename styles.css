@@ -417,6 +417,29 @@ body {
 .cmp-services li::before { content: "•"; position: absolute; left: 0; color: var(--accent); }
 .cmp-cell .vbadges { gap: 0.25rem; }
 .cmp-view { padding: 0.5rem; font-size: 0.82rem; }
+
+/* ===== Recommendation rails (horizontal scroll) ===== */
+.rail-sec h2 { margin-bottom: 0.6rem; }
+.rail { display: flex; gap: 0.8rem; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0.2rem 0 0.6rem; scroll-snap-type: x proximity; }
+.rail::-webkit-scrollbar { height: 0; }
+.rail > .vcard { flex: 0 0 230px; width: 230px; scroll-snap-align: start; }
+
+/* ===== Vendor dashboard ===== */
+.dash-metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.7rem; margin: 0.4rem 0 0.5rem; }
+.dash-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0.9rem; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 0.2rem; }
+.dash-card:last-child:nth-child(odd) { grid-column: 1 / -1; }   /* 5th metric spans full width */
+.dash-ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: #fff; background: var(--mc, var(--accent)); box-shadow: 0 4px 10px color-mix(in srgb, var(--mc, var(--accent)) 35%, transparent); margin-bottom: 0.3rem; }
+.dash-ico svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.dash-card strong { font-size: 1.5rem; font-weight: 800; color: var(--text); line-height: 1; }
+.dash-label { font-size: 0.74rem; color: var(--text-soft); font-weight: 600; }
+.funnel { display: flex; flex-direction: column; gap: 0.55rem; }
+.funnel-row { display: grid; grid-template-columns: 70px 1fr 54px; align-items: center; gap: 0.6rem; }
+.funnel-label { font-size: 0.78rem; font-weight: 600; color: var(--text-soft); }
+.funnel-bar { height: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
+.funnel-fill { display: block; height: 100%; background: var(--grad); border-radius: 999px; transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.funnel-val { font-size: 0.8rem; font-weight: 700; text-align: right; }
+.dash-muted { font-size: 0.82rem; color: var(--text-soft); line-height: 1.5; }
+.dash-muted a { color: var(--accent-dark); font-weight: 600; }
 .vcard-meta { font-size: 0.78rem; color: var(--text-soft); display: flex; align-items: center; gap: 0.3rem; }
 .vcard-meta .ico { width: 13px; height: 13px; flex: 0 0 auto; color: var(--accent); }
 .vcard-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 0.45rem; }
