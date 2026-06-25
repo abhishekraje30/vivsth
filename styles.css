@@ -5,7 +5,7 @@
   --bg: #fff7fb;          /* soft pink-tinted white */
   --surface: #ffffff;     /* app surface */
   --text: #3a2f37;        /* deep plum-grey */
-  --text-soft: #9b8c95;   /* muted mauve-grey */
+  --text-soft: #736570;   /* muted mauve-grey — darkened to meet WCAG AA (≈5.5:1 on white) */
 
   /* Primary festive accent */
   --accent: #e23e7a;      /* vivid rose-pink */
@@ -35,8 +35,8 @@ body {
   font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
   color: var(--text);
   line-height: 1.5;
-  /* Desktop: colorful backdrop so the phone frame reads as an app */
-  background: linear-gradient(135deg, #ffd9c0 0%, #ffb3d1 45%, #c9b3ff 100%);
+  /* Desktop: soft, refined backdrop so the phone frame reads as an app */
+  background: linear-gradient(135deg, #fbe7dd 0%, #fad8e6 45%, #e8defb 100%);
   background-attachment: fixed;
   height: 100%;
   overflow: hidden;
@@ -198,7 +198,7 @@ body {
   content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
   width: 4px; height: 1em; border-radius: 4px; background: var(--grad);
 }
-.link-more { font-size: 0.8rem; color: var(--accent); text-decoration: none; font-weight: 700; }
+.link-more { font-size: 0.8rem; color: var(--accent-dark); text-decoration: none; font-weight: 700; }
 
 /* ===== Search ===== */
 .search {
@@ -394,9 +394,9 @@ body {
 }
 .register-form input:focus { border-color: var(--accent); }
 .vendor-cta { font-size: 0.8rem; color: var(--text-soft); margin-top: 0.85rem; text-align: center; }
-.vendor-cta a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.vendor-cta a { color: var(--accent-dark); font-weight: 600; text-decoration: none; }
 .form-aside { margin: -0.1rem 0 0.2rem; text-align: right; }
-.form-aside a { font-size: 0.78rem; color: var(--accent); font-weight: 600; text-decoration: none; }
+.form-aside a { font-size: 0.78rem; color: var(--accent-dark); font-weight: 600; text-decoration: none; }
 
 /* ===== Vendor sign-up ===== */
 .vendor-intro { padding: 1.25rem 0 0.5rem; }
@@ -482,7 +482,7 @@ body {
 .agree { display: flex; flex-direction: column; gap: 0.7rem; padding: 0.25rem 0.25rem; }
 .check { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.8rem; color: var(--text-soft); }
 .check input { flex: 0 0 auto; width: 18px; height: 18px; margin-top: 1px; accent-color: var(--accent); }
-.check a { color: var(--accent); font-weight: 700; text-decoration: none; }
+.check a { color: var(--accent-dark); font-weight: 700; text-decoration: none; }
 
 .btn-lg { padding: 0.95rem; font-size: 1rem; }
 

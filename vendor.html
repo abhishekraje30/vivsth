@@ -4,8 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#e23e7a" />
-  <meta name="description" content="Vendor details, packages and reviews on Vivah Spot." />
+  <meta name="description" content="Vendor details, packages, availability and reviews on Vivah Spot." />
   <title>Vendor — Vivah Spot</title>
+  <link rel="canonical" href="https://vivahspot.com/vendor.html" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Vivah Spot" />
+  <meta property="og:title" content="Vendor details — Vivah Spot" />
+  <meta property="og:description" content="See packages, availability and reviews, then request a booking on Vivah Spot." />
+  <meta property="og:image" content="https://vivahspot.com/images/hero.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -81,6 +90,22 @@
     } else {
       document.title = v.name + " — Vivah Spot";
       const cat = vsCategory(v.cat);
+
+      // Per-vendor SEO/social: point canonical + Open Graph at this specific vendor.
+      (function () {
+        const url = "https://vivahspot.com/vendor.html?id=" + v.id;
+        const img = "https://vivahspot.com/images/" + v.gallery[0];
+        const desc = `${v.name} · ${cat ? cat.name : ""} in ${v.city}. From ${vsFormatPrice(v.priceFrom)}/${v.unit} · ★ ${v.rating} (${v.reviews} reviews).`;
+        const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute("content", val); };
+        const canon = document.querySelector('link[rel="canonical"]'); if (canon) canon.setAttribute("href", url);
+        document.querySelector('meta[name="description"]').setAttribute("content", desc);
+        setMeta('meta[property="og:title"]', v.name + " — Vivah Spot");
+        setMeta('meta[property="og:description"]', desc);
+        setMeta('meta[property="og:image"]', img);
+        let ogUrl = document.querySelector('meta[property="og:url"]');
+        if (!ogUrl) { ogUrl = document.createElement("meta"); ogUrl.setAttribute("property", "og:url"); document.head.appendChild(ogUrl); }
+        ogUrl.setAttribute("content", url);
+      })();
       const reviews = [
         { name: "Priya & Rohan", stars: 5, text: "Absolutely wonderful experience from start to finish. Highly professional and exactly what we wanted for our big day." },
         { name: "Sneha Kulkarni", stars: 5, text: "Punctual, courteous and great value. Our guests are still talking about it!" },
