@@ -90,6 +90,7 @@ const VENDORS = [
   {
     id: "blossom", cat: "decoration", name: "Blossom Decorators", city: "Pune",
     rating: 4.7, reviews: 103, priceFrom: 30000, unit: "event", verified: true,
+    tags: ["Mandap", "Haldi", "Reception"],
     img: "feat-decor.jpg", gallery: ["feat-decor.jpg", "cat-decoration.jpg"],
     about: "Floral and theme décor specialists creating stunning stages, mandaps and entrances tailored to your wedding theme.",
     amenities: ["Floral & theme décor", "Stage & mandap", "Entrance décor", "Lighting", "Custom themes"],
@@ -101,6 +102,7 @@ const VENDORS = [
   {
     id: "petal-story", cat: "decoration", name: "Petal Story Events", city: "Wakad, Pune",
     rating: 4.8, reviews: 67, priceFrom: 45000, unit: "event", verified: true,
+    tags: ["Mandap", "Reception", "Mehendi", "Destination Wedding"],
     img: "cat-decoration.jpg", gallery: ["cat-decoration.jpg", "feat-decor.jpg"],
     about: "Luxury wedding décor with imported flowers, bespoke installations and complete venue transformation.",
     amenities: ["Luxury décor", "Imported flowers", "Custom installations", "Lighting", "Drone-ready setups"],
@@ -114,6 +116,7 @@ const VENDORS = [
   {
     id: "candid-frames", cat: "photography", name: "Candid Frames Studio", city: "Pune",
     rating: 4.9, reviews: 189, priceFrom: 60000, unit: "event", verified: true,
+    tags: ["Candid", "Cinematic", "Drone", "Pre-Wedding"],
     img: "cat-photography.jpg", gallery: ["cat-photography.jpg", "hero.jpg"],
     about: "Storytelling wedding photography & cinematography capturing candid moments, with same-day teasers and premium albums.",
     amenities: ["Candid photography", "Cinematography", "Drone", "Same-day teaser", "Premium album"],
@@ -125,6 +128,7 @@ const VENDORS = [
   {
     id: "lens-tales", cat: "photography", name: "Lens & Tales", city: "Hadapsar, Pune",
     rating: 4.6, reviews: 74, priceFrom: 45000, unit: "event", verified: false,
+    tags: ["Candid", "Traditional", "Pre-Wedding"],
     img: "cat-photography.jpg", gallery: ["cat-photography.jpg", "hero.jpg"],
     about: "Affordable yet creative wedding photography for couples who want beautiful memories on a budget.",
     amenities: ["Candid photography", "Traditional coverage", "Edited photos", "Album"],
@@ -189,6 +193,13 @@ function vsParam(name) { return new URLSearchParams(location.search).get(name); 
 function vsCategory(slug) { return CATEGORIES.find(c => c.slug === slug); }
 function vsVendor(id) { return VENDORS.find(v => v.id === id); }
 function vsVendorsByCat(slug) { return VENDORS.filter(v => v.cat === slug); }
+
+/* Category-specific speciality filters (only some categories have them) */
+const VS_SPECIALITIES = {
+  photography: ["Pre-Wedding", "Candid", "Traditional", "Drone", "Cinematic"],
+  decoration: ["Mandap", "Haldi", "Mehendi", "Reception", "Destination Wedding"],
+};
+function vsCatSpecialities(slug) { return VS_SPECIALITIES[slug] || []; }
 function vsFormatPrice(n) { return "₹" + n.toLocaleString("en-IN"); }
 
 /* ---- vendor badges (derived from data; deterministic, no backend) ---- */

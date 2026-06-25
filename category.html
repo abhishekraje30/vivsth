@@ -36,13 +36,15 @@
 
     <main class="screen" id="results">
       <!-- Sort / filter chips -->
-      <div class="filterbar" role="toolbar" aria-label="Sort vendors">
+      <div class="filterbar" id="sortbar" role="toolbar" aria-label="Sort vendors">
         <button class="chip active" data-sort="recommended">Recommended</button>
         <button class="chip" data-sort="rating">Top rated</button>
         <button class="chip" data-sort="price-asc">Price: low to high</button>
         <button class="chip" data-sort="price-desc">Price: high to low</button>
         <button class="chip" data-sort="verified">Verified only</button>
       </div>
+      <!-- Category-specific speciality filters (photography / decoration) -->
+      <div class="filterbar specbar" id="specbar" role="toolbar" aria-label="Filter by speciality" hidden></div>
 
       <div class="results-head">
         <span class="results-count" id="count">0 vendors</span>
@@ -101,6 +103,10 @@
     else base = VENDORS.slice();
 
     let currentSort = "recommended";
+    let currentSpec = null;
+    function specFilter(list) {
+      return currentSpec ? list.filter(v => v.tags && v.tags.includes(currentSpec)) : list;
+    }
     function sorted(list) {
       const a = list.slice();
       if (currentSort === "rating") a.sort((x, y) => y.rating - x.rating);
@@ -111,7 +117,7 @@
     }
 
     function render() {
-      const list = sorted(base);
+      const list = sorted(specFilter(base));
       const cards = document.getElementById("cards");
       const empty = document.getElementById("empty");
       document.getElementById("count").textContent =
@@ -123,14 +129,31 @@
       vsInitCompare();
     }
 
-    document.querySelectorAll(".chip").forEach(chip => {
+    document.querySelectorAll("#sortbar .chip").forEach(chip => {
       chip.addEventListener("click", () => {
-        document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+        document.querySelectorAll("#sortbar .chip").forEach(c => c.classList.remove("active"));
         chip.classList.add("active");
         currentSort = chip.dataset.sort;
         render();
       });
     });
+
+    // Category-specific speciality filters (only photography / decoration have them)
+    const specs = cat ? vsCatSpecialities(catSlug) : [];
+    if (specs.length) {
+      const sb = document.getElementById("specbar");
+      sb.hidden = false;
+      sb.innerHTML = `<button class="chip active" data-spec="">All</button>` +
+        specs.map(s => `<button class="chip" data-spec="${s}">${s}</button>`).join("");
+      sb.querySelectorAll(".chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          sb.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+          chip.classList.add("active");
+          currentSpec = chip.dataset.spec || null;
+          render();
+        });
+      });
+    }
 
     render();
   </script>

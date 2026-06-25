@@ -143,6 +143,12 @@
           <div class="amenities">${v.amenities.map(a => `<span class="amenity">${a}</span>`).join("")}</div>
         </section>
 
+        ${v.tags && v.tags.length ? `
+        <section class="detail-section">
+          <h2>Specialities</h2>
+          <div class="amenities">${v.tags.map(t => `<span class="amenity amenity--spec">${t}</span>`).join("")}</div>
+        </section>` : ""}
+
         <section class="detail-section">
           <h2>Contact ${v.name.split(" ")[0]}</h2>
           <div class="contact-row">
