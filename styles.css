@@ -487,6 +487,8 @@ body {
 /* ===== Footer ===== */
 .foot { padding: 1.5rem 0 0.5rem; text-align: center; }
 .foot p { font-size: 0.75rem; color: var(--text-soft); }
+.foot-credit { margin-top: 0.35rem; font-size: 0.72rem; }
+.foot-credit strong { color: var(--text); font-weight: 700; }
 
 /* ===== Bottom tab bar ===== */
 .tabbar {
