@@ -983,8 +983,11 @@ h1, h2 { line-height: 1.16; }
 
 /* ===== Desktop "web view": real website layout (document scroll) ===== */
 @media (min-width: 1024px) {
-  html, body { height: auto; overflow-y: auto; overflow-x: hidden; overscroll-behavior: auto; }
-  body { background: var(--bg); display: block; }
+  /* Only <html> is the scroll container; body must stay overflow:visible so the
+     sticky header/nav stick to the viewport (an overflow on body would capture
+     them and scroll them away). */
+  html { height: auto; overflow-y: auto; overflow-x: hidden; overscroll-behavior: auto; }
+  body { height: auto; overflow: visible; background: var(--bg); display: block; }
 
   .app {
     position: static; display: flex; flex-direction: column;
