@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#e23e7a" />
-  <meta name="description" content="Free wedding budget planner — enter your city, guest count and total budget to get estimated costs for venue, catering, decoration, photography and more on Vivah Spot." />
-  <title>Wedding Budget Planner — Vivah Spot</title>
+  <meta name="description" content="Smart wedding planner — enter your city, guest count, budget and date, pick the services you need, and get per-service budgets plus recommended vendors on Vivah Spot." />
+  <title>Smart Wedding Planner & Budget — Vivah Spot</title>
   <link rel="canonical" href="https://vivahspot.com/budget.html" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Vivah Spot" />
-  <meta property="og:title" content="Wedding Budget Planner — Vivah Spot" />
-  <meta property="og:description" content="Plan your wedding spend: enter city, guests and budget for instant per-category cost estimates." />
+  <meta property="og:title" content="Smart Wedding Planner & Budget — Vivah Spot" />
+  <meta property="og:description" content="Enter city, guests, budget and date — get per-service budgets and recommended vendors instantly." />
   <meta property="og:url" content="https://vivahspot.com/budget.html" />
   <meta property="og:image" content="https://vivahspot.com/images/hero.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -26,16 +26,16 @@
         <svg viewBox="0 0 24 24" class="ico"><path d="M15 18l-6-6 6-6"/></svg>
       </a>
       <div class="appbar-brand appbar-brand--center">
-        <span class="page-title">Budget Planner</span>
-        <span class="page-sub">Estimate your wedding spend</span>
+        <span class="page-title">Smart Planner</span>
+        <span class="page-sub">Budget &amp; vendor suggestions</span>
       </div>
       <span class="appbar-spacer" aria-hidden="true"></span>
     </header>
 
     <main class="screen" id="main">
       <section class="bp-intro">
-        <h1>Wedding Budget Planner</h1>
-        <p>Tell us a few details and we'll suggest how to split your budget across services — with live vendor matches from Vivah Spot.</p>
+        <h1>Smart Wedding Planner</h1>
+        <p>Tell us your city, guests, budget and date, then pick the services you need — we'll split your budget and recommend the best-matched vendors.</p>
       </section>
 
       <form class="bp-form" id="bp-form" onsubmit="return false;">
@@ -47,18 +47,28 @@
           <label for="bp-guests">Guest count — <strong id="bp-guests-val">250</strong></label>
           <input id="bp-guests" type="range" min="50" max="1000" step="10" value="250" />
         </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="bp-budget">Total budget (₹)</label>
+            <input id="bp-budget" type="number" min="100000" step="50000" value="1000000" inputmode="numeric" />
+          </div>
+          <div class="field">
+            <label for="bp-date">Wedding date <small style="font-weight:500;color:var(--text-soft);">(optional)</small></label>
+            <input id="bp-date" type="date" />
+          </div>
+        </div>
         <div class="field">
-          <label for="bp-budget">Total budget (₹)</label>
-          <input id="bp-budget" type="number" min="100000" step="50000" value="1000000" inputmode="numeric" />
+          <label>Services you need</label>
+          <div class="svc-chips" id="svc-chips"><!-- rendered by JS --></div>
         </div>
       </form>
 
       <section class="bp-summary" id="bp-summary"><!-- rendered by JS --></section>
 
       <section class="detail-section">
-        <h2>Suggested allocation</h2>
-        <div class="bp-rows" id="bp-rows"><!-- rendered by JS --></div>
-        <p class="bp-note">Estimates use typical Indian-wedding splits and scale catering by guest count. Tap a row to browse matching vendors.</p>
+        <h2>Your plan</h2>
+        <div class="rec-list" id="rec-list"><!-- rendered by JS --></div>
+        <p class="bp-note">“Smart” picks rank by rating, popularity, your city and (if set) availability on your date. We also keep a small buffer for misc costs — add ~10% on top for a safety margin.</p>
       </section>
 
       <div style="height:0.5rem;"></div>
@@ -78,65 +88,119 @@
     window.IMG_BASE = "";
     const CITIES = ["Pune", "Mumbai", "Delhi", "Bengaluru", "Hyderabad", "Chennai", "Kolkata", "Ahmedabad", "Jaipur", "Lucknow"];
 
-    // Typical Indian-wedding allocation (sums to 100). `perPlate` scales by guests.
-    const ALLOC = [
-      { slug: "venues",      label: "Venue",           pct: 30, color: "var(--c-green)" },
-      { slug: "catering",    label: "Catering",        pct: 25, color: "var(--c-orange)", perPlate: true },
-      { slug: "decoration",  label: "Decoration",      pct: 12, color: "var(--c-pink)" },
-      { slug: "photography", label: "Photography",     pct: 11, color: "var(--c-blue)" },
-      { slug: "makeup",      label: "Makeup & Mehndi", pct: 6,  color: "var(--c-red)" },
-      { slug: "music",       label: "DJ & Music",      pct: 6,  color: "var(--c-purple)" },
-      { slug: null,          label: "Buffer / Misc",   pct: 10, color: "var(--c-gold)" },
+    // Service weights (relative); re-normalised over the services the user selects.
+    const SERVICES = [
+      { slug: "venues",      label: "Venue",           weight: 30, color: "var(--c-green)" },
+      { slug: "catering",    label: "Catering",        weight: 25, color: "var(--c-orange)", perPlate: true },
+      { slug: "decoration",  label: "Decoration",      weight: 12, color: "var(--c-pink)" },
+      { slug: "photography", label: "Photography",     weight: 11, color: "var(--c-blue)" },
+      { slug: "makeup",      label: "Makeup & Mehndi", weight: 6,  color: "var(--c-red)" },
+      { slug: "music",       label: "DJ & Music",      weight: 6,  color: "var(--c-purple)" },
     ];
+    const selected = new Set(SERVICES.map(s => s.slug)); // all on by default
 
     const cityEl = document.getElementById("bp-city");
     const guestsEl = document.getElementById("bp-guests");
     const guestsValEl = document.getElementById("bp-guests-val");
     const budgetEl = document.getElementById("bp-budget");
+    const dateEl = document.getElementById("bp-date");
+    const chipsEl = document.getElementById("svc-chips");
+
     cityEl.innerHTML = CITIES.map(c => `<option>${c}</option>`).join("");
     const savedCity = localStorage.getItem("vs_city");
     if (savedCity && CITIES.includes(savedCity)) cityEl.value = savedCity;
+    dateEl.min = new Date().toISOString().slice(0, 10);
 
-    function vendorsInBudget(slug, amount, perPlateAmt) {
-      if (!slug) return null;
-      if (slug === "catering") return VENDORS.filter(v => v.cat === "catering" && v.priceFrom <= perPlateAmt).length;
-      return VENDORS.filter(v => v.cat === slug && v.priceFrom <= amount).length;
-    }
+    chipsEl.innerHTML = SERVICES.map(s =>
+      `<button type="button" class="svc-chip on" data-svc="${s.slug}" style="--sc:${s.color}">
+        <span class="svc-dot"></span>${s.label}
+      </button>`).join("");
 
     function render() {
       const budget = Math.max(0, parseInt(budgetEl.value, 10) || 0);
       const guests = parseInt(guestsEl.value, 10) || 1;
+      const city = cityEl.value;
+      const dateISO = dateEl.value || null;
       guestsValEl.textContent = guests;
+
+      const chosen = SERVICES.filter(s => selected.has(s.slug));
+      const totalWeight = chosen.reduce((sum, s) => sum + s.weight, 0) || 1;
       const perGuest = budget / guests;
 
-      // Summary
       document.getElementById("bp-summary").innerHTML = `
-        <div class="bp-stat"><strong>${vsFormatPrice(budget)}</strong><span>Total budget</span></div>
+        <div class="bp-stat"><strong>${vsFormatPrice(budget)}</strong><span>Budget</span></div>
         <div class="bp-stat"><strong>${guests}</strong><span>Guests</span></div>
-        <div class="bp-stat"><strong>${vsFormatPrice(Math.round(perGuest))}</strong><span>Per guest</span></div>`;
+        <div class="bp-stat"><strong>${vsFormatPrice(Math.round(perGuest))}</strong><span>Per guest</span></div>
+        <div class="bp-stat"><strong>${chosen.length}</strong><span>Services</span></div>`;
 
-      const maxPct = Math.max(...ALLOC.map(a => a.pct));
-      document.getElementById("bp-rows").innerHTML = ALLOC.map(a => {
-        const amount = Math.round(budget * a.pct / 100);
-        const perPlate = a.perPlate ? Math.round(amount / guests) : null;
-        const count = vendorsInBudget(a.slug, amount, perPlate);
-        const hint = a.perPlate
-          ? `≈ ${vsFormatPrice(perPlate)} / plate` + (perPlate < 350 ? ` · tight` : "")
-          : (count !== null ? `${count} vendor${count === 1 ? "" : "s"} in budget` : "Contingency");
-        const inner = `
-          <span class="bp-dot" style="background:${a.color}"></span>
-          <span class="bp-label">${a.label}<small> · ${a.pct}%</small></span>
-          <span class="bp-bar"><span class="bp-fill" style="width:${(a.pct / maxPct) * 100}%;background:${a.color}"></span></span>
-          <span class="bp-amt">${vsFormatPrice(amount)}<small>${hint}</small></span>`;
-        return a.slug
-          ? `<a class="bp-row" href="category.html?cat=${a.slug}">${inner}<svg class="bp-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></a>`
-          : `<div class="bp-row bp-row--static">${inner}</div>`;
+      const recList = document.getElementById("rec-list");
+      if (!chosen.length) {
+        recList.innerHTML = `<p class="dash-muted">Select at least one service above to see your plan.</p>`;
+        return;
+      }
+
+      recList.innerHTML = chosen.map(s => {
+        const amount = Math.round(budget * s.weight / totalWeight);
+        const perPlate = s.perPlate ? Math.round(amount / guests) : null;
+        const opts = { city, dateISO };
+        if (s.perPlate) opts.perPlate = perPlate; else opts.maxPrice = amount;
+        const matches = vsRecommendVendors(s.slug, opts);
+        const top = matches[0];
+        const amtLine = s.perPlate
+          ? `${vsFormatPrice(amount)} <small>≈ ${vsFormatPrice(perPlate)}/plate${perPlate < 350 ? " · tight" : ""}</small>`
+          : `${vsFormatPrice(amount)}`;
+
+        let body;
+        if (top) {
+          const cat = vsCategory(top.cat);
+          const avail = dateISO
+            ? (vsIsBooked(top.id, dateISO)
+                ? `<span class="rec-av rec-av--no">Booked on ${dateISO}</span>`
+                : `<span class="rec-av rec-av--yes">Available ${dateISO}</span>`)
+            : "";
+          const more = matches.length > 1
+            ? `<a class="rec-more" href="category.html?cat=${s.slug}">+${matches.length - 1} more in budget →</a>`
+            : `<a class="rec-more" href="category.html?cat=${s.slug}">Browse all →</a>`;
+          body = `
+            <a class="rec-vendor" href="vendor.html?id=${top.id}">
+              <img src="images/${top.img}" alt="${top.name}" loading="lazy" />
+              <span class="rec-v-info">
+                <strong>${top.name}</strong>
+                <span class="rec-v-meta">★ ${top.rating} · ${vsFormatPrice(top.priceFrom)}/${top.unit} · ${top.city}</span>
+                ${vsBadgesHTML(top, 2)}
+                ${avail}
+              </span>
+            </a>
+            ${more}`;
+        } else {
+          body = `<p class="rec-none">No ${s.label.toLowerCase()} vendors within this allocation.
+            <a href="category.html?cat=${s.slug}">See all options →</a></p>`;
+        }
+
+        return `
+          <div class="rec">
+            <div class="rec-head" style="--rc:${s.color}">
+              <span class="rec-svc"><span class="rec-dot"></span>${s.label}</span>
+              <span class="rec-amt">${amtLine}</span>
+            </div>
+            <div class="rec-body">${body}</div>
+          </div>`;
       }).join("");
     }
 
-    cityEl.addEventListener("change", () => localStorage.setItem("vs_city", cityEl.value));
+    // Wire up
+    chipsEl.querySelectorAll(".svc-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        const slug = chip.dataset.svc;
+        if (selected.has(slug)) { selected.delete(slug); chip.classList.remove("on"); }
+        else { selected.add(slug); chip.classList.add("on"); }
+        render();
+      });
+    });
+    cityEl.addEventListener("change", () => { localStorage.setItem("vs_city", cityEl.value); render(); });
     guestsEl.addEventListener("input", render);
     budgetEl.addEventListener("input", render);
+    dateEl.addEventListener("change", render);
     render();
   </script>
 </body>

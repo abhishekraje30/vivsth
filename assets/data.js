@@ -432,6 +432,28 @@ function vsRailHTML(title, vendors) {
     </section>`;
 }
 
+/* ---- recommendation engine (rule-based "smart" ranking) ----
+   opts: { city, maxPrice, perPlate, dateISO }. Returns vendors of a category
+   sorted best-first by rating/popularity, city match and date availability. */
+function vsRecommendVendors(slug, opts) {
+  opts = opts || {};
+  const cityKey = opts.city ? vsCityKey(opts.city) : null;
+  const cap = slug === "catering"
+    ? (opts.perPlate != null ? opts.perPlate : Infinity)
+    : (opts.maxPrice != null ? opts.maxPrice : Infinity);
+  return VENDORS
+    .filter(v => v.cat === slug && v.priceFrom <= cap)
+    .map(v => {
+      let score = v.rating * 10 + Math.min(v.reviews, 200) / 50;
+      if (v.verified) score += 4;
+      if (cityKey && vsCityKey(v.city) === cityKey) score += 15;
+      if (opts.dateISO) score += vsIsBooked(v.id, opts.dateISO) ? -25 : 6;
+      return { v, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .map(x => x.v);
+}
+
 /* ---- vendor dashboard metrics (real tracked counts + deterministic baseline) ---- */
 function vsDashStats(v) {
   const real = vsGetStats(v.id);
