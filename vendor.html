@@ -124,8 +124,8 @@
         <div class="detail-head">
           <div>
             <h1>${v.name}</h1>
+            ${vsBadgesHTML(v)}
             <div class="detail-meta">
-              ${v.verified ? `<span class="badge-verified">✓ Verified</span>` : ""}
               <span class="mi"><svg viewBox="0 0 24 24" class="ico"><path d="M12 21s-7-6.1-7-11a7 7 0 1 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>${v.city}</span>
               <span class="mi">${cat ? cat.name : ""}</span>
             </div>

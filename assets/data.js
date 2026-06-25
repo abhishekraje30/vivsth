@@ -191,6 +191,26 @@ function vsVendor(id) { return VENDORS.find(v => v.id === id); }
 function vsVendorsByCat(slug) { return VENDORS.filter(v => v.cat === slug); }
 function vsFormatPrice(n) { return "₹" + n.toLocaleString("en-IN"); }
 
+/* ---- vendor badges (derived from data; deterministic, no backend) ---- */
+function vsBadges(v) {
+  if (!v) return [];
+  const out = [];
+  if (v.verified) out.push({ key: "verified", icon: "🏆", label: "Verified" });
+  if (v.rating >= 4.8) out.push({ key: "top", icon: "⭐", label: "Top Rated" });
+  if (v.reviews >= 150) out.push({ key: "booked", icon: "🔥", label: "Most Booked" });
+  if (v.verified && v.rating >= 4.7 && v.reviews >= 140) out.push({ key: "premium", icon: "💎", label: "Premium" });
+  // Quick Response: deterministic stand-in (the prototype has no real response-time data)
+  if (vsHashStr(v.id) % 3 === 0) out.push({ key: "quick", icon: "⚡", label: "Quick Response" });
+  return out;
+}
+function vsBadgesHTML(v, max) {
+  const list = vsBadges(v);
+  const shown = max ? list.slice(0, max) : list;
+  if (!shown.length) return "";
+  return `<div class="vbadges">${shown.map(b =>
+    `<span class="vbadge vbadge-${b.key}">${b.icon} ${b.label}</span>`).join("")}</div>`;
+}
+
 /* Returns the markup for one featured-style vendor card. */
 function vsVendorCard(v) {
   const b = vsBase();
@@ -207,6 +227,7 @@ function vsVendorCard(v) {
         <span class="rating">★ ${v.rating}</span>
       </div>
       <div class="vcard-body">
+        ${vsBadgesHTML(v, 2)}
         <h3>${v.name}</h3>
         <p class="vcard-meta">
           <svg viewBox="0 0 24 24" class="ico"><path d="M12 21s-7-6.1-7-11a7 7 0 1 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>

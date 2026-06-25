@@ -335,6 +335,23 @@ body {
 
 .vcard-body { padding: 0.85rem 0.95rem 1rem; display: flex; flex-direction: column; gap: 0.3rem; }
 .vcard-body h3 { font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
+
+/* ===== Vendor badges (derived) ===== */
+.vbadges { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.vbadge {
+  display: inline-flex; align-items: center; gap: 0.22rem;
+  font-size: 0.66rem; font-weight: 700; line-height: 1; white-space: nowrap;
+  padding: 0.26rem 0.5rem; border-radius: 999px;
+  background: color-mix(in srgb, var(--bc, var(--accent)) 14%, #fff);
+  color: color-mix(in srgb, var(--bc, var(--accent)) 72%, #000);
+  border: 1px solid color-mix(in srgb, var(--bc, var(--accent)) 26%, #fff);
+}
+.vbadge-verified { --bc: var(--c-green); }
+.vbadge-top      { --bc: var(--c-gold); }
+.vbadge-booked   { --bc: var(--c-orange); }
+.vbadge-premium  { --bc: var(--c-purple); }
+.vbadge-quick    { --bc: var(--c-blue); }
+.detail-head .vbadges { margin: 0.45rem 0 0.1rem; }
 .vcard-meta { font-size: 0.78rem; color: var(--text-soft); display: flex; align-items: center; gap: 0.3rem; }
 .vcard-meta .ico { width: 13px; height: 13px; flex: 0 0 auto; color: var(--accent); }
 .vcard-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 0.45rem; }
