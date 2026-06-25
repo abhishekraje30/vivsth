@@ -1,0 +1,13 @@
+{
+  "name": "Vivah Spot — Wedding Services Marketplace",
+  "short_name": "Vivah Spot",
+  "description": "Book trusted wedding vendors — venues, catering, decoration, photography, makeup & mehndi and DJ — all in one place.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fff7fb",
+  "theme_color": "#e23e7a",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" }
+  ]
+}

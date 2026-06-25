@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Personal / utility pages have no search value
+Disallow: /account/bookings.html
+Disallow: /account/favourites.html
+Disallow: /account/profile.html
+
+Sitemap: https://vivahspot.com/sitemap.xml
