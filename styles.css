@@ -983,10 +983,11 @@ h1, h2 { line-height: 1.16; }
 
 /* ===== Desktop "web view": real website layout (document scroll) ===== */
 @media (min-width: 1024px) {
-  /* Only <html> is the scroll container; body must stay overflow:visible so the
-     sticky header/nav stick to the viewport (an overflow on body would capture
-     them and scroll them away). */
-  html { height: auto; overflow-y: auto; overflow-x: hidden; overscroll-behavior: auto; }
+  /* Natural document scroll — NO overflow on html/body. Any overflow value
+     (even overflow-x:hidden) turns the root into a scroll container and breaks
+     position:sticky for the header/nav, so they'd scroll away. Pages with
+     decorative blobs clip them locally instead. */
+  html { height: auto; overflow: visible; overscroll-behavior: auto; }
   body { height: auto; overflow: visible; background: var(--bg); display: block; }
 
   .app {
