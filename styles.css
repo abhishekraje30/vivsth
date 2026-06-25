@@ -219,7 +219,7 @@ body {
 .hero {
   border-radius: 18px;
   background:
-    linear-gradient(135deg, rgba(226, 62, 122, 0.86) 0%, rgba(255, 122, 61, 0.7) 60%, rgba(139, 92, 246, 0.7) 100%),
+    linear-gradient(135deg, rgba(226, 62, 122, 0.92) 0%, rgba(255, 122, 61, 0.82) 100%),
     url("images/hero.jpg") center / cover no-repeat;
   color: #fff;
   padding: 1.4rem 1.25rem 1.5rem;
@@ -371,14 +371,12 @@ body {
 .about-text { font-size: 0.9rem; color: var(--text-soft); }
 .stats { display: flex; gap: 0.6rem; margin-top: 1rem; }
 .stat {
-  flex: 1; border: none; border-radius: 16px; padding: 0.9rem 0.5rem;
-  text-align: center; color: #fff; box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+  flex: 1; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 0.9rem 0.5rem;
+  text-align: center; color: var(--text); box-shadow: var(--shadow);
 }
-.stat:nth-child(1) { background: linear-gradient(135deg, #ff7a3d, #f5b301); }
-.stat:nth-child(2) { background: linear-gradient(135deg, #e23e7a, #8b5cf6); }
-.stat:nth-child(3) { background: linear-gradient(135deg, #12b3a3, #3b9ae1); }
-.stat strong { display: block; font-size: 1.2rem; font-weight: 800; }
-.stat span { font-size: 0.72rem; opacity: 0.95; }
+.stat strong { display: block; font-size: 1.2rem; font-weight: 800; color: var(--accent-dark); }
+.stat span { font-size: 0.72rem; color: var(--text-soft); }
 
 /* ===== Register ===== */
 .register-card {
