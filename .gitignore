@@ -32,3 +32,11 @@ yarn-error.log*
 # Playwright MCP scratch output (console logs, page snapshots, screenshots)
 .playwright-mcp/
 vivahspot-mobile-home.png
+.bmad-loop/runs/
+.bmad-loop/cache/
+.bmad-loop/policy.toml
+_bmad/render/
+
+# Python bytecode from BMAD skill scripts
+__pycache__/
+*.pyc
