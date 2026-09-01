@@ -1,0 +1,45 @@
+/**
+ * Vivah Spot design tokens for Tailwind 4 (vendor-web).
+ *
+ * Tailwind 4 is CSS-first, so the token values are declared here as `@theme` variables.
+ * `tokens.js` remains canonical — if you change a colour, change it there first, then
+ * mirror it here. Only the colour/font values are duplicated; nothing else.
+ *
+ * Imported by apps/vendor-web/src/app/globals.css.
+ */
+
+@theme {
+  /* Surfaces & text */
+  --color-bg: #fff7fb;
+  --color-surface: #ffffff;
+  --color-text: #3a2f37;
+  /* WCAG AA on white (~5.5:1) — do not lighten */
+  --color-text-soft: #736570;
+  --color-border: #f4e3ec;
+
+  /* Primary festive accent */
+  --color-accent: #e23e7a;
+  --color-accent-dark: #c62368;
+  --color-accent-soft: #fde7f0;
+
+  /* Festive wedding palette */
+  --color-pink: #e23e7a;
+  --color-marigold: #ff7a3d;
+  --color-gold: #f5b301;
+  --color-teal: #12b3a3;
+  --color-purple: #8b5cf6;
+  --color-blue: #3b9ae1;
+  --color-red: #ef4d5a;
+  --color-green: #2bb673;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* Type. --font-playfair is injected by next/font in vendor-web's layout.tsx. */
+  --font-heading: var(--font-playfair), Georgia, 'Times New Roman', serif;
+  --font-sans: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+}

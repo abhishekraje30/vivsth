@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@import "@vivahspot/shared/tokens.css";
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+h1,
+h2 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.005em;
+  line-height: 1.16;
+}

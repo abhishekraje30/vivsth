@@ -1,2 +1,30 @@
 # Requirement / internal docs — not part of the published site
 VivahSpot_Addtional_Requirement.docx
+
+# Dependencies
+node_modules/
+.npm/
+
+# Build output
+apps/vendor-web/.next/
+apps/vendor-web/out/
+apps/mobile/.expo/
+apps/mobile/android/
+apps/mobile/ios/
+packages/*/dist/
+*.tsbuildinfo
+
+# Environment — never commit secrets (Razorpay, MSG91, WhatsApp, R2)
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*

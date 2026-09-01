@@ -1,0 +1,19 @@
+{
+  "name": "vivahspot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Vivah Spot — modular wedding-services marketplace. Monorepo: Expo customer app, Next.js vendor portal, shared API contract.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "web": "npm run dev --workspace=@vivahspot/vendor-web",
+    "mobile": "npm run start --workspace=@vivahspot/mobile",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  }
+}
