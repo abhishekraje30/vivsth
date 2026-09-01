@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "free: vendor-web port (3000)",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/free-port.sh 3000",
+      "presentation": { "reveal": "silent", "panel": "shared", "close": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "free: mobile port (8081)",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/free-port.sh 8081",
+      "presentation": { "reveal": "silent", "panel": "shared", "close": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "free: all dev ports",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/free-port.sh 3000 8081 19000 19001",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "typecheck: all workspaces",
+      "type": "shell",
+      "command": "npm run typecheck",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "mobile: check Expo package versions",
+      "type": "shell",
+      "command": "npx expo install --check --project-root apps/mobile",
+      "problemMatcher": []
+    }
+  ]
+}

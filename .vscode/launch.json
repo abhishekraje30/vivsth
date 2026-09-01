@@ -1,0 +1,71 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "vendor-web: dev server",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/vendor-web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--port", "3000"],
+      "console": "integratedTerminal",
+      "preLaunchTask": "free: vendor-web port (3000)",
+      "serverReadyAction": {
+        "pattern": "- Local:\\s+(https?://\\S+)",
+        "uriFormat": "%s",
+        "action": "openExternally"
+      },
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "vendor-web: production build",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/vendor-web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "build"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "mobile: Expo (Expo Go)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/mobile",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["expo", "start", "--port", "8081"],
+      "console": "integratedTerminal",
+      "preLaunchTask": "free: mobile port (8081)",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "mobile: Expo (tunnel — use if phone can't reach WSL)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/mobile",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["expo", "start", "--tunnel", "--port", "8081"],
+      "console": "integratedTerminal",
+      "preLaunchTask": "free: mobile port (8081)",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "mobile: Expo (web preview)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/mobile",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["expo", "start", "--web", "--port", "8081"],
+      "console": "integratedTerminal",
+      "preLaunchTask": "free: mobile port (8081)",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Both apps",
+      "configurations": ["vendor-web: dev server", "mobile: Expo (Expo Go)"],
+      "stopAll": true
+    }
+  ]
+}

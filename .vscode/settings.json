@@ -1,0 +1,13 @@
+{
+  // Two Tailwind majors in one repo — the extension needs to be told which config
+  // governs which folder, or IntelliSense picks one and is wrong in the other app.
+  "tailwindCSS.experimental.configFile": {
+    "apps/vendor-web/src/app/globals.css": "apps/vendor-web/**",
+    "apps/mobile/tailwind.config.js": "apps/mobile/**"
+  },
+  // NativeWind puts classes on className and contentContainerClassName in .tsx
+  "tailwindCSS.includeLanguages": { "typescriptreact": "javascript" },
+  "tailwindCSS.classAttributes": ["class", "className", "contentContainerClassName"],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "search.exclude": { "**/node_modules": true, "**/.next": true, "**/.expo": true }
+}

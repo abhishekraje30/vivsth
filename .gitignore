@@ -28,3 +28,7 @@ Thumbs.db
 *.log
 npm-debug.log*
 yarn-error.log*
+
+# Playwright MCP scratch output (console logs, page snapshots, screenshots)
+.playwright-mcp/
+vivahspot-mobile-home.png
