@@ -40,3 +40,9 @@ _bmad/render/
 # Python bytecode from BMAD skill scripts
 __pycache__/
 *.pyc
+
+# graphify — machine-local extraction cache and interpreter pins.
+# The graph outputs themselves are committed; these are not portable.
+graphify-out/cache/
+graphify-out/.graphify_python
+graphify-out/.graphify_root
