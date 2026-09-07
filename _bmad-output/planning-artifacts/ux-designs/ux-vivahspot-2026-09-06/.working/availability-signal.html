@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — the availability signal, in place</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   THE AVAILABILITY SIGNAL, TESTED WHERE IT HAS TO LIVE
+   Three states, never two: shows available / shows unavailable / hasn't said. The third
+   is not a rejection -- it fires with no Anchor Date, a no-duration Service,
+   or a lapsed Subscription -- and must not look like one.
+   Copy always says "shows", never asserts on the Vendor's behalf.
+   Tested in the two places it actually appears: a 2-up results grid at 360px,
+   and a full-width list row. Built from DESIGN.md tokens only.
+
+   ---- 2026-09-07 · RECONCILIATION D2 / D12 / C5 / C16 ----------------------
+   THE RINGS WERE RIGHT AND THE MARKS INSIDE THEM WERE NOT. All three rings
+   already drew in {colors.muted} at 2px solid / 1px solid / 1px dashed, so
+   the state is carried by stroke WIDTH and STYLE and never by colour -- that
+   part is unchanged and stays. What was wrong is that the second signal was
+   a Unicode tick, em dash and question mark. DESIGN.md:264 and :607 both
+   forbid it, and for a reason this page makes worse than most: U+2713 takes
+   emoji presentation on several Android builds, which would drop an unchosen
+   green tick into a system whose stated rule is that nothing means "good" by
+   being green. The drawings existed in availability-icons-b.html (Set B, the
+   calendar, small cut) and were simply never carried into the file that ships
+   the mark. They are here now: inline SVG, currentColor, aria-hidden="true",
+   focusable="false", with the WORD beside each one carrying the accessible
+   name. Per C16 the small cut is drawn at 10x10 inside the 12px inner box --
+   1px of optical padding each side, so no corner rides the ring stroke -- and
+   the distinguishing mark BREAKS the body silhouette rather than sitting
+   inside it: the tick crosses the calendar's right edge, the "unavailable" bar
+   crosses both side edges, and "not stated" is the dashed body with no mark
+   at all. Two icons that differ only by an interior detail stop differing.
+   The gold-tint fill on "shows available" is warmth only and carries nothing:
+   remove it and all three states still read.
+
+   ---- 2026-09-07 · COPY NORMALISED · PRD §3 ----------------------------
+   "Shows free" and "Shows taken" were a SYNONYM invented during this run
+   and are gone. The canonical strings are the ones the spines already
+   carry -- PRD :117, :501, :579, the architecture spine :144 and :464,
+   restated at EXPERIENCE.md:482. On a CARD: "Shows available" /
+   "Shows unavailable" / "Not stated". On a LIST ROW it opens up:
+   "Shows available across all three days" /
+   "Shows unavailable on 27 November" / "Hasn't set dates yet".
+   Inventing a second word for a state the glossary already names is the
+   divergence the glossary exists to prevent, so no shortening may buy
+   the width back. Measured after, at the tight case: the longest string,
+   "Shows unavailable", is 117.83px inside the 141.5px content box of a
+   161.5px card in the 360px two-up grid. One line, no overflow, card
+   heights unchanged -- the layout needed no adjustment.
+   ========================================================================== */
+:root{
+  --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
+  --vermillion:#E01B33;--turmeric:#FFC300;--gold-tint:#FFEBB0;--hairline:#F6E2C2;
+  --e1:0 2px 9px rgba(190,30,50,.10);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --disp:'Playfair Display',Georgia,serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/1.55 var(--sans)}
+.wrap{max-width:1180px;margin:0 auto}
+.lede{max-width:74ch;margin:0 auto 28px}
+.lede h1{font-family:var(--disp);font-size:1.78rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.row2{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin-bottom:34px}
+.side{flex:1 1 420px;max-width:520px}
+.side>h2{font-family:var(--disp);font-size:1.18rem;margin:0 0 4px}
+.side>.s{font-size:.82rem;color:#8d868b;margin:0 0 12px}
+.ctx{font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;color:#8d868b;margin:0 0 8px}
+.pane{background:var(--ground);border-radius:9px;padding:13px;color:var(--ink)}
+.verdict{font-size:.79rem;color:#a9a3a8;margin:11px 0 0;line-height:1.5}
+.verdict b{color:#ddd8dc}
+.gray{filter:grayscale(1)}
+/* C22/C20 · this caption sits on {colors.ground}, not the dark page: #8D868B
+   is 3.458:1 at 10.4px -- and it sits on the DARK presentation page, not on
+   {colors.ground}, so {colors.muted} would be 3.681 there. #B3ADB1 is 8.172:1
+   on it, matching the chrome already used elsewhere in these files. 11px. */
+.grayNote{font-size:11px;color:#b3adb1;text-align:center;margin-top:5px}
+
+/* --- the grid: 2-up at 360px, the tight case --- */
+.phone{width:360px;max-width:100%;margin:0 auto;background:var(--ground);
+  border:1px solid #35323a;border-radius:10px;padding:12px;overflow:hidden}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.vc{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;
+  overflow:hidden;box-shadow:var(--e1)}
+.vc .ph{height:70px;background:linear-gradient(150deg,#FFE7A8,#FFBDB6);position:relative}
+.vc .tx{padding:8px 9px 9px}
+.vc h5{margin:0 0 2px;font-size:.82rem;font-family:var(--disp);font-weight:400;line-height:1.25}
+.vc .m{font-size:.66rem;color:var(--muted);margin-bottom:6px}
+.vc .pr{font-weight:700;font-size:.76rem}
+
+/* ring form */
+.ring{display:inline-flex;align-items:center;gap:5px;font-size:.66rem;margin-bottom:5px}
+.ring .gl{width:16px;height:16px;flex:none;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;line-height:1}
+.ring .gl svg{display:block}
+.g-y{background:var(--gold-tint);border:2px solid var(--muted);color:var(--ink)}
+.g-n{background:var(--surface);border:1px solid var(--muted);color:var(--muted)}
+.g-u{background:var(--surface);border:1px dashed var(--muted);color:var(--muted)}
+.ring .w{color:var(--ink);line-height:1.2}
+.ring.q .w{color:var(--muted)}
+
+/* words form */
+.words{font-size:.66rem;line-height:1.35;margin-bottom:5px;color:var(--ink)}
+.words.q{color:var(--muted)}
+
+/* --- the list row: full width --- */
+.lr{display:flex;gap:11px;background:var(--surface);border:1px solid var(--hairline);
+  border-radius:6px;padding:10px 11px;margin-bottom:8px;box-shadow:var(--e1);align-items:center}
+.lr .th{width:52px;height:52px;border-radius:4px;flex:none;
+  background:linear-gradient(150deg,#FFE7A8,#FFBDB6)}
+.lr .g{flex:1;min-width:0}
+.lr .g b{display:block;font-family:var(--disp);font-weight:400;font-size:.92rem}
+.lr .g .m{font-size:.7rem;color:var(--muted)}
+.lr .r{flex:none;text-align:right}
+.lr .r .pr{font-weight:700;font-size:.82rem;display:block;margin-bottom:5px}
+.tap{min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+  background:var(--vermillion);color:#fff;font-size:.74rem;font-weight:700;padding:0 14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>The availability signal, where it actually lives</h1>
+  <p>Both forms, in the two places the signal appears: a <b>two-up results grid at 360px</b> — the
+     tight case — and a <b>full-width list row</b>, where there is room for anything. Three vendors,
+     one in each state.</p>
+  <p class="hint">The copy never asserts on a Vendor's behalf: <b>shows</b> available, never
+     <em>available</em>. The third state is not a rejection — it fires when there are no dates yet, or
+     the Service has no duration, or the Subscription has lapsed — so nothing about it may read as a
+     refusal. Greyscale strips underneath.</p>
+</div>
+
+<div class="row2">
+  <!-- ============ RING ============ -->
+  <div class="side">
+    <h2>One ring, three treatments</h2>
+    <p class="s">Solid, thin, dashed — all three in <code>{colors.muted}</code>. The border WIDTH and
+       STYLE separate them before colour or icon does anything; the Set B calendar is the second
+       signal and the word is the third.</p>
+
+    <p class="ctx">Results grid · 360px · two-up</p>
+    <div class="pane"><div class="phone"><div class="grid2">
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="ring"><span class="gl g-y"><svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.4 12.4l2.6 2.6 9.1-9.3" stroke-width="2.6"/></svg></span><span class="w">Shows available</span></div>
+        <h5>Shubhmangal Lawns</h5><div class="m">800 capacity</div>
+        <span class="pr">₹1,80,000</span></div></div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="ring"><span class="gl g-n"><svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M1.6 13h16.8" stroke-width="2.8"/></svg></span><span class="w">Shows unavailable</span></div>
+        <h5>Annapurna Caterers</h5><div class="m">veg &amp; jain</div>
+        <span class="pr">₹420 / plate</span></div></div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="ring q"><span class="gl g-u"><svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2" stroke-dasharray="3.4 3.2"/><path d="M6.5 3.2v3.4M13.5 3.2v3.4"/></svg></span><span class="w">Not stated</span></div>
+        <h5>Sant Sakhu Karyalay</h5><div class="m">400 capacity</div>
+        <span class="pr">₹95,000</span></div></div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="ring"><span class="gl g-y"><svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.4 12.4l2.6 2.6 9.1-9.3" stroke-width="2.6"/></svg></span><span class="w">Shows available</span></div>
+        <h5>Ravi Studios</h5><div class="m">Photography</div>
+        <span class="pr">₹65,000</span></div></div>
+    </div></div></div>
+
+    <p class="ctx" style="margin-top:14px">List row · full width</p>
+    <div class="pane">
+      <div class="lr"><div class="th"></div><div class="g"><b>Shubhmangal Lawns</b>
+        <div class="m">Lawns &amp; Venues · 800 capacity</div>
+        <div class="ring" style="margin:4px 0 0"><span class="gl g-y"><svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.4 12.4l2.6 2.6 9.1-9.3" stroke-width="2.6"/></svg></span>
+          <span class="w">Shows available across all three days</span></div></div>
+        <div class="r"><span class="pr">₹1,80,000</span><span class="tap">Enquire</span></div></div>
+      <div class="lr"><div class="th"></div><div class="g"><b>Annapurna Caterers</b>
+        <div class="m">Catering · veg &amp; jain</div>
+        <div class="ring" style="margin:4px 0 0"><span class="gl g-n"><svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M1.6 13h16.8" stroke-width="2.8"/></svg></span>
+          <span class="w">Shows unavailable on 27 November</span></div></div>
+        <div class="r"><span class="pr">₹420 / plate</span><span class="tap">Enquire</span></div></div>
+      <div class="lr"><div class="th"></div><div class="g"><b>Sant Sakhu Karyalay</b>
+        <div class="m">Lawns &amp; Venues · 400 capacity</div>
+        <div class="ring q" style="margin:4px 0 0"><span class="gl g-u"><svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2" stroke-dasharray="3.4 3.2"/><path d="M6.5 3.2v3.4M13.5 3.2v3.4"/></svg></span>
+          <span class="w">Hasn't set dates yet</span></div></div>
+        <div class="r"><span class="pr">₹95,000</span><span class="tap">Enquire</span></div></div>
+    </div>
+
+    <div class="pane gray" style="margin-top:9px"><div class="phone" style="width:auto"><div class="grid2">
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="ring"><span class="gl g-y"><svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.4 12.4l2.6 2.6 9.1-9.3" stroke-width="2.6"/></svg></span><span class="w">Shows available</span></div>
+        <h5>Shubhmangal Lawns</h5></div></div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="ring"><span class="gl g-n"><svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M1.6 13h16.8" stroke-width="2.8"/></svg></span><span class="w">Shows unavailable</span></div>
+        <h5>Annapurna Caterers</h5></div></div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="ring q"><span class="gl g-u"><svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2" stroke-dasharray="3.4 3.2"/><path d="M6.5 3.2v3.4M13.5 3.2v3.4"/></svg></span><span class="w">Not stated</span></div>
+        <h5>Sant Sakhu Karyalay</h5></div></div>
+    </div></div></div>
+    <p class="grayNote">greyscale</p>
+    <p class="verdict"><b>Fits both.</b> Two words on the card, a full phrase on the row — the same
+      component, expanded. In grey the three rings are still solid, thin and dashed.</p>
+  </div>
+
+  <!-- ============ WORDS ============ -->
+  <div class="side">
+    <h2>Words with no mark</h2>
+    <p class="s">No circle, no glyph. Only the phrase.</p>
+
+    <p class="ctx">Results grid · 360px · two-up</p>
+    <div class="pane"><div class="phone"><div class="grid2">
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="words">Shows available across all three days</div>
+        <h5>Shubhmangal Lawns</h5><div class="m">800 capacity</div>
+        <span class="pr">₹1,80,000</span></div></div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="words">Shows unavailable on 27 November</div>
+        <h5>Annapurna Caterers</h5><div class="m">veg &amp; jain</div>
+        <span class="pr">₹420 / plate</span></div></div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="words q">Hasn't set dates yet</div>
+        <h5>Sant Sakhu Karyalay</h5><div class="m">400 capacity</div>
+        <span class="pr">₹95,000</span></div></div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="words">Shows available across all three days</div>
+        <h5>Ravi Studios</h5><div class="m">Photography</div>
+        <span class="pr">₹65,000</span></div></div>
+    </div></div></div>
+
+    <p class="ctx" style="margin-top:14px">List row · full width</p>
+    <div class="pane">
+      <div class="lr"><div class="th"></div><div class="g"><b>Shubhmangal Lawns</b>
+        <div class="m">Lawns &amp; Venues · 800 capacity</div>
+        <div class="words" style="margin:4px 0 0">Shows available across all three days</div></div>
+        <div class="r"><span class="pr">₹1,80,000</span><span class="tap">Enquire</span></div></div>
+      <div class="lr"><div class="th"></div><div class="g"><b>Annapurna Caterers</b>
+        <div class="m">Catering · veg &amp; jain</div>
+        <div class="words" style="margin:4px 0 0">Shows unavailable on 27 November</div></div>
+        <div class="r"><span class="pr">₹420 / plate</span><span class="tap">Enquire</span></div></div>
+      <div class="lr"><div class="th"></div><div class="g"><b>Sant Sakhu Karyalay</b>
+        <div class="m">Lawns &amp; Venues · 400 capacity</div>
+        <div class="words q" style="margin:4px 0 0">Hasn't set dates yet</div></div>
+        <div class="r"><span class="pr">₹95,000</span><span class="tap">Enquire</span></div></div>
+    </div>
+
+    <div class="pane gray" style="margin-top:9px"><div class="phone" style="width:auto"><div class="grid2">
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="words">Shows available across all three days</div>
+        <h5>Shubhmangal Lawns</h5></div></div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="words">Shows unavailable on 27 November</div>
+        <h5>Annapurna Caterers</h5></div></div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <div class="words q">Hasn't set dates yet</div>
+        <h5>Sant Sakhu Karyalay</h5></div></div>
+    </div></div></div>
+    <p class="grayNote">greyscale</p>
+    <p class="verdict"><b>Look at the grid.</b> Three lines of wrapped text above each vendor's name,
+      and the two positive states are near-identical strings — the eye has to <em>read</em> every card
+      to sort them. On the list row it is excellent. The problem is only ever the grid.</p>
+  </div>
+</div>
+
+<div class="lede">
+  <p class="hint">Working artifact · <code>.working/availability-signal.html</code> · 2026-09-07.
+    Requires network for Playfair. All Enquire targets are 44px. The third state's copy is
+    deliberately about the Vendor, not the Family: <em>"Hasn't set dates yet"</em>, never
+    <em>"unknown"</em> and never styled as a failure.</p>
+</div>
+</div>
+</body>
+</html>

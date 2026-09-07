@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — icons for the availability ring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   ICONS FOR THE AVAILABILITY RING — INLINE SVG, NOT UNICODE
+   Why SVG: U+2713 renders with emoji presentation on several Android builds,
+   which would put an unchosen green tick into a system where nothing means
+   "good" by being green. SVG also needs no webfont on NFR 5.3's patchy data,
+   inherits currentColor, and stays crisp at 16px.
+   Ring treatments are fixed (solid / thin / dashed) and carry the state on
+   their own; the icon is the second signal, never the only one.
+
+   ---- SUPERSESSION (Reconciliation contract, Rule C-0) · 2026-09-07 --------
+   THIS FILE IS THE COMPARISON, NOT THE SPECIFICATION. The author chose
+   SET B, the calendar marks (.memlog.md:101), and cut it twice
+   (.memlog.md:102). Set A (plain marks) carries a "recommended" badge that
+   was the opening view and did NOT win; Set C (weight only) was rejected.
+   The shipped drawing lives in availability-icons-b.html and is the only one
+   to copy from. Sets A and C keep their ORIGINAL drawings here deliberately:
+   a rejected option is evidence, and quietly bringing it up to date destroys
+   the record of why it lost. Set B's two measured defects -- the small cut
+   filling its box edge to edge, and the distinguishing mark sitting inside
+   the silhouette -- are fixed in availability-icons-b.html, not here.
+
+   FIXED IN BOTH CLASSES, because they are defects rather than design content:
+   C7  every <svg> in this file asserted in prose that it was hidden and none
+       of them carried aria-hidden, so Chromium exposed unnamed image nodes.
+       All 20 now carry aria-hidden="true" and focusable="false".
+   C22 the greyscale captions were #8D868B on {colors.ground} at 10.24px --
+       3.458:1. They are {colors.muted} at 11px, 4.766:1.
+
+   ---- 2026-09-07 · COPY NORMALISED · PRD §3 ----------------------------
+   "Shows free" and "Shows taken" were a SYNONYM invented during this run
+   and are gone. The canonical strings are the ones the spines already
+   carry -- PRD :117, :501, :579, the architecture spine :144 and :464,
+   restated at EXPERIENCE.md:482. On a CARD: "Shows available" /
+   "Shows unavailable" / "Not stated". On a LIST ROW it opens up:
+   "Shows available across all three days" /
+   "Shows unavailable on 27 November" / "Hasn't set dates yet".
+   Inventing a second word for a state the glossary already names is the
+   divergence the glossary exists to prevent, so no shortening may buy
+   the width back. Measured after, at the tight case: the longest string,
+   "Shows unavailable", is 117.83px inside the 141.5px content box of a
+   161.5px card in the 360px two-up grid. One line, no overflow, card
+   heights unchanged -- the layout needed no adjustment.
+   Set A's and Set C's DRAWINGS are untouched -- a rejected option is
+   evidence and stays as it lost -- but their copy normalises with
+   everything else.
+   ========================================================================== */
+:root{
+  --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
+  --vermillion:#E01B33;--turmeric:#FFC300;--gold-tint:#FFEBB0;--hairline:#F6E2C2;
+  --e1:0 2px 9px rgba(190,30,50,.10);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --disp:'Playfair Display',Georgia,serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/1.55 var(--sans)}
+.wrap{max-width:1180px;margin:0 auto}
+.lede{max-width:74ch;margin:0 auto 26px}
+.lede h1{font-family:var(--disp);font-size:1.78rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.sets{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.set{flex:1 1 330px;max-width:360px}
+.set>h2{font-family:var(--disp);font-size:1.16rem;margin:0 0 3px}
+.set>.s{font-size:.81rem;color:#8d868b;margin:0 0 12px;min-height:3.4em}
+.pane{background:var(--ground);border-radius:9px;padding:14px;color:var(--ink)}
+.big{display:flex;gap:16px;justify-content:center;margin-bottom:14px;padding-bottom:14px;
+  border-bottom:1px solid var(--hairline)}
+.big figure{margin:0;text-align:center}
+.big figcaption{font-size:.6rem;color:var(--muted);margin-top:5px;line-height:1.3}
+.r{border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.r40{width:40px;height:40px}
+.r16{width:16px;height:16px}
+.y{background:var(--gold-tint);border:2px solid var(--muted);color:var(--ink)}
+.n{background:var(--surface);border:1px solid var(--muted);color:var(--muted)}
+.u{background:var(--surface);border:1px dashed var(--muted);color:var(--muted)}
+svg{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.vc{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;
+  overflow:hidden;box-shadow:var(--e1)}
+.vc .ph{height:58px;background:linear-gradient(150deg,#FFE7A8,#FFBDB6)}
+.vc .tx{padding:8px 9px 9px}
+.vc h5{margin:0 0 2px;font-size:.8rem;font-family:var(--disp);font-weight:400;line-height:1.25}
+.vc .pr{font-weight:700;font-size:.74rem}
+.sig{display:inline-flex;align-items:center;gap:5px;font-size:.65rem;margin-bottom:5px;line-height:1.2}
+.sig.q{color:var(--muted)}
+.gray{filter:grayscale(1)}
+/* C22/C20 · captions on {colors.ground}: #8D868B is 3.458:1 at 10.24px.
+   {colors.muted} is 4.766:1, at the 11px label floor. */
+.grayNote{font-size:11px;color:var(--muted);text-align:center;margin-top:5px}
+.verdict{font-size:.79rem;color:#a9a3a8;margin:11px 0 0;line-height:1.5}
+.verdict b{color:#ddd8dc}
+.rec{display:inline-block;background:var(--turmeric);color:var(--ink);font-size:.58rem;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>Icons for the availability ring</h1>
+  <p>Three sets, each drawn as inline SVG at a 2px stroke with round caps and joins. Shown large
+     enough to judge, then at the real 16px inside the ring, then in the grid where they live.</p>
+  <p class="hint">The ring treatment — solid, thin, dashed — already carries the state on its own.
+     The icon is the <b>second</b> signal, never the only one, so it can afford to be quiet. Greyscale
+     underneath each set.</p>
+</div>
+<div class="sets">
+
+  <!-- ============ SET A ============ -->
+  <div class="set">
+    <h2>A · Plain marks<span class="rec">recommended</span></h2>
+    <p class="s">A tick, a bar, an ellipsis. The ellipsis is the idea worth stealing — it reads as
+      <em>hasn't said yet</em>, where a question mark reads as <em>confused</em>.</p>
+    <div class="pane">
+      <div class="big">
+        <figure><span class="r r40 y"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true" focusable="false"><path d="M4 10.5l4 4 8-9"/></svg></span>
+          <figcaption>shows<br>available</figcaption></figure>
+        <figure><span class="r r40 n"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false">
+          <path d="M4.5 10h11"/></svg></span>
+          <figcaption>shows<br>unavailable</figcaption></figure>
+        <figure><span class="r r40 u"><svg width="20" height="20" viewBox="0 0 20 20"
+          fill="currentColor" aria-hidden="true" focusable="false"><circle cx="5.5" cy="10" r="1.5"/>
+          <circle cx="10" cy="10" r="1.5"/><circle cx="14.5" cy="10" r="1.5"/></svg></span>
+          <figcaption>not<br>stated</figcaption></figure>
+      </div>
+      <div class="grid2">
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 y"><svg width="9" height="9" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 10.5l4 4 8-9"/></svg></span>Shows available</span>
+          <h5>Shubhmangal Lawns</h5><span class="pr">₹1,80,000</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 n"><svg width="9" height="9" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true" focusable="false">
+            <path d="M4.5 10h11"/></svg></span>Shows unavailable</span>
+          <h5>Annapurna Caterers</h5><span class="pr">₹420 / plate</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig q"><span class="r r16 u"><svg width="9" height="9" viewBox="0 0 20 20"
+            fill="currentColor" aria-hidden="true" focusable="false"><circle cx="4" cy="10" r="2.2"/><circle cx="10" cy="10" r="2.2"/>
+            <circle cx="16" cy="10" r="2.2"/></svg></span>Not stated</span>
+          <h5>Sant Sakhu Karyalay</h5><span class="pr">₹95,000</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 y"><svg width="9" height="9" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 10.5l4 4 8-9"/></svg></span>Shows available</span>
+          <h5>Ravi Studios</h5><span class="pr">₹65,000</span></div></div>
+      </div>
+      <div class="gray" style="margin-top:10px"><div class="big" style="border:0;padding:0;margin:0">
+        <figure><span class="r r40 y"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M4 10.5l4 4 8-9"/></svg></span></figure>
+        <figure><span class="r r40 n"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4.5 10h11"/></svg></span></figure>
+        <figure><span class="r r40 u"><svg width="20" height="20" viewBox="0 0 20 20"
+          fill="currentColor" aria-hidden="true" focusable="false"><circle cx="5.5" cy="10" r="1.5"/><circle cx="10" cy="10" r="1.5"/>
+          <circle cx="14.5" cy="10" r="1.5"/></svg></span></figure>
+      </div></div>
+      <p class="grayNote">greyscale</p>
+    </div>
+    <p class="verdict"><b>Clearest at 16px.</b> Three completely different silhouettes — diagonal,
+      horizontal, dotted — so they separate by shape before anything else.</p>
+  </div>
+
+  <!-- ============ SET B ============ -->
+  <div class="set">
+    <h2>B · Calendar marks</h2>
+    <p class="s">Each icon is a tiny calendar, because the question is literally about dates. More
+      designed, and more to draw at 16px.</p>
+    <div class="pane">
+      <div class="big">
+        <figure><span class="r r40 y"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+          <path d="M3 8h14M6.5 3v3M13.5 3v3M7 12l2 2 4-4.5"/></svg></span>
+          <figcaption>shows<br>available</figcaption></figure>
+        <figure><span class="r r40 n"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+          <path d="M3 8h14M6.5 3v3M13.5 3v3M7 12.5h6"/></svg></span>
+          <figcaption>shows<br>unavailable</figcaption></figure>
+        <figure><span class="r r40 u"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"
+          stroke-dasharray="2.5 2.5"/><path d="M6.5 3v3M13.5 3v3"/></svg></span>
+          <figcaption>not<br>stated</figcaption></figure>
+      </div>
+      <div class="grid2">
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 y"><svg width="11" height="11" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+            <path d="M3 8h14M7 12l2 2 4-4.5"/></svg></span>Shows available</span>
+          <h5>Shubhmangal Lawns</h5><span class="pr">₹1,80,000</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 n"><svg width="11" height="11" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+            <path d="M3 8h14M7 12.5h6"/></svg></span>Shows unavailable</span>
+          <h5>Annapurna Caterers</h5><span class="pr">₹420 / plate</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig q"><span class="r r16 u"><svg width="11" height="11" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"
+            stroke-dasharray="3 3"/></svg></span>Not stated</span>
+          <h5>Sant Sakhu Karyalay</h5><span class="pr">₹95,000</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 y"><svg width="11" height="11" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+            <path d="M3 8h14M7 12l2 2 4-4.5"/></svg></span>Shows available</span>
+          <h5>Ravi Studios</h5><span class="pr">₹65,000</span></div></div>
+      </div>
+      <div class="gray" style="margin-top:10px"><div class="big" style="border:0;padding:0;margin:0">
+        <figure><span class="r r40 y"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="3" y="4.5" width="14" height="12" rx="1.5"/><path d="M3 8h14M6.5 3v3M13.5 3v3M7 12l2 2 4-4.5"/></svg></span></figure>
+        <figure><span class="r r40 n"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="3" y="4.5" width="14" height="12" rx="1.5"/><path d="M3 8h14M6.5 3v3M13.5 3v3M7 12.5h6"/></svg></span></figure>
+        <figure><span class="r r40 u"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="3" y="4.5" width="14" height="12" rx="1.5" stroke-dasharray="2.5 2.5"/>
+          <path d="M6.5 3v3M13.5 3v3"/></svg></span></figure>
+      </div></div>
+      <p class="grayNote">greyscale</p>
+    </div>
+    <p class="verdict"><b>Handsome at 40px, mush at 16.</b> The grid rows and the tick collapse into
+      a grey block on a low-density screen, and available vs unavailable stop being distinguishable at a glance.</p>
+  </div>
+
+  <!-- ============ SET C ============ -->
+  <div class="set">
+    <h2>C · Weight only</h2>
+    <p class="s">No icon at all inside the ring — the ring is filled, hollow or dashed and that is
+      the whole signal, with the word beside it.</p>
+    <div class="pane">
+      <div class="big">
+        <figure><span class="r r40" style="background:var(--turmeric);border:2px solid var(--turmeric)"></span>
+          <figcaption>shows<br>available</figcaption></figure>
+        <figure><span class="r r40 n"></span><figcaption>shows<br>unavailable</figcaption></figure>
+        <figure><span class="r r40 u"></span><figcaption>not<br>stated</figcaption></figure>
+      </div>
+      <div class="grid2">
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16" style="background:var(--turmeric);border:2px solid var(--turmeric)"></span>Shows available</span>
+          <h5>Shubhmangal Lawns</h5><span class="pr">₹1,80,000</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 n"></span>Shows unavailable</span>
+          <h5>Annapurna Caterers</h5><span class="pr">₹420 / plate</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig q"><span class="r r16 u"></span>Not stated</span>
+          <h5>Sant Sakhu Karyalay</h5><span class="pr">₹95,000</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16" style="background:var(--turmeric);border:2px solid var(--turmeric)"></span>Shows available</span>
+          <h5>Ravi Studios</h5><span class="pr">₹65,000</span></div></div>
+      </div>
+      <div class="gray" style="margin-top:10px"><div class="big" style="border:0;padding:0;margin:0">
+        <figure><span class="r r40" style="background:var(--turmeric);border:2px solid var(--turmeric)"></span></figure>
+        <figure><span class="r r40 n"></span></figure>
+        <figure><span class="r r40 u"></span></figure>
+      </div></div>
+      <p class="grayNote">greyscale</p>
+    </div>
+    <p class="verdict"><b>Quietest, and the only one with nothing to learn.</b> But a filled dot does
+      not <em>mean</em> available — it means "on". The word carries everything, which is the objection you
+      rejected in the words-only option.</p>
+  </div>
+</div>
+
+<div class="lede" style="margin-top:28px">
+  <p class="hint">Working artifact · <code>.working/availability-icons.html</code> · 2026-09-07.
+    All three sets are inline SVG at 2px-equivalent stroke with round caps, inheriting
+    <code>currentColor</code> from the ring. No icon font, no Unicode, nothing to load. Each is
+    <code>aria-hidden</code> — the word beside it is what a screen reader announces.</p>
+</div>
+</div>
+</body>
+</html>

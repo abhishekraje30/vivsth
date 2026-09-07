@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — the guest invitation and RSVP page</title>
+<!-- NETWORK DEPENDENCY: Playfair Display and Inknut Antiqua are fetched from
+     fonts.googleapis.com / fonts.gstatic.com. Neither has a file in this repo
+     (DESIGN.md Open Question 1). If the network is unavailable this page falls
+     back to Georgia/serif for Latin display and to the platform Devanagari face
+     for the lang="mr" runs; the layout holds and the fold measurement below
+     shifts by a few pixels. Production must self-host or subset — a guest on a
+     patchy connection in Pune must not wait on Google for the couple's names. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Inknut+Antiqua:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   GUEST INVITATION / RSVP — the page Vasant kaka lands on, and the WhatsApp
+   preview he sees before he taps. Closes review-accessibility.md C2.
+
+   WHICH EXPERIENCE.md RULE EACH PART IMPLEMENTS
+   ---------------------------------------------------------------------------
+   .gp                     "No app shell" (EXPERIENCE.md:210) — no bar, no tabs,
+                           no avatar, no sign-in, nothing implying an account.
+                           NFR 5.8. There is exactly one <button> group on the
+                           page and it is the reply.
+   .gp > .col              "Guest pages: fluid, single column, no chrome that
+                           implies an account exists" (Responsive & Platform).
+                           max-width 430px = {spacing.phone-column}; above it the
+                           column centres on {colors.ground} rather than
+                           stretching (DESIGN.md Layout & Spacing).
+   .card                   "The invitation leads; the reply sits directly under
+                           it" (EXPERIENCE.md:196). The card motif carried onto
+                           the one surface strangers ever see. Double gold rule
+                           at 1px + 1px inset 4px, square, elevation-2 — the
+                           DESIGN.md signature, not softened.
+   .card (what is ABSENT)  "The card is finished, not filling"
+                           (EXPERIENCE.md:205). No progress track, no fill, no
+                           `n OF 5`, no dotted rule for an open fact, no foil
+                           sweep waiting to happen. Every fact is settled and
+                           set in {colors.ink}. A Guest has nothing to complete.
+   .card .shrink-*         "If the invitation cannot be both beautiful and
+                           compact at 360x640, the invitation shrinks — never
+                           the reply" (EXPERIENCE.md:204). The card is the only
+                           element on this page with a compact variant: at
+                           <=390px the ornament loses a glyph, the names drop
+                           from 1.35rem to 1.2rem, the card inset drops 15->13px
+                           and the Function rows tighten. The reply block below
+                           is byte-identical at both widths.
+   .reply                  "The reply control is visible without scrolling on a
+                           360x640 viewport" (EXPERIENCE.md:204). Measured, not
+                           asserted — the fold readout under each frame is
+                           computed at runtime from getBoundingClientRect().
+   .ans                    "Three answers, each a full-width target, each
+                           labelled in words. Yes / No / Not sure. Never colour-
+                           coded alone, never a single toggle, never a dark-
+                           pattern default. Nothing is preselected"
+                           (EXPERIENCE.md:206). All three are identical in fill,
+                           border, weight and size — they are not distinguished
+                           by colour at ALL, only by their glyph and their
+                           words. min-height 48px clears the 48dp Android floor
+                           in Accessibility Floor, and answers review C1.
+   .ans .g                 Glyph + word, never colour alone (Accessibility
+                           Floor; NFR 5.8). The glyph is decorative
+                           (aria-hidden); the accessible name is the sentence.
+   .changeable             "The answer is changeable, and says so"
+                           (EXPERIENCE.md:207). Stated plainly, before he
+                           answers as well as after, never as a warning to be
+                           certain.
+   .recorded               "Confirmation is on the same page, in place. No
+                           redirect, no success screen, no account offer"
+                           (EXPERIENCE.md:208). The control becomes his recorded
+                           answer with the date it was recorded. aria-live
+                           announces it; focus moves to the recorded answer.
+   .growth                 "One quiet growth line at the foot" — below the
+                           answer, never above it, never a modal
+                           (EXPERIENCE.md:209, FR-12, UJ-5 step 5). Wording is
+                           marked [PROPOSAL]: EXPERIENCE.md:217 leaves it OPEN.
+   .attrib                 FR-12 — "a single discreet line of Vivah Spot
+                           attribution in the page frame", never inside the
+                           invitation artwork, never removable, never sold.
+                           Outside .card by construction.
+   .obligations            AD-32 see-and-correct and AD-33/FR-63 grievance,
+                           which Guest pages owes "on every surface, without a
+                           login". See FINDING 3 in the report — these compete
+                           with "the least chrome".
+   [lang="mr"]             Accessibility Floor + review S7 (SC 3.1.2 Language of
+                           Parts). Every Devanagari run carries it: the couple's
+                           names as the Family typed them, and the household
+                           name as she pasted it. Set on the run, never on the
+                           page — the interface is English throughout (NFR 5.1).
+   :focus-visible          Accessibility Floor — "focus is never removed and
+                           never signalled by a tint alone". 2px {vermillion} at
+                           2px offset. Clears 3:1 on ground (4.68) and on
+                           surface (4.80). Answers review m4.
+   @media reduced-motion   Accessibility Floor — the state renders immediately
+                           and reads identically. Nothing here animates meaning.
+
+   CONTRAST — every pair recomputed from hex in Python, not eyeballed.
+   PASS  17.752  ink #2B0A0E on ground #FFFCF2        page-frame text
+   PASS  18.222  ink on surface #FFFFFF               names, Functions, answers
+   PASS   4.892  muted #8C6A50 on surface             eyebrow, times, meta
+   PASS   4.766  muted on ground                      changeable line, foot
+   PASS   4.801  vermillion #E01B33 on surface        the ampersand
+   PASS   4.677  vermillion on ground                 growth-line link
+   PASS   4.892  muted border on surface   (>=3 non-text)  the three answers
+   PASS   4.766  muted border on ground    (>=3 non-text)  answers at 430
+   PASS   4.801  vermillion focus ring on surface (>=3)
+   PASS   4.677  vermillion focus ring on ground  (>=3)
+   PASS  18.222  ink rule on surface        (>=3 non-text)  recorded answer
+   DECORATIVE ONLY, carries no meaning, 1.4.11 does not apply:
+        1.608  turmeric #FFC300 on surface   card border, inner rule, ornament
+        1.267  hairline #F6E2C2 on surface   row dividers
+   NOT USED ANYWHERE ON THIS PAGE, recorded so it stays that way:
+        1.608  white on turmeric   — DESIGN.md forbids it. No text sits on
+                                     {colors.turmeric} here at all.
+        4.138  muted on gold-tint  — review C3. {colors.gold-tint} carries no
+                                     text on this page.
+        3.040  #8C6A50 at opacity .75 on surface — the back-door fade
+                                     DESIGN.md Don'ts bans. {colors.muted} is
+                                     set as a colour here and never faded;
+                                     there is no `opacity` on any text rule.
+
+   MEASURED IN CHROMIUM, NOT ASSERTED (re-measured 2026-09-07, WITH the count
+   control in place and with Playfair and Inknut actually loaded)
+   ---------------------------------------------------------------------------
+   360x640, unanswered   card 325px, reply control ends at 542px, "you can
+                         change your answer" ends at 589px. 98px of headroom
+                         above the fold. Three targets 48x330px.
+                         UNCHANGED by the count control, and that is the point:
+                         the control is revealed only AFTER the answer, so it
+                         cannot push the answer down. EXPERIENCE.md:247's fold
+                         rule is measured in this state and still holds.
+   360x640, YES TAPPED   the count control ends at 526px of 640 -- 114px of
+   (frame 5, new)        headroom, so it lands above the fold too, inside the
+                         98px the unanswered state already had. Stepper row
+                         50px tall (48px minimum plus its own 1px rules), the
+                         minus and plus 48x48 each, the Confirm button 48px.
+                         Value pre-filled at 4.
+   360x640, answered     recorded answer ends at 483px; Change your answer is
+                         48x330px. URL, scroll position and page unchanged.
+   430x760, unanswered   card 342px, reply ends at 559px, whole page 818px --
+                         growth line and attribution visible without scrolling.
+   Growth call to action 330x48 (was 74x15). Both obligation links 48px tall
+   (were 44px). Zero duplicate ids in the document; one <h1>; no aria-live
+   region anywhere -- focus alone carries the announcement.
+   Whole page is 760px at 360 wide, so the foot sits below the 640 fold. That
+   is correct: EXPERIENCE.md:204 requires the REPLY above the fold, and
+   EXPERIENCE.md:209 requires the growth line BELOW the answer.
+
+   WHAT DID NOT SURVIVE CONTACT WITH THE PIXELS
+   ---------------------------------------------------------------------------
+   1. THE FOLD RULE AND THE 200% ZOOM RULE CONTRADICT EACH OTHER.
+      EXPERIENCE.md:204 wants the reply above the fold at 360x640;
+      EXPERIENCE.md:798 wants the guest pages "readable at 200% zoom". At a
+      32px root the card alone measures 702px -- taller than the entire
+      viewport -- and the reply ends at 1099px. There is no horizontal
+      overflow, so SC 1.4.10 and 1.4.4 both pass; what fails is the spine's own
+      fold rule. Its escape hatch ("the card shrinks") has a floor: at 200% a
+      card carrying names, city, date, venue, three Functions and the
+      household cannot be made to fit. One of the two rules has to be written
+      down as conditional on the text size. Not resolved here.
+   2. UJ-5's HEADCOUNT HAD NO HOME -- CLOSED 2026-09-07. When this file was
+      drawn, none of the guest-page rules mentioned a count control, so a
+      faithful render of exactly those rules could not produce the number
+      UJ-5's climax moves, and the gap was recorded rather than invented over.
+      EXPERIENCE.md:249 and :473 now require it, and it is BUILT here:
+      {components.stepper-count}. Revealed only by *Yes*; pre-filled with the
+      household figure the Creator recorded (four, for the Deshmukhs);
+      keyboard-editable, not stepper-only; minimum 1 with the decrement
+      DISABLED AND THE REASON STATED rather than silently inert; no maximum.
+      *No* and *Not sure* reveal nothing -- nobody is asked how many of them
+      are not coming. See frame 5.
+   3. "LEAST CHROME" vs TWO STANDING OBLIGATIONS. AD-33/FR-63 puts a grievance
+      entry point on EVERY surface without a login, and AD-32 puts see-and-
+      correct on any surface, while EXPERIENCE.md:797 gives the guest pages
+      "the least chrome". Two foot links at a 44px target is the smallest
+      honest resolution, and they are what pushes the foot below the fold.
+   4. DESIGN.md HAS NO BUTTON FOR THIS. button-primary is vermillion with white
+      and button-celebration is turmeric with ink; neither can express three
+      answers of equal standing. Three vermillion blocks would read as three
+      calls to action and imply the platform prefers one. A third variant was
+      needed: {colors.surface} fill, {colors.ink} label, 1px {colors.muted}
+      border (4.89:1, clears the 3:1 non-text floor), square. It is not in
+      DESIGN.md and should be added before anyone builds this.
+   5. THE CARD'S SIGNATURE BORDER IS 1.61:1. DESIGN.md's 1px turmeric + 1px
+      gold-tint double rule is below SC 1.4.11's 3:1. It is kept because it is
+      decorative and the card is not a control -- but on this page it is also
+      the only boundary between the invitation and the ground. If a builder
+      ever gives that edge meaning, it fails. Recorded, not fixed.
+   6. STILL OPEN, per EXPERIENCE.md:217, and rendered here as proposals only:
+      the growth line's exact wording, and the preview image being a rendering
+      of the card ([ASSUMPTION], EXPERIENCE.md:215).
+
+   TWO DEFECTS THIS FILE CAUGHT WHILE BEING DRAWN, BOTH FIXED HERE
+   ---------------------------------------------------------------------------
+   a. `hidden` on .ans did nothing, because .ans{display:flex} outranks the
+      attribute -- the answered state rendered the answers AND the recorded
+      answer at once. Fixed by [hidden]{display:none!important}.
+   b. The reply heading rendered WHITE ON CREAM (1.05:1), because a
+      presentation-chrome rule `.col h2{color:#fff}` matched .reply h2, which
+      set no colour of its own. Fixed by scoping the chrome to `.col > h2` and
+      by stating color:var(--ink) on the product rule. Worth carrying as a
+      convention: on a product surface, state the colour, never inherit it.
+   ========================================================================== */
+
+:root{
+  /* DESIGN.md tokens, verbatim. Nothing outside this block is a colour. */
+  --ground:#FFFCF2; --surface:#FFFFFF; --ink:#2B0A0E; --muted:#8C6A50;
+  --vermillion:#E01B33; --turmeric:#FFC300; --gold-tint:#FFEBB0;
+  --hairline:#F6E2C2; --on-vermillion:#FFFFFF;
+  --e1:0 2px 9px rgba(190,30,50,.15);
+  --e2:0 3px 12px rgba(190,30,50,.15);
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  --disp:"Playfair Display",Georgia,serif;
+  --deva:"Inknut Antiqua",Georgia,serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}  /* .ans is display:flex; the attribute must win */
+
+/* ---------- presentation frame (NOT part of the product) ---------- */
+body{margin:0;background:#17161a;color:#e8e4e6;padding:26px 18px 64px;
+     font:15px/1.55 var(--sans)}
+.wrap{max-width:1720px;margin:0 auto}
+.lede{max-width:82ch;margin:0 auto 26px}
+.lede h1{font-family:var(--disp);font-size:1.75rem;margin:0 0 10px;color:#fff}
+.lede p{margin:0 0 9px;color:#b3adb1}
+/* C22 · #8D868B inside a <code> chip (#26242A) is 4.323:1 at 13.28px, under
+   the 4.5 body floor. #B3ADB1 is 6.965:1 on that chip and 8.172:1 on the page. */
+.lede .hint{font-size:.85rem;color:#b3adb1;border-left:2px solid #46414a;
+            padding-left:12px}
+.lede code{background:#26242a;padding:1px 5px;font-size:.83rem}
+.grid{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;
+      align-items:flex-start}
+.col{flex:0 0 auto}
+.col > .n{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+        color:#8d868b}
+.col > h2{font-family:var(--disp);font-size:1.14rem;margin:3px 0 4px;color:#fff}
+.col > .idea{font-size:.82rem;color:#b3adb1;margin:0 0 11px;max-width:38ch;
+           min-height:5.2em}
+.col > .measure{font-size:.75rem;color:#8d868b;margin:10px 0 0;line-height:1.6;
+              max-width:38ch}
+.col > .measure b{color:#ddd8dc;font-weight:600}
+.col > .measure .ok{color:#8ecf9a}
+.col > .measure .no{color:#e08a8a}
+.device{background:#0c0b0d;padding:8px;box-shadow:0 16px 40px rgba(0,0,0,.5);
+        border-radius:22px;width:max-content}
+.vp{overflow:hidden;position:relative;border-radius:14px}
+.vp.w360{width:360px;height:640px}
+.vp.w430{width:430px;height:760px}
+.vplabel{position:absolute;right:0;top:0;z-index:6;background:#17161a;
+         color:#cfc9cd;font:600 10px/1 var(--sans);padding:4px 6px;
+         letter-spacing:.05em}
+
+/* ---------- simulated WhatsApp chat (platform chrome, not our tokens) ------ */
+.wa{height:100%;display:flex;flex-direction:column;background:#0B141A;
+    color:#E9EDEF;font:14px/1.45 var(--sans)}
+.wa .bar{flex:none;display:flex;align-items:center;gap:10px;background:#202C33;
+         padding:10px 12px}
+.wa .bar .av{width:30px;height:30px;border-radius:50%;background:#3B4A54;
+             display:flex;align-items:center;justify-content:center;
+             font-size:12px;color:#AEBAC1}
+.wa .bar b{font-size:.9rem;font-weight:600}
+.wa .bar span{font-size:.68rem;color:#8696A0;display:block;font-weight:400}
+.wa .paper{flex:1;padding:14px 10px;background:#0B141A;
+           background-image:radial-gradient(circle at 20% 10%,#12222b 0,transparent 40%),
+                            radial-gradient(circle at 80% 70%,#101d24 0,transparent 45%);
+           display:flex;flex-direction:column;justify-content:flex-end;gap:8px}
+.wa .day{align-self:center;background:#182229;color:#8696A0;font-size:.64rem;
+         padding:4px 9px;border-radius:7px}
+.wa .bub{max-width:86%;background:#202C33;border-radius:8px;padding:4px;
+         box-shadow:0 1px 1px rgba(0,0,0,.3)}
+.wa .prev{background:#101A20;border-radius:6px;overflow:hidden}
+.wa .prev .img{height:170px;background:var(--ground);display:flex;
+               align-items:center;justify-content:center;padding:10px}
+.wa .prev .txt{padding:8px 10px 9px}
+.wa .prev .t{font-size:.83rem;font-weight:600;line-height:1.3;color:#E9EDEF}
+.wa .prev .d{font-size:.76rem;color:#8696A0;line-height:1.35;margin-top:3px}
+.wa .prev .u{font-size:.7rem;color:#8696A0;margin-top:5px}
+.wa .msg{padding:5px 8px 4px;font-size:.86rem;line-height:1.4}
+.wa .msg .lnk{color:#53BDEB;word-break:break-all}
+.wa .tm{text-align:right;font-size:.62rem;color:#8696A0;padding:0 8px 4px}
+.wa .entry{flex:none;display:flex;align-items:center;gap:8px;padding:8px 10px 12px;
+           background:#0B141A;color:#8696A0;font-size:.8rem}
+.wa .entry .f{flex:1;background:#202C33;border-radius:18px;padding:9px 14px}
+/* the mini invitation card inside the link preview — [ASSUMPTION]
+   EXPERIENCE.md:215: "its image is a rendering of the same invitation card;
+   nothing in the sources says so." */
+.mini{background:var(--surface);border:1px solid var(--turmeric);width:100%;
+      max-width:290px;padding:12px 14px;position:relative;text-align:center;
+      color:var(--ink)}
+.mini::before{content:"";position:absolute;inset:3px;
+              border:1px solid var(--gold-tint)}
+.mini .orn{color:var(--turmeric);letter-spacing:.4em;font-size:.62rem;
+           line-height:1}
+.mini .nm{font-family:var(--disp);font-size:1.18rem;line-height:1.3;margin:5px 0 0}
+.mini .nm i{color:var(--vermillion);font-style:italic;font-weight:400}
+.mini .nm-mr{font-family:var(--deva);font-weight:500;font-size:.8rem;
+             line-height:1.4;margin-top:2px}
+.mini .eb{font-family:var(--disp);font-size:.62rem;letter-spacing:.16em;
+          text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+/* ==========================================================================
+   THE GUEST PAGE ITSELF — everything below this line is product.
+   ========================================================================== */
+.gp{height:100%;background:var(--ground);color:var(--ink);
+    font:.86rem/1.55 var(--sans);overflow:hidden;
+    container-type:inline-size;container-name:page}
+.gp .col2{display:block;max-width:430px;margin:0 auto;padding:13px 15px 16px}
+
+/* --- the invitation card. Finished. Nothing on it is in progress. --- */
+.card{background:var(--surface);border:1px solid var(--turmeric);
+      box-shadow:var(--e2);position:relative;padding:13px 15px 14px;
+      text-align:center}
+.card::before{content:"";position:absolute;inset:4px;
+              border:1px solid var(--gold-tint);pointer-events:none}
+.card .orn{color:var(--turmeric);letter-spacing:.4em;font-size:.68rem;
+           line-height:1}
+.card .nm{font-family:var(--disp);font-size:1.2rem;line-height:1.3;
+          margin:6px 0 0;font-weight:400}
+.card .nm i{color:var(--vermillion);font-style:italic}
+.card .nm-mr{font-family:var(--deva);font-weight:500;font-size:.9rem;
+             line-height:1.4;margin:1px 0 0}
+.card .eb{font-family:var(--disp);font-size:.72rem;letter-spacing:.16em;
+          text-transform:uppercase;color:var(--muted);margin:6px 0 0}
+.card .rule{height:1px;background:var(--turmeric);margin:10px 24% 9px}
+.card .venue{font-family:var(--disp);font-size:.95rem;line-height:1.35}
+.card .addr{font-size:.74rem;line-height:1.4;color:var(--muted);margin-top:1px}
+.card .fns{margin:9px 0 0;text-align:left;border-top:1px solid var(--hairline)}
+.card .fn{display:flex;align-items:baseline;gap:8px;
+          padding:6px 0 5px;border-bottom:1px solid var(--hairline)}
+.card .fn:last-child{border-bottom:0;padding-bottom:0}
+.card .fn b{font-family:var(--disp);font-size:.95rem;font-weight:400;
+            flex:0 0 auto;min-width:80px}
+.card .fn span{font-size:.74rem;line-height:1.4;color:var(--muted);
+               margin-left:auto;text-align:right}
+.card .forwhom{margin:9px 0 0;padding-top:8px;border-top:1px solid var(--hairline);
+               text-align:left}
+.card .forwhom em{display:block;font-style:normal;font-size:.74rem;
+                  color:var(--muted);line-height:1.4}
+.card .forwhom b{font-family:var(--deva);font-weight:500;font-size:.9rem;
+                 line-height:1.45}
+
+/* --- the reply. Never shrinks. --- */
+.reply{margin:14px 0 0}
+.reply h2{font-family:var(--disp);font-size:1.06rem;font-weight:400;color:var(--ink);
+          line-height:1.25;margin:0 0 9px;letter-spacing:.01em}
+.ans{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;border:0;min-width:0}
+.ans legend{font-family:var(--disp);font-size:1.06rem;font-weight:400;color:var(--ink);
+            line-height:1.25;padding:0;margin:0 0 9px;letter-spacing:.01em}
+.ans button{display:flex;align-items:center;gap:11px;width:100%;min-height:48px;
+            padding:10px 14px;background:var(--surface);color:var(--ink);
+            border:1px solid var(--muted);border-radius:0;
+            font:.9rem/1.35 var(--sans);text-align:left;cursor:pointer;
+            transition:transform .12s ease,opacity .12s ease}
+.ans button .g{flex:0 0 22px;display:flex;align-items:center;justify-content:center}
+.ans button .g svg{display:block}
+
+/* --- {components.stepper-count}. The only numeric control in the product.
+   Revealed by *Yes* alone: EXPERIENCE.md:249. Pre-filled with the household
+   figure the Creator recorded, keyboard-editable, minimum 1 with the reason
+   stated, no maximum. Both glyphs are inline SVG, aria-hidden; the accessible
+   names live on the buttons. --- */
+.count{margin:11px 0 0}
+.count:focus-visible{outline:2px solid var(--vermillion);outline-offset:3px}
+.count > label{display:block;font:.86rem/1.45 var(--sans);color:var(--ink);margin:0 0 6px}
+.count .row{display:flex;align-items:stretch;border:1px solid var(--muted);
+            background:var(--surface);border-radius:0;min-height:48px}
+.count .row button{flex:0 0 48px;width:48px;min-height:48px;display:flex;
+            align-items:center;justify-content:center;background:var(--surface);
+            color:var(--ink);border:0;border-radius:0;cursor:pointer}
+.count .row button:first-child{border-right:1px solid var(--muted)}
+.count .row button:last-child{border-left:1px solid var(--muted)}
+.count .row button[disabled]{color:var(--muted);cursor:default}
+.count .row input{flex:1;min-width:0;border:0;background:transparent;text-align:center;
+            font:700 1.16rem/1.2 var(--disp);color:var(--ink);padding:0 4px}
+.count .row input:focus-visible{outline:2px solid var(--vermillion);outline-offset:-2px}
+.count .why{font-size:.76rem;line-height:1.45;color:var(--muted);margin:6px 0 0}
+.count .go{display:flex;align-items:center;justify-content:center;width:100%;
+           min-height:48px;margin:9px 0 0;padding:10px 14px;
+           background:var(--vermillion);color:var(--on-vermillion);border:0;border-radius:0;
+           font:700 .9rem/1.35 var(--sans);cursor:pointer}
+.ans button:active{transform:scale(.98);opacity:.88}
+.changeable{font-size:.78rem;line-height:1.5;color:var(--muted);margin:9px 0 0}
+
+/* --- confirmation, in place. No redirect. No success screen. --- */
+.recorded{background:var(--surface);border:1px solid var(--ink);
+          padding:12px 14px;box-shadow:var(--e1)}
+.recorded .hd{display:flex;align-items:flex-start;gap:11px}
+.recorded .hd .g{flex:0 0 22px;display:flex;align-items:flex-start;justify-content:center}
+.recorded .hd .g svg{display:block}
+.recorded .hd b{font-family:var(--disp);font-size:1.02rem;font-weight:400;
+                line-height:1.3}
+.recorded .when{font-size:.76rem;color:var(--muted);line-height:1.45;
+                margin:5px 0 0 33px}
+.chg{display:flex;align-items:center;justify-content:center;
+               width:100%;min-height:48px;margin:11px 0 0;padding:10px 14px;
+               background:var(--surface);color:var(--ink);
+               border:1px solid var(--muted);border-radius:0;
+               font:.86rem/1.35 var(--sans);cursor:pointer}
+.chg:active{transform:scale(.98);opacity:.88}
+
+/* --- the foot. Growth line first, then the frame's obligations. --- */
+.growth{margin:14px 0 0;padding-top:11px;border-top:1px solid var(--hairline);
+        font-size:.78rem;line-height:1.55;color:var(--muted)}
+/* C21 · this was a 74x15px inline target on the product's only growth
+   channel. It is its own block now, 48px tall and full width. */
+.growth a{display:flex;align-items:center;min-height:48px;margin-top:6px;
+          color:var(--vermillion);text-underline-offset:2px;font-weight:600}
+.attrib{margin:9px 0 0;font-size:.74rem;line-height:1.45;color:var(--muted)}
+.obligations{margin:3px 0 0;display:flex;flex-wrap:wrap;gap:0 14px}
+.obligations a{display:inline-flex;align-items:center;
+               min-height:48px;color:var(--muted);font-size:.74rem;
+               text-underline-offset:2px}
+
+/* focus — never removed, never a tint alone */
+.gp a:focus-visible,.gp button:focus-visible{outline:2px solid var(--vermillion);
+                                             outline-offset:2px}
+
+/* the card is the only thing that shrinks (EXPERIENCE.md:204) */
+@container page (max-width:390px){
+  .card{padding:12px 13px 13px}
+  .card .nm{font-size:1.12rem}
+  .card .nm-mr{font-size:.85rem}
+  .card .rule{margin:8px 24% 8px}
+  .card .fn{padding:5px 0 4px}
+  .card .fn b{min-width:74px;font-size:.9rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .ans button,.chg,.count .go{transition:none}
+  .ans button:active,.chg:active{transform:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="lede">
+  <h1>The guest invitation and RSVP page</h1>
+  <p>Vasant kaka is in Pune. He has never heard of Vivah Spot, will not install it, and has no
+     account. A message arrives from Rutuja&rsquo;s own number — the platform never messages a
+     Guest — and he replies in about fifteen seconds.</p>
+  <p class="hint">Frames 2, 3 and 4 are live. Tap an answer and the reply block becomes the
+     recorded answer in place — no redirect, no success screen, no account offer. The fold
+     readout under each frame is measured at runtime with
+     <code>getBoundingClientRect()</code>, not asserted. Frame 1&rsquo;s chat chrome is a
+     simulation of WhatsApp and is deliberately outside the token system; everything the
+     platform controls inside the preview is drawn from <code>DESIGN.md</code>.</p>
+</div>
+
+<div class="grid">
+
+  <!-- ============ 1 · the link preview ============ -->
+  <div class="col">
+    <div class="n">Frame 1 · before he taps</div>
+    <h2>The WhatsApp link preview</h2>
+    <p class="idea">FR-12 makes the preview platform-controlled, and for most people who ever see
+       Vivah Spot this is the whole product. The image is a rendering of the same invitation card
+       — <b>[ASSUMPTION]</b>, EXPERIENCE.md:215. The message around it is Rutuja&rsquo;s own.</p>
+    <div class="device"><div class="vp w360"><span class="vplabel">360 × 640</span>
+      <div class="wa">
+        <div class="bar">
+          <div class="av">R</div>
+          <div><b>Rutuja</b><span>+91 98220 &middot; family</span></div>
+        </div>
+        <div class="paper">
+          <div class="day">TODAY</div>
+          <div class="bub" style="max-width:78%">
+            <div class="msg">Kaka, namaskar. Kaki bariye ka?</div>
+            <div class="tm">9:13 am</div>
+          </div>
+          <div class="bub">
+            <div class="prev">
+              <div class="img">
+                <div class="mini">
+                  <div class="orn" aria-hidden="true">&#10049; &#10049; &#10049;</div>
+                  <div class="nm">Omkar <i>&amp;</i> Snehal</div>
+                  <div class="nm-mr" lang="mr">&#2323;&#2306;&#2325;&#2366;&#2352; &#2310;&#2339;&#2367; &#2360;&#2381;&#2344;&#2375;&#2361;&#2354;</div>
+                  <div class="eb">Shrirampur &middot; 27 November</div>
+                </div>
+              </div>
+              <div class="txt">
+                <div class="t">Omkar &amp; Snehal &mdash; 27 November, Shrirampur</div>
+                <div class="d">The Haldi, the Wedding and the Reception. Tap to say whether you
+                  can come.</div>
+                <div class="u">vivahspot.com</div>
+              </div>
+            </div>
+            <div class="msg">Kaka, Omkar&rsquo;s wedding is fixed. Please tell us if you can come.<br>
+              <span class="lnk">vivahspot.com/i/7fq2-mhb9</span></div>
+            <div class="tm">9:14 am</div>
+          </div>
+        </div>
+        <div class="entry"><div class="f">Message</div><div>&#9834;</div></div>
+      </div>
+    </div></div>
+    <p class="measure">The preview carries the couple&rsquo;s names and the date and
+       <b>nothing else of the Wedding</b> — no venue address, no guest count, no Vendors — because
+       a preview renders in group chats the link was forwarded into. The Devanagari names run
+       carries <b>lang="mr"</b> here too.</p>
+  </div>
+
+  <!-- ============ 2 · the critical case ============ -->
+  <div class="col">
+    <div class="n">Frame 2 · the critical case</div>
+    <h2>360 × 640, before he answers</h2>
+    <p class="idea">A budget Android viewport with the frame clipped at exactly 640px and
+       <code>overflow:hidden</code>, so anything below the fold is genuinely cut off. The reply
+       must be reachable without a scroll. Nothing is preselected.</p>
+    <div class="device"><div class="vp w360"><span class="vplabel">360 × 640</span>
+      <div class="gp" id="gp1"></div>
+    </div></div>
+    <p class="measure" id="m1">measuring&hellip;</p>
+  </div>
+
+  <!-- ============ 3 · answered, in place ============ -->
+  <div class="col">
+    <div class="n">Frame 3 · after he answers</div>
+    <h2>360 × 640, answered</h2>
+    <p class="idea">The same page, same URL, same scroll position. The control became his
+       recorded answer with the date it was recorded. No success screen, no redirect, no
+       &ldquo;create an account to manage your RSVP&rdquo;.</p>
+    <div class="device"><div class="vp w360"><span class="vplabel">360 × 640</span>
+      <div class="gp" id="gp2"></div>
+    </div></div>
+    <p class="measure" id="m2">measuring&hellip;</p>
+  </div>
+
+  <!-- ============ 5 · the count, revealed by Yes ============ -->
+  <div class="col">
+    <div class="n">Frame 5 · the count</div>
+    <h2>360 × 640, after <em>Yes</em></h2>
+    <p class="idea">Tapping <em>Yes</em> reveals <code>{components.stepper-count}</code>, already
+       reading <b>four</b> — the figure Rutuja recorded for the Deshmukh household. He changes
+       nothing and confirms, so the count costs one extra tap only when her number was already
+       right. <em>No</em> and <em>Not sure</em> reveal nothing: nobody is asked how many of them are
+       not coming. The centre value is keyboard-editable, not stepper-only; at 1 the decrement is
+       disabled and says why.</p>
+    <div class="device"><div class="vp w360"><span class="vplabel">360 × 640</span>
+      <div class="gp" id="gp4"></div>
+    </div></div>
+    <p class="measure" id="m4">measuring&hellip;</p>
+  </div>
+
+  <!-- ============ 4 · a larger phone ============ -->
+  <div class="col">
+    <div class="n">Frame 4 · a larger phone</div>
+    <h2>430 × 760, unanswered</h2>
+    <p class="idea">430px is <code>{spacing.phone-column}</code>, the column&rsquo;s cap, so this
+       is the widest the page ever gets: above 430 the column centres on the ground rather than
+       stretching. The card leaves its compact variant &mdash; names back to 1.2rem, more inset,
+       roomier Function rows &mdash; while the reply block is byte-identical to frame 2. Taller,
+       so the whole page including the growth line and the attribution is visible at once.</p>
+    <div class="device"><div class="vp w430"><span class="vplabel">430 × 760</span>
+      <div class="gp" id="gp3"></div>
+    </div></div>
+    <p class="measure" id="m3">measuring&hellip;</p>
+  </div>
+
+</div>
+</div>
+
+<script>
+/* The page markup, built once and cloned into each frame, so the three guest
+   frames are provably the same page in different states and at different
+   widths rather than three hand-tuned drawings. */
+const PAGE = `
+<main class="col2">
+
+  <!-- THE CARD. Finished, not filling: no progress track, no n OF 5, no
+       unsettled line. EXPERIENCE.md:205 -->
+  <div class="card">
+    <div class="orn" aria-hidden="true">&#10049; &#10049; &#10049;</div>
+    <!-- C14 · in the shipped guest page the couple's names are the page's own
+         <h1>. Inside this presentation document the frames are simulations of
+         one page rendered three times, so they take <h2>: a document must have
+         exactly one <h1>, and this one's is in the lede above. -->
+    <h2 class="nm">Omkar <i>&amp;</i> Snehal</h2>
+    <div class="nm-mr" lang="mr">&#2323;&#2306;&#2325;&#2366;&#2352; &#2310;&#2339;&#2367; &#2360;&#2381;&#2344;&#2375;&#2361;&#2354;</div>
+    <div class="eb">Shrirampur &middot; 27 November 2026</div>
+    <div class="rule"></div>
+    <div class="venue">Shubhmangal Lawns</div>
+    <div class="addr">Ahmednagar Road, Shrirampur</div>
+    <div class="fns">
+      <div class="fn"><b>Haldi</b><span>Thu 26 Nov &middot; 9.30 am</span></div>
+      <div class="fn"><b>Wedding</b><span>Fri 27 Nov &middot; 7.30 pm</span></div>
+      <div class="fn"><b>Reception</b><span>Sat 28 Nov &middot; 8.00 pm</span></div>
+    </div>
+    <div class="forwhom">
+      <em>This invitation is for</em>
+      <b lang="mr">&#2342;&#2375;&#2358;&#2346;&#2366;&#2306;&#2337;&#2375; &#2325;&#2369;&#2335;&#2369;&#2306;&#2348;</b>
+    </div>
+  </div>
+
+  <!-- THE REPLY. Directly under the card, above the fold, never shrunk. -->
+  <div class="reply">
+    <!-- C14 · <fieldset>/<legend> instead of an id + aria-labelledby, because
+         this template is instantiated more than once per document and a
+         duplicate id is SC 4.1.1, Level A. The legend IS the group's name. -->
+    <fieldset class="ans" data-ans>
+      <legend>Will you be able to come?</legend>
+      <button type="button" data-a="yes">
+        <span class="g"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 10.4l4.3 4.3 9-10"/></svg></span>
+        <span>Yes, we will be there</span></button>
+      <button type="button" data-a="no">
+        <span class="g"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 5l10 10M15 5L5 15"/></svg></span>
+        <span>No, we cannot come</span></button>
+      <button type="button" data-a="maybe">
+        <span class="g"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.6 6.9a3.5 3.5 0 1 1 3.4 4.1v1.9"/><path d="M10 16.2v.2"/></svg></span>
+        <span>Not sure yet</span></button>
+    </fieldset>
+
+    <!-- {components.stepper-count}. Absent until *Yes*. -->
+    <div class="count" hidden data-count tabindex="-1">
+      <label data-cntlabel>How many of you will be coming?</label>
+      <div class="row">
+        <button type="button" data-dec aria-label="One fewer"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4.5 10h11"/></svg></button>
+        <input data-cntval type="text" inputmode="numeric" autocomplete="off" value="4"
+               aria-describedby="" >
+        <button type="button" data-inc aria-label="One more"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4.5 10h11M10 4.5v11"/></svg></button>
+      </div>
+      <p class="why" data-cntwhy>Rutuja wrote four for your household. Change it if that is
+        no longer right.</p>
+      <button type="button" class="go" data-confirm>Confirm</button>
+    </div>
+
+    <!-- C17 · one mechanism, not two. This carried role="status" +
+         aria-live="polite" AND took focus, so the answer was announced twice,
+         and "Change your answer" lived inside the live region so every later
+         change to that subtree announced as well. Focus wins: the Guest has
+         just acted, so moving focus is the stronger pattern. The live region
+         is gone, the button has moved OUT, and the changed wording is folded
+         into the focused element instead of drifting outside it. -->
+    <div class="recorded" hidden data-rec tabindex="-1">
+      <div class="hd">
+        <span class="g"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 10.4l4.3 4.3 9-10"/></svg></span>
+        <b data-rectxt>Your answer: Yes, we will be there.</b>
+      </div>
+      <div class="when">Recorded 7 September. Rutuja can see it.</div>
+      <div class="when" data-chgline2>You can change this at any time, from this same link.</div>
+    </div>
+    <button type="button" class="chg" data-chg hidden>Change your answer</button>
+
+    <p class="changeable" data-chgline>You can change your answer later, from this same
+      link.</p>
+  </div>
+
+  <!-- THE FOOT. Growth line below the answer, never above it, never a modal. -->
+  <div class="growth">
+    Planning a wedding of your own? This one was put together on Vivah&nbsp;Spot.
+    <a href="#">Have a look</a>.
+  </div>
+  <div class="attrib">Hosted by Vivah Spot &middot; sent by Rutuja from her own number.</div>
+  <div class="obligations">
+    <a href="#">What we hold about you</a>
+    <a href="#">Raise a concern</a>
+  </div>
+
+</main>`;
+
+const LABEL = {
+  no:    'Your answer: No, we cannot come.',
+  maybe: 'Your answer: Not sure yet.'
+};
+/* The household figure the Creator recorded. It is READ here, never guessed:
+   Rutuja wrote the Deshmukhs as four when she built the list, and pre-filling
+   is what keeps UJ-5's fifteen-second reply to one extra tap. */
+const HOUSEHOLD = 4;
+const yesLabel = n =>
+  'Your answer: Yes — ' + n + (n === 1 ? ' of us will be there.' : ' of us will be there.');
+
+let SEQ = 0;
+
+function wire(host, state){
+  host.innerHTML = PAGE;
+  const uid   = 'g' + (++SEQ);
+  /* C21 · the shipped guest page wraps its column in <main>, so the reply is
+     two landmark jumps from the top. This document simulates that page four
+     times, and a document may hold only ONE <main>, so every instance after
+     the first is demoted to a labelled region. The template is what ships. */
+  if (SEQ > 1){
+    const m = host.querySelector('main.col2');
+    const sec = document.createElement('section');
+    sec.className = m.className;
+    sec.setAttribute('aria-label', 'Guest page, simulated instance ' + SEQ);
+    while (m.firstChild) sec.appendChild(m.firstChild);
+    m.replaceWith(sec);
+  }
+  const group = host.querySelector('[data-ans]');
+  const cnt   = host.querySelector('[data-count]');
+  const val   = host.querySelector('[data-cntval]');
+  const lab   = host.querySelector('[data-cntlabel]');
+  const why   = host.querySelector('[data-cntwhy]');
+  const dec   = host.querySelector('[data-dec]');
+  const inc   = host.querySelector('[data-inc]');
+  const rec   = host.querySelector('[data-rec]');
+  const txt   = host.querySelector('[data-rectxt]');
+  const chg   = host.querySelector('[data-chg]');
+  const line  = host.querySelector('[data-chgline]');
+
+  /* C14 · ids are generated per instance. The label binds to its own input,
+     and nothing in this document holds a duplicate id. */
+  val.id = uid + '-count';
+  lab.setAttribute('for', val.id);
+  why.id = uid + '-why';
+  val.setAttribute('aria-describedby', why.id);
+
+  const clamp = n => (isFinite(n) && n >= 1) ? Math.floor(n) : 1;
+  function paint(){
+    const n = clamp(parseInt(val.value, 10));
+    val.value = n;
+    /* EXPERIENCE.md:473 · at the minimum the decrement is DISABLED WITH THE
+       REASON STATED, never silently inert. */
+    dec.disabled = (n <= 1);
+    why.textContent = n <= 1
+      ? 'One is the fewest we can record — you said you are coming.'
+      : 'Rutuja wrote ' + HOUSEHOLD + ' for your household. Change it if that is no longer right.';
+  }
+  function step(d){ val.value = clamp(parseInt(val.value, 10) + d); paint(); }
+
+  function askCount(moveFocus){
+    group.hidden = true;
+    rec.hidden = true; chg.hidden = true;
+    cnt.hidden = false;
+    val.value = HOUSEHOLD;
+    paint();
+    /* One mechanism, not two: focus moves to the revealed control, which
+       announces its own label. No aria-live anywhere on this page. */
+    if (moveFocus) cnt.focus();
+    measure();
+  }
+  function record(a, n, moveFocus){
+    txt.textContent = (a === 'yes') ? yesLabel(n) : LABEL[a];
+    group.hidden = true; cnt.hidden = true;
+    rec.hidden = false; chg.hidden = false;
+    line.hidden = true;                 /* its wording is inside .recorded now */
+    if (moveFocus) rec.focus();
+    measure();
+  }
+  function reopen(){
+    group.hidden = false;
+    cnt.hidden = true;
+    rec.hidden = true; chg.hidden = true;
+    line.hidden = false;
+    group.querySelector('button').focus();
+    measure();
+  }
+
+  group.querySelectorAll('button').forEach(b =>
+    b.addEventListener('click', () => {
+      /* *No* and *Not sure* reveal NOTHING. Nobody is asked how many of them
+         are not coming. */
+      if (b.dataset.a === 'yes') askCount(true);
+      else record(b.dataset.a, 0, true);
+    }));
+  dec.addEventListener('click', () => step(-1));
+  inc.addEventListener('click', () => step(+1));
+  val.addEventListener('input', () => { val.value = val.value.replace(/[^0-9]/g, ''); });
+  val.addEventListener('change', paint);
+  host.querySelector('[data-confirm]')
+      .addEventListener('click', () => record('yes', clamp(parseInt(val.value, 10)), true));
+  chg.addEventListener('click', reopen);
+
+  if (state === 'yes')   record('yes', HOUSEHOLD, false);
+  if (state === 'count') askCount(false);
+}
+
+/* Measure, do not assert. Reports the bottom edge of the LAST reply control
+   against the frame height, and the height of every answer button. */
+function measure(){
+  [['gp1','m1',640],['gp2','m2',640],['gp3','m3',760],['gp4','m4',640]].forEach(([id,mid,H])=>{
+    const host = document.getElementById(id);
+    const out  = document.getElementById(mid);
+    if(!host||!out) return;
+    const top  = host.getBoundingClientRect().top;
+    const col  = host.querySelector('.col2');
+    const card = host.querySelector('.card');
+    const grp  = host.querySelector('[data-ans]');
+    const rec  = host.querySelector('[data-rec]');
+    const cnt  = host.querySelector('[data-count]');
+    const live = (grp && !grp.hidden) ? grp
+               : ((cnt && !cnt.hidden) ? cnt : rec);
+    const foot = host.querySelector('.obligations');
+    if(!card||!col||!live||!foot) return;   // frame not wired yet
+
+    const cardH  = Math.round(card.getBoundingClientRect().height);
+    const replyB = Math.round(live.getBoundingClientRect().bottom - top);
+    const lineEl = host.querySelector('[data-chgline]').hidden
+                     ? host.querySelector('[data-chgline2]')
+                     : host.querySelector('[data-chgline]');
+    const lineB  = Math.round(lineEl.getBoundingClientRect().bottom - top);
+    const pageB  = Math.round(col.getBoundingClientRect().height);
+    const footB  = Math.round(foot.getBoundingClientRect().bottom - top);
+    const btns   = [...host.querySelectorAll('.ans button, .chg, .count .row button, .count .go')]
+                     .filter(b => b.getBoundingClientRect().height > 0)
+                     .map(b => Math.round(b.getBoundingClientRect().height));
+    const wide   = Math.round(live.getBoundingClientRect().width);
+    const minBtn = btns.length ? Math.min(...btns) : 0;
+    /* No U+2713 anywhere in this file, including its own readout. */
+    const mark = v => v <= H
+      ? '<span class="ok">' + v + 'px, above the fold</span>'
+      : '<span class="no">' + v + 'px, BELOW the fold</span>';
+
+    out.innerHTML =
+      'Invitation card <b>' + cardH + 'px</b>. Reply control ends at ' + mark(replyB) +
+      ' of <b>' + H + 'px</b> available &mdash; <b>' + (H - replyB) +
+      'px</b> of headroom above the fold.' +
+      '<br>&ldquo;You can change it&rdquo; ends at ' + mark(lineB) +
+      '. Whole page <b>' + pageB + 'px</b>; the foot &mdash; growth line, then attribution &mdash; ' +
+      (footB <= H
+        ? 'ends at <span class="ok">' + footB + 'px</span>, fully visible.'
+        : 'ends at ' + footB + 'px, below the fold. That is correct: only the reply is required above it.') +
+      '<br>Answer targets <b>' + btns.join(' / ') + 'px</b> tall (floor 48dp), <b>' + wide +
+      'px</b> wide &mdash; full width, identical, none preselected.';
+  });
+}
+
+wire(document.getElementById('gp1'), null);
+wire(document.getElementById('gp2'), 'yes');
+wire(document.getElementById('gp3'), null);
+wire(document.getElementById('gp4'), 'count');
+measure();
+document.fonts && document.fonts.ready.then(measure);
+window.addEventListener('resize', measure);
+</script>
+</body>
+</html>

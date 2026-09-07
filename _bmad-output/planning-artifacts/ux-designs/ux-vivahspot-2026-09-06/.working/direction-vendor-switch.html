@@ -9,12 +9,47 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
+   ACCESSIBILITY REMEDIATION · 2026-09-07 · against review-accessibility.md
+   C1 every interactive element now clears a 44px hit area (see the block at
+      the end of this stylesheet). Calendar day cells keep their dense visual
+      box and gain the hit area through an invisible ::after overlay.
+   C3 no {colors.muted} or {colors.vermillion} text remains on
+      {colors.gold-tint}: the filter chip's meta text and the ghost buttons
+      inside the nudge now use {colors.ink} (15.41:1, recomputed).
+   C4 the three calendar states carry a non-colour mark — filled dot,
+      hollow ring, strike + cross — and the legend shows the mark.
+   S1 the active tab carries an indicator rule as well as colour and weight.
+   S3 the lens switch and the filter chip take a {colors.muted} boundary
+      (4.77:1 on ground) instead of turmeric at 1.57:1.
+   M5 the unread Enquiries now sit under a "Needs a reply" heading rather
+      than being marked by a vermillion rail and list position alone.
+   m2 the "marked unavailable" day number is ink on hairline (14.38:1), not
+      muted at 3.86:1.
+   No palette value, type choice or layout concept was changed.
+   ==========================================================================
    THE MIDDLE PATH — INBOX AND CALENDAR AS TWO LENSES ON ONE SET
    Not two screens with a toggle between them. The same Enquiries, arranged
    two ways: by recency (Inbox) or by date (Calendar). Selection carries
    across the switch, which is what makes it one surface rather than two.
    The rail never changes: the nudge and the season's numbers are constant.
    Built from DESIGN.md tokens. Requires network.
+
+   ---- 2026-09-07 · NAVIGATION GLYPHS -> INLINE SVG ---------------------
+   The previous pass converted the state marks and vendor-calendar-360's
+   navigation glyphs but left this file's as Unicode, so the prototypes
+   disagreed with each other -- the exact divergence class the whole
+   reconciliation exists to remove. Converted here on the same reasoning
+   the state marks were: an envelope
+   take emoji presentation on several Android builds, which puts unchosen
+   colour into a system where colour is the one thing that carries meaning.
+   ONE set for the whole product: a 20x20 grid, 1.9 stroke (2px-
+   equivalent), round caps and joins, currentColor, aria-hidden="true"
+   focusable="false", and the adjacent tab LABEL carrying the accessible
+   name. The calendar is the availability ring's cut verbatim, so there
+   is one calendar mark and not two. The drawings and the centring rule
+   are in the NAVIGATION ICONS block at the foot of this stylesheet.
+   Measured after: every phone tab is still 48.00px, every rail row and switch
+   segment still 44.00px, and nothing overflows.
    ========================================================================== */
 :root{
   --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
@@ -53,6 +88,7 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
   font-weight:700;padding:1px 6px}
 .side a.on{background:var(--gold-tint);border-left:3px solid var(--vermillion);padding-left:12px;font-weight:600}
 .side a.on .ic{color:var(--vermillion)}
+/* C3 · overridden below: the glyph is text, and vermillion on gold-tint is 4.061:1 */
 .side .sub{margin-top:auto;padding:12px 15px 0;border-top:1px solid var(--hairline);
   font-size:.69rem;color:var(--muted)}
 .side .sub b{display:block;font-family:var(--disp);font-size:.81rem;color:var(--ink)}
@@ -63,16 +99,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
 
 /* THE SWITCH */
 .swwrap{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:12px}
-.sw{display:inline-flex;border:1px solid var(--turmeric);background:var(--surface);flex:none}
+.sw{display:inline-flex;border:1px solid var(--muted);background:var(--surface);flex:none}
 .sw span{padding:8px 17px;font-size:.79rem;font-weight:700;color:var(--muted);display:flex;
   align-items:center;gap:6px}
 .sw span.on{background:var(--vermillion);color:#fff}
 .sw span .ic{font-weight:400}
 .ctx{font-size:.76rem;color:var(--muted)}
 .filt{display:inline-flex;align-items:center;gap:7px;background:var(--gold-tint);
-  border:1px solid var(--turmeric);padding:5px 11px;font-size:.75rem;color:var(--ink)}
+  border:1px solid var(--muted);padding:5px 11px;font-size:.75rem;color:var(--ink)}
 .filt b{font-weight:700}
-.filt em{font-style:normal;color:var(--muted)}
+.filt em{font-style:normal;color:var(--ink)}
 
 .eyebrow{font-family:var(--disp);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
   color:var(--muted);margin:16px 0 9px;display:flex;justify-content:space-between;align-items:baseline}
@@ -130,6 +166,148 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
 .ptab .ic{display:block;font-size:14px;margin-bottom:2px}
 .ptab.on{color:var(--vermillion);font-weight:600}
 .pcap{text-align:center;font-size:.78rem;color:#8d868b;margin-top:10px}
+
+/* ==========================================================================
+   REMEDIATION BLOCK — overrides only, nothing above was restructured
+   ========================================================================== */
+
+/* C1 · 44px hit areas. Buttons, pills that are controls, switch segments,
+   left-rail rows and tab items all grow to the product's own 44pt/48dp floor
+   rather than being scaled down to fit the frame. */
+.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+  padding:7px 16px;line-height:1.2}
+.pill{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:3px 11px}
+.pill.act{min-height:0;padding:3px 9px}     /* a status badge, not a control */
+.sw span{min-height:44px}
+.side a{min-height:44px}
+.filt{min-height:44px}
+.ptabs{padding:0 3px}
+.ptab{position:relative;min-height:48px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:4px 2px}
+
+/* C1 · The calendar is the density case named in the audit. Seven columns
+   inside a 360px phone leave roughly 37px of width per cell, so WIDENING the
+   visible box would break the month grid. The visual cell is therefore left
+   alone horizontally and an invisible ::after overlay carries a 44x44 hit
+   area. Vertically the cell is raised to a real 44px, so rows never overlap.
+   Horizontally they do: MEASURED in Chromium at the phone width, the cell is
+   37.1px on a 41.1px pitch, so two neighbouring 44px hit areas share about
+   2.9px. Seven 44px targets need 308px and the grid has 284px — a
+   seven-column month at 360px cannot give each day a clean 44px of width.
+   The 2.9px sliver is the accepted cost of clearing the floor; the
+   alternative was leaving the 27px cell the audit measured. */
+
+/* ==========================================================================
+   RECONCILIATION CONTRACT · 2026-09-07 · Part 2 §2.1 / §2.2 / §2.4
+   (a) THE DOTS DIE, THE BAR LIVES. This file drew the three calendar states
+       as Unicode dot / ring / cross on ::before. DESIGN.md:607 bans a Unicode
+       state glyph outright -- U+2713 and its neighbours take emoji
+       presentation on several Android builds -- and .memlog.md:106 is a user
+       decision that chose the underbar. The mark is now a COUNT: ONE bar =
+       engaged, TWO segments = Enquiries pending, NO bar plus a struck number
+       = unavailable. Segments are 29% / 12% gap / 29% of the cell so the
+       count survives blur at a small cell; the bar still spans 70%.
+   (b) BAR COLOUR. {colors.turmeric} was 1.608:1 on {colors.surface} and could
+       not carry a mark at all. Pending draws in {colors.vermillion} #E01B33,
+       4.061:1 on the gold-tint fill it sits on. Engaged sits on a VERMILLION
+       fill, where a vermillion bar would be invisible, so it draws in
+       {colors.surface} at 4.801:1 -- one ink per surface, the count unchanged.
+       This is the single place the one-ink rule bends, and it bends because
+       the alternative is a mark nobody can see. Cell FILLS are unchanged:
+       they are what make the month scannable.
+   (c) THE HIT OVERLAY MAY NEVER EXCEED THE COLUMN PITCH. It was a fixed
+       44x44 box centred on a 37.14px cell, so neighbours overlapped and the
+       later sibling won the hit test -- elementFromPoint on a date's right
+       edge returned the NEXT date. It is now inset:-(gap/2): the reachable
+       box equals the pitch exactly and no two overlays intersect, on either
+       axis. ::after is reserved for the hit area alone.
+   (d) The 44px floor is met by the CELL, never by the overlay. Inside the phone frame the grid takes the named, bounded exception at 40x40 with a 2px gap (pitch 42px): comfortably above WCAG 2.2 SC 2.5.8's 24px, 4px under the product's own 44px bar, knowingly, and licensing nothing else. The desktop lens keeps 44px with no exception.
+   ========================================================================== */
+.cal .dow,.cal .days{gap:var(--calgap,4px)}
+.cal .days b{position:relative;aspect-ratio:auto;min-height:44px}
+.cal .days b::after{content:"";position:absolute;
+  inset:calc(var(--calgap,4px) / -2 - 1px)}   /* -1px absorbs the cell's own 1px
+     transparent border, so the reachable box is EXACTLY the pitch, never more */
+  /* HIT AREA ONLY. Reserved -- never shared with a state mark. */
+
+/* The phone month grid: the NAMED, BOUNDED exception the user chose
+   (.memlog.md:116/117). 40x40 cells, 2px gap, 42px pitch, and the overlay is
+   inset:-1px so the reachable box IS the pitch -- no two hit areas intersect.
+   The month at a glance is what makes a stale calendar visible, and a stale
+   calendar silently corrupts every Family's cross-Service matching, so the
+   month is worth 4px. This licenses nothing else. */
+.pscr .cal{--calgap:2px}
+.pscr .cal .days b{min-height:40px;height:40px}
+
+
+/* C4 · Non-colour marks for the three calendar states, so engaged, pending
+   and unavailable stay separable in greyscale and in daylight on a bleached
+   screen. Colour is kept — it is what makes the month scannable. */
+/* The three states, drawn as a count. .blk deliberately takes no bar. */
+.cal .days b.eng::before,.cal .days b.ask::before{
+  content:"";position:absolute;left:15%;width:70%;bottom:3px;height:4px;border-radius:1px}
+.cal .days b.eng::before{background:var(--surface)}
+.cal .days b.ask::before{background:linear-gradient(90deg,
+  var(--vermillion) 0 41.4286%,transparent 41.4286% 58.5714%,var(--vermillion) 58.5714% 100%)}
+.cal .days b.blk{color:var(--ink)}                   /* m2 · 14.38:1, was 3.86:1 */
+/* legend swatches render the actual marks, not glyphs */
+.key i{width:20px;height:4px;display:inline-block;margin-right:6px;vertical-align:2px;
+  border-radius:1px;font-style:normal;background:none;border:0}
+.key i.one{background:var(--vermillion)}
+.key i.two{background:linear-gradient(90deg,var(--vermillion) 0 41.4286%,
+  transparent 41.4286% 58.5714%,var(--vermillion) 58.5714% 100%)}
+.key i.non{width:20px;height:auto;vertical-align:0;text-align:center;color:var(--ink);
+  text-decoration:line-through;font-weight:400}
+
+/* S1 · The active tab gets a third signal that is a shape, not a hue: an
+   indicator rule above it. Weight and colour are unchanged. */
+.ptab.on::before{content:"";position:absolute;top:0;left:20%;right:20%;
+  height:3px;background:currentColor}
+
+/* C3 · A ghost button standing on {colors.gold-tint} takes an ink label with
+   a vermillion rule. Vermillion text on that fill is 4.06:1 and banned;
+   ink is 15.41:1 and the vermillion border still clears the 3:1 non-text
+   floor at 4.06:1. Both figures recomputed, not recalled. */
+.nudge .btn.ghost{color:var(--ink);border-color:var(--vermillion)}
+.side a.on .ic{color:var(--ink)}   /* 15.412:1; the row still has its fill, rule and weight */
+
+/* ==========================================================================
+   C9 · THE BREAKPOINT THIS FILE NEVER HAD
+   No @media rule existed in any vendor prototype. At a 320px viewport -- and
+   at a 32px root, which is what SC 1.4.4 asks the page to survive -- the
+   desktop WINDOW MOCK clipped rather than scrolled: .win carries
+   overflow:hidden, so the 520px application clipped to 284px and the content became unreachable.
+   Two changes:
+   (a) the window mock SCROLLS instead of clipping, so nothing is unreachable
+       at any width or any text size;
+   (b) both rails shrink first, because a fixed navigation rail and a fixed
+       context rail are the two things that should give way before the column
+       a Vendor actually reads.
+   EXPERIENCE.md:830 asserts the >=768px behaviour and nothing demonstrated it;
+   this is the demonstration. The PHONE frames are pixel-exact device mocks and
+   are deliberately NOT responsive -- being exactly 360px wide is their point.
+   ========================================================================== */
+@media (max-width:900px){
+  .win{overflow-x:auto;overflow-y:hidden}
+  .app{min-width:760px}
+  .side{width:168px}
+  .rail{width:232px}
+}
+
+/* ==========================================================================
+   NAVIGATION ICONS — INLINE SVG, NOT UNICODE
+   The reasoning that forced SVG on the state marks applies unchanged here:
+   the heart and the envelope take emoji presentation on several Android
+   builds, which drops unchosen colour into a system where colour carries
+   meaning. One set, 20x20 grid, 1.9 stroke, round caps, currentColor,
+   aria-hidden="true" focusable="false" -- the adjacent tab LABEL is the
+   accessible name. The calendar is the availability ring's cut verbatim, so
+   the product has one calendar mark rather than two. The glyphs were text
+   and are now replaced elements, so each one is centred explicitly.
+   ========================================================================== */
+.side a .ic svg{display:block;margin:0 auto}
+.ptab .ic svg{display:block;margin:0 auto}
+.sw span .ic svg{display:block}
 </style>
 </head>
 <body>
@@ -156,17 +334,18 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
     <div class="app">
       <div class="side">
         <div class="biz"><b>Shubhmangal Lawns</b><span>Shrirampur · Verified</span></div>
-        <a class="on"><span class="ic">✉</span>Enquiries<span class="ct">3</span></a>
-        <a><span class="ic">◈</span>Listings</a><a><span class="ic">◮</span>Performance</a>
-        <a><span class="ic">◯</span>Account</a>
+        <a class="on"><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></span>Enquiries<span class="ct">3</span></a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.4" y="6.4" width="12.2" height="11.2" rx="2"/><path d="M6.2 3.2h9.2a2.2 2.2 0 0 1 2.2 2.2v9.2"/></svg></span>Listings</a><a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.2 16.8v-4.4M10 16.8V6.2M14.8 16.8v-2.6"/></svg></span>Performance</a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></span>Account</a>
         <div class="sub"><b>Tier 2 · renews 1 June</b>Twelve months, paid in full</div>
       </div>
       <div class="main">
         <div class="pri">
           <div class="swwrap">
-            <div class="sw"><span class="on"><i class="ic">✉</i>Inbox</span><span><i class="ic">▦</i>Calendar</span></div>
+            <div class="sw"><span class="on"><i class="ic"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Inbox</span><span><i class="ic"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.5 11.8h.01M10 11.8h.01M13.5 11.8h.01M6.5 14.6h.01M10 14.6h.01"/></svg></i>Calendar</span></div>
             <span class="ctx">3 waiting · 4 in progress</span>
           </div>
+          <div class="eyebrow">Needs a reply <em>3</em></div>
           <div class="enq unread"><div class="g"><b>Wedding · 27 November</b>
             <div class="f">600 guests · Haldi, Wedding, Reception<br>
             <em>Haldi 26th morning · Wedding 27th evening · Reception 28th evening</em><br>
@@ -212,15 +391,15 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
     <div class="app">
       <div class="side">
         <div class="biz"><b>Shubhmangal Lawns</b><span>The lawn · 800 capacity</span></div>
-        <a class="on"><span class="ic">✉</span>Enquiries<span class="ct">3</span></a>
-        <a><span class="ic">◈</span>Listings</a><a><span class="ic">◮</span>Performance</a>
-        <a><span class="ic">◯</span>Account</a>
+        <a class="on"><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></span>Enquiries<span class="ct">3</span></a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.4" y="6.4" width="12.2" height="11.2" rx="2"/><path d="M6.2 3.2h9.2a2.2 2.2 0 0 1 2.2 2.2v9.2"/></svg></span>Listings</a><a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.2 16.8v-4.4M10 16.8V6.2M14.8 16.8v-2.6"/></svg></span>Performance</a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></span>Account</a>
         <div class="sub"><b>Tier 2 · renews 1 June</b>Twelve months, paid in full</div>
       </div>
       <div class="main">
         <div class="pri">
           <div class="swwrap">
-            <div class="sw"><span><i class="ic">✉</i>Inbox</span><span class="on"><i class="ic">▦</i>Calendar</span></div>
+            <div class="sw"><span><i class="ic"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Inbox</span><span class="on"><i class="ic"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.5 11.8h.01M10 11.8h.01M13.5 11.8h.01M6.5 14.6h.01M10 14.6h.01"/></svg></i>Calendar</span></div>
             <span class="ctx">The lawn · switch Space</span>
           </div>
           <div class="cal">
@@ -235,9 +414,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
               <b>30</b><b class="blk">1</b><b>2</b><b>3</b><b class="ask">4</b><b>5</b><b>6</b>
             </div>
             <div class="key">
-              <span><i style="background:var(--vermillion)"></i>Engaged — an Agreement holds it</span>
-              <span><i style="background:var(--gold-tint);border:1px solid var(--turmeric)"></i>Enquiries pending</span>
-              <span><i style="background:var(--hairline)"></i>You marked unavailable</span>
+              <span><i class="one"></i>Engaged — an Agreement holds it</span>
+              <span><i class="two"></i>Enquiries pending</span>
+              <span><i class="non">1</i><s>You marked unavailable</s></span>
             </div>
           </div>
           <div class="eyebrow">Switching to Inbox keeps this date</div>
@@ -277,8 +456,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
         <div class="pbar"><b>Enquiries</b><span class="ctx">3 waiting</span></div>
         <div class="pbody">
           <div class="sw" style="display:flex;width:100%;margin-bottom:12px">
-            <span class="on" style="flex:1;justify-content:center"><i class="ic">✉</i>Inbox</span>
-            <span style="flex:1;justify-content:center"><i class="ic">▦</i>Calendar</span></div>
+            <span class="on" style="flex:1;justify-content:center"><i class="ic"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Inbox</span>
+            <span style="flex:1;justify-content:center"><i class="ic"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.5 11.8h.01M10 11.8h.01M13.5 11.8h.01M6.5 14.6h.01M10 14.6h.01"/></svg></i>Calendar</span></div>
+          <div class="eyebrow" style="margin-top:0">Needs a reply <em>2</em></div>
           <div class="enq unread" style="display:block"><div class="g"><b>Wedding · 27 Nov</b>
             <div class="f">600 guests · Haldi, Wedding, Reception<br><em>₹8,00,000 · the lawn</em></div></div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px">
@@ -296,9 +476,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
           <div class="stat"><span>Enquiries</span><b>34</b></div>
           <div class="stat"><span>Weddings won</span><b>2</b></div>
         </div>
-        <div class="ptabs"><div class="ptab on"><i class="ic">✉</i>Enquiries</div>
-          <div class="ptab"><i class="ic">◈</i>Listings</div><div class="ptab"><i class="ic">◮</i>Performance</div>
-          <div class="ptab"><i class="ic">◯</i>You</div></div>
+        <div class="ptabs"><div class="ptab on"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Enquiries</div>
+          <div class="ptab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.4" y="6.4" width="12.2" height="11.2" rx="2"/><path d="M6.2 3.2h9.2a2.2 2.2 0 0 1 2.2 2.2v9.2"/></svg></i>Listings</div><div class="ptab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.2 16.8v-4.4M10 16.8V6.2M14.8 16.8v-2.6"/></svg></i>Performance</div>
+          <div class="ptab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
       </div></div>
       <p class="pcap">Inbox lens</p>
     </div>
@@ -307,9 +487,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
         <div class="pbar"><b>Enquiries</b><span class="ctx">The lawn</span></div>
         <div class="pbody">
           <div class="sw" style="display:flex;width:100%;margin-bottom:12px">
-            <span style="flex:1;justify-content:center"><i class="ic">✉</i>Inbox</span>
-            <span class="on" style="flex:1;justify-content:center"><i class="ic">▦</i>Calendar</span></div>
-          <div class="cal" style="padding:10px">
+            <span style="flex:1;justify-content:center"><i class="ic"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Inbox</span>
+            <span class="on" style="flex:1;justify-content:center"><i class="ic"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.5 11.8h.01M10 11.8h.01M13.5 11.8h.01M6.5 14.6h.01M10 14.6h.01"/></svg></i>Calendar</span></div>
+          <div class="cal" style="padding:6px">
             <div class="mh"><b>November</b><span>4 pending</span></div>
             <div class="dow"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
             <div class="days">
@@ -321,9 +501,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
               <b>30</b><b class="blk">1</b><b>2</b><b>3</b><b class="ask">4</b><b>5</b><b>6</b>
             </div>
             <div class="key" style="font-size:.64rem">
-              <span><i style="background:var(--vermillion)"></i>Engaged</span>
-              <span><i style="background:var(--gold-tint);border:1px solid var(--turmeric)"></i>Enquiries pending</span>
-              <span><i style="background:var(--hairline)"></i>Unavailable</span></div>
+              <span><i class="one"></i>Engaged</span>
+              <span><i class="two"></i>Enquiries pending</span>
+              <span><i class="non">1</i><s>Unavailable</s></span></div>
           </div>
           <div class="nudge" style="margin-top:12px"><b>27 November · 3 Enquiries</b>
             <p>Confirming keeps you in their results.</p>
@@ -333,9 +513,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
             <div class="f">Haldi · Wedding · Reception<br><em>₹8,00,000</em></div></div>
             <div style="margin-top:8px"><span class="btn">Send a Quote</span></div></div>
         </div>
-        <div class="ptabs"><div class="ptab on"><i class="ic">✉</i>Enquiries</div>
-          <div class="ptab"><i class="ic">◈</i>Listings</div><div class="ptab"><i class="ic">◮</i>Performance</div>
-          <div class="ptab"><i class="ic">◯</i>You</div></div>
+        <div class="ptabs"><div class="ptab on"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Enquiries</div>
+          <div class="ptab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.4" y="6.4" width="12.2" height="11.2" rx="2"/><path d="M6.2 3.2h9.2a2.2 2.2 0 0 1 2.2 2.2v9.2"/></svg></i>Listings</div><div class="ptab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.2 16.8v-4.4M10 16.8V6.2M14.8 16.8v-2.6"/></svg></i>Performance</div>
+          <div class="ptab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
       </div></div>
       <p class="pcap">Calendar lens · same tab, same URL, same data</p>
     </div>

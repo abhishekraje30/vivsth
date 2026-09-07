@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — the four the review left to me</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   FOUR DESIGN CALLS THE REVIEWER GATE LEFT OPEN
+   1  Span continuation rail  -- EXPERIENCE.md calls it the highest-risk
+      pattern in the product; DESIGN.md never defined how it is drawn.
+   2  Availability signal     -- three states requiring "a glyph AND the
+      word"; no glyph was ever named.
+   3  Cold load               -- no loading state exists anywhere in 1110
+      lines, in a product targeting patchy mobile data.
+   4  Calendar without colour -- Engaged vs Enquiries-pending are currently
+      separated by fill colour alone.
+   Built only from DESIGN.md tokens. Every pair below clears WCAG AA;
+   turmeric never carries white; muted is never faded.
+
+   ---- 2026-09-07 · RECONCILIATION CONTRACT ---------------------------------
+   ALL FOUR CALLS HAVE SINCE BEEN MADE, AND THIS FILE IS WHERE THEY WERE MADE.
+   It said so nowhere, and it was linked from nowhere, so a reader who opened
+   .working/ unprompted found a document that appeared to specify the REJECTED
+   options. Each winner is now marked "chosen" inline; the italic "recommended"
+   badges were the author's opening view and are superseded where they differ.
+     1  "Where a Span lives" -- B, ONE CARD WITH ITS DAYS INSIDE (.memlog.md
+        :100). The heading used to name option A, the continuation rail, which
+        is the pattern that lost. Renamed.
+     2  Availability signal -- A, ONE RING, THREE TREATMENTS (.memlog.md:101),
+        with Set B calendar icons as the second signal. The ring is redrawn:
+        all three treatments in {colors.muted} at 2px solid / 1px solid / 1px
+        dashed. The turmeric border and gold-tint fill measured 1.608 and
+        1.182 against the surface and never carried state; they were the
+        colour-alone defect the three-treatment idea existed to remove.
+     3  Cold load -- A, SKELETON EVERYWHERE (.memlog.md:104).
+     4  Vendor calendar -- C, THE UNDERBAR, strengthened into a COUNT
+        (.memlog.md:106): ONE bar engaged, TWO segments pending at 29%/12%/29%,
+        no bar plus a struck number for unavailable. Both bars are
+        {colors.vermillion}; turmeric was 1.608:1 and could not carry a mark.
+
+   D12 · NO UNICODE STATE MARKS. U+2714, U+2713 and the ?/- glyphs are gone.
+        Every mark is inline SVG inheriting currentColor, aria-hidden="true",
+        with the adjacent word carrying the accessible name.
+   C8  · {colors.muted} on {colors.gold-tint} is 4.138 and on {colors.hairline}
+        3.862 -- both under 4.5 for text, and the worst instance was a DATE at
+        8.96px. Every one is {colors.ink} now: 15.412 and 14.383.
+   C11 · a prefers-reduced-motion block was missing entirely, against
+        DESIGN.md:275 and EXPERIENCE.md:452. The sheen and the spinner stop.
+   C15 · the span card's 2px turmeric edge was 1.608 -- imperceptible on the
+        one object whose SHAPE carries the idea. It is {colors.muted}, 4.892,
+        with turmeric kept as an inner rule for warmth.
+   C20 · labels below the 11px floor raised.
+
+   ---- 2026-09-07 · COPY NORMALISED · PRD §3 ----------------------------
+   The rendered copy here was already canonical. The ring's own CSS
+   comment still described the three treatments as "shows free / shows
+   taken"; it now names them as the glossary does. No drawing, no rule
+   and no measurement changed.
+   ========================================================================== */
+:root{
+  --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
+  --vermillion:#E01B33;--turmeric:#FFC300;--gold-tint:#FFEBB0;--hairline:#F6E2C2;
+  --danger:#8C2F1A;--e1:0 2px 9px rgba(190,30,50,.10);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --disp:'Playfair Display',Georgia,serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/1.55 var(--sans)}
+.wrap{max-width:1280px;margin:0 auto}
+.lede{max-width:76ch;margin:0 auto 30px}
+.lede h1{font-family:var(--disp);font-size:1.82rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.block{margin-bottom:40px}
+.block>.n{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#8d868b}
+.block>h2{font-family:var(--disp);font-size:1.34rem;margin:3px 0 5px}
+.block>.why{font-size:.86rem;color:#b3adb1;margin:0 0 14px;max-width:84ch}
+.opts{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
+.opt{flex:1 1 300px;max-width:360px}
+.opt>h3{font-size:.95rem;margin:0 0 3px}
+.opt>.s{font-size:.78rem;color:#8d868b;margin:0 0 10px;min-height:2.6em}
+.pane{background:var(--ground);border-radius:9px;padding:14px;color:var(--ink)}
+.verdict{font-size:.78rem;color:#a9a3a8;margin:10px 0 0;line-height:1.5}
+.verdict b{color:#ddd8dc}
+.rec{display:inline-block;background:var(--turmeric);color:var(--ink);font-size:11px;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;margin-left:6px}
+.chosen{display:inline-block;background:var(--vermillion);color:#fff;font-size:11px;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;margin-left:6px}
+.rejected{display:inline-block;border:1px solid var(--muted);color:#b3adb1;font-size:11px;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;margin-left:6px}
+
+/* ---------- 1 · SPAN RAIL ---------- */
+.fn{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;
+  margin-bottom:8px;box-shadow:var(--e1);overflow:hidden;position:relative}
+.fh{display:flex;gap:10px;padding:9px 11px;align-items:center;background:var(--gold-tint);
+  border-bottom:1px solid var(--turmeric)}
+.fh .d{width:30px;text-align:center;flex:none}
+.fh .d b{display:block;font-family:var(--disp);font-size:1rem;line-height:1}
+.fh .d span{font-size:11px;text-transform:uppercase;color:var(--ink)}   /* C8/C20 · 15.412 on gold-tint, was 4.138 at 8.96px */
+.fh .nm b{display:block;font-family:var(--disp);font-size:.92rem}
+.fh .nm span{font-size:.68rem;color:var(--ink)}          /* C8 · 15.412 on gold-tint, was 4.138 */
+.sv{display:flex;gap:8px;padding:8px 11px;align-items:center;font-size:.8rem;
+  border-bottom:1px solid var(--hairline)}
+.sv:last-child{border-bottom:0}
+.sv .g{flex:1}
+.amt{font-weight:700;font-size:.82rem}
+.cont{color:var(--muted);font-size:.72rem;font-style:italic}
+/* A · bracket rail */
+.railA{position:relative;padding-left:16px}
+.railA::before{content:"";position:absolute;left:5px;top:0;bottom:0;width:3px;
+  background:var(--turmeric)}
+.railA.start::before{top:8px;border-radius:2px 2px 0 0}
+.railA.end::before{bottom:8px;border-radius:0 0 2px 2px}
+.railA .tag{position:absolute;left:0;top:calc(50% - 6px);width:13px;height:13px;
+  background:var(--surface);border:2px solid var(--turmeric);border-radius:50%}
+/* B · one card, days inside */
+/* C15 · the card's OUTER edge is {colors.muted} (4.892). Turmeric survives as
+   an inner rule, so the warmth stays but the shape is perceivable. */
+.spanCard{background:var(--surface);border:2px solid var(--muted);border-radius:6px;
+  outline:1px solid var(--turmeric);outline-offset:-4px;
+  padding:10px 11px;margin-bottom:8px;box-shadow:var(--e1)}
+.spanCard .hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.spanCard .hd b{font-family:var(--disp);font-size:.95rem}
+.spanCard .days{display:flex;gap:6px;margin-top:7px}
+.spanCard .days i{font-style:normal;font-size:11px;background:var(--gold-tint);
+  border:1px solid var(--muted);padding:3px 8px;color:var(--ink)}
+/* C · text only */
+.textOnly{border-left:3px solid var(--hairline);padding-left:9px}
+
+/* ---------- 2 · AVAILABILITY ---------- */
+.av{display:flex;align-items:center;gap:8px;background:var(--surface);
+  border:1px solid var(--hairline);border-radius:6px;padding:10px 11px;margin-bottom:7px;
+  box-shadow:var(--e1);font-size:.82rem}
+/* THE RING, as decided. All three strokes {colors.muted} at 4.892 on surface;
+   the separator is stroke WIDTH and STYLE, never colour and never fill.
+   2px solid = shows available, 1px solid = shows unavailable,
+   1px dashed = not stated. */
+.av .gl{width:22px;height:22px;flex:none;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;color:var(--ink)}
+.av .gl svg{display:block}
+.gl-y{background:var(--surface);border:2px solid var(--muted)}
+.gl-n{background:var(--surface);border:1px solid var(--muted);color:var(--muted)}
+.gl-u{background:var(--surface);border:1px dashed var(--muted);color:var(--muted)}
+.av .t{flex:1}
+.av .t b{display:block;font-size:.84rem}
+.av .t span{font-size:.7rem;color:var(--muted)}
+
+/* ---------- 3 · COLD LOAD ---------- */
+.sk{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;
+  padding:11px;margin-bottom:8px;box-shadow:var(--e1)}
+.bar{height:11px;background:var(--hairline);border-radius:2px;margin-bottom:7px}
+.bar.w70{width:70%}.bar.w45{width:45%}.bar.w90{width:90%}
+.shim{position:relative;overflow:hidden}
+.shim::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);
+  transform:translateX(-100%);animation:sh 1.5s ease-in-out infinite}
+@keyframes sh{to{transform:translateX(100%)}}
+.ph{height:64px;background:var(--hairline);border-radius:4px;margin-bottom:8px}
+.spin{display:flex;align-items:center;justify-content:center;gap:9px;padding:26px 0;
+  color:var(--muted);font-size:.8rem}
+.ring{width:20px;height:20px;border:2px solid var(--hairline);border-top-color:var(--vermillion);
+  border-radius:50%;animation:sp .9s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.prog{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:11px;
+  box-shadow:var(--e1)}
+.prog .l{font-size:.78rem;margin-bottom:7px}
+.prog .t{height:4px;background:var(--gold-tint)}
+.prog .t i{display:block;height:100%;width:40%;background:var(--turmeric)}
+.prog .c{font-size:.68rem;color:var(--muted);margin-top:5px}
+
+/* ---------- 4 · CALENDAR ---------- */
+.cal{background:var(--surface);border:1px solid var(--hairline);padding:11px;box-shadow:var(--e1)}
+.dow,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+/* C20 · weekday labels were 9.28px. 11px is the label floor. */
+.dow span{text-align:center;font-size:11px;color:var(--muted);padding-bottom:3px}
+.days b{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:.74rem;
+  font-weight:400;border:1px solid transparent;position:relative}
+.k{display:flex;flex-direction:column;gap:5px;margin-top:10px;font-size:.68rem;color:var(--muted)}
+.k{font-size:11px;color:var(--ink)}
+.k i{width:20px;height:4px;display:inline-block;border-radius:1px;
+  font-style:normal;margin-right:6px;vertical-align:2px}
+.k i.one{background:var(--vermillion)}
+.k i.two{background:linear-gradient(90deg,var(--vermillion) 0 41.4286%,
+  transparent 41.4286% 58.5714%,var(--vermillion) 58.5714% 100%)}
+.k i.non{width:20px;height:auto;vertical-align:0;text-align:center;color:var(--ink);
+  text-decoration:line-through}
+.k i.gA{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;
+  vertical-align:-3px;border-radius:0}
+.cA .eng .m,.cA .ask .m{position:absolute;bottom:0;right:2px;display:block;line-height:0}
+.cB .m,.cC .m{display:none}   /* option A's corner mark belongs to option A only */
+/* A · fill + glyph */
+.cA .eng{background:var(--vermillion);color:#fff;font-weight:700}
+
+.cA .ask{background:var(--gold-tint);border-color:var(--turmeric);font-weight:700}
+
+/* C8 · muted on hairline is 3.862:1 at 11.84px on a DATE. Ink is 14.383. */
+.cA .blk{background:var(--hairline);color:var(--ink);text-decoration:line-through}
+/* B · shape, no fill */
+.cB .eng{border:2px solid var(--ink);font-weight:700}
+.cB .ask{border:2px dashed var(--turmeric);font-weight:700;background:var(--gold-tint)}
+.cB .blk{background:var(--hairline);color:var(--ink);text-decoration:line-through}
+/* C · underbar */
+.cC .eng{font-weight:700}
+.cC .eng::before{content:"";position:absolute;left:15%;width:70%;bottom:2px;height:4px;
+  border-radius:1px;background:var(--vermillion)}
+/* AS DECIDED: a COUNT, not a texture and not a colour. TWO segments at 29% of
+   the cell with a 12% gap, both {colors.vermillion}. The dash this option was
+   first drawn with averaged into a solid line at 3px, which made committed and
+   being-asked-about the same mark in greyscale. */
+.cC .ask{font-weight:700;background:var(--gold-tint)}
+.cC .ask::before{content:"";position:absolute;left:15%;width:70%;bottom:2px;height:4px;
+  border-radius:1px;background:linear-gradient(90deg,var(--vermillion) 0 41.4286%,
+  transparent 41.4286% 58.5714%,var(--vermillion) 58.5714% 100%)}
+.cC .blk{color:var(--ink);text-decoration:line-through}
+/* C11 · DESIGN.md:275 (skeleton.reduced-motion) and EXPERIENCE.md:452 require
+   this and the file carried no block at all. The sheen and the spinner both
+   stop; neither carries information, so nothing is lost by stopping them. */
+@media (prefers-reduced-motion:reduce){
+  .shim::after{animation:none;display:none}
+  .ring{animation:none;border-top-color:var(--muted)}
+}
+.gray{filter:grayscale(1)}
+.grayNote{font-size:11px;color:#b3adb1;text-align:center;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>The four the review left to me</h1>
+  <p>Six of the eight criticals had a right answer in your documents. These four don't — they need a
+     decision about how something looks. Each is drawn from <code>DESIGN.md</code> tokens only; no
+     new colours, no new type.</p>
+  <p class="hint">Under each set is the same thing rendered in <b>greyscale</b>, because three of these
+     four exist specifically because something currently depends on colour alone. If an option stops
+     working in grey, it has failed the test it was built for.</p>
+</div>
+
+<!-- ================= 1 ================= -->
+<div class="block">
+  <div class="n">Critical · rubric</div>
+  <h2>1 · Where a Span lives</h2>
+  <p class="why">A Span Service — the lawn across Haldi and Wedding — is <b>one Selection contributing
+    once</b>. The By-Function workspace lists it under every day it serves, and the PRD names the
+    failure exactly: counting per Function posts <b>₹7,20,000 for a ₹2,40,000 lawn</b>. The UI must
+    make the single-ness visible. <code>EXPERIENCE.md</code> calls this the highest-risk pattern in
+    the product; <code>DESIGN.md</code> never said how to draw it.</p>
+  <div class="opts">
+    <div class="opt">
+      <h3>A · Bracket rail<span class="rec">was recommended</span><span class="rejected">rejected</span></h3>
+      <p class="s">A 3px turmeric rail down the left of every row the Span covers, with a ring at the
+        row that carries the price.</p>
+      <div class="pane">
+        <div class="fn"><div class="fh"><div class="d"><b>26</b><span>Nov</span></div>
+          <div class="nm"><b>Haldi</b><span>Morning · 150</span></div></div>
+          <div class="sv railA start"><span class="tag"></span><span class="g">Venue — Shubhmangal Lawns</span>
+            <span class="amt">₹1,80,000</span></div></div>
+        <div class="fn"><div class="fh"><div class="d"><b>27</b><span>Nov</span></div>
+          <div class="nm"><b>Wedding</b><span>Evening · 600</span></div></div>
+          <div class="sv railA end"><span class="g">Venue — Shubhmangal Lawns</span>
+            <span class="cont">continues · one arrangement</span></div>
+          <div class="sv"><span class="g">Catering — Annapurna</span><span class="amt">₹2,40,000</span></div></div>
+      </div>
+      <div class="pane gray" style="margin-top:8px">
+        <div class="fn"><div class="fh"><div class="d"><b>26</b><span>Nov</span></div>
+          <div class="nm"><b>Haldi</b><span>Morning</span></div></div>
+          <div class="sv railA start"><span class="tag"></span><span class="g">Venue — Shubhmangal Lawns</span>
+            <span class="amt">₹1,80,000</span></div></div>
+        <div class="fn"><div class="fh"><div class="d"><b>27</b><span>Nov</span></div>
+          <div class="nm"><b>Wedding</b><span>Evening</span></div></div>
+          <div class="sv railA end"><span class="g">Venue — Shubhmangal Lawns</span>
+            <span class="cont">continues · one arrangement</span></div></div>
+      </div>
+      <p class="grayNote">greyscale</p>
+      <p class="verdict"><b>Survives grey.</b> The rail is geometry, the price appears once, and
+        "continues" says it in words. Three signals, one of them colour.</p>
+    </div>
+
+    <div class="opt">
+      <h3>B · One card, days inside<span class="chosen">chosen</span></h3>
+      <p class="s">The Span stops being a row on each day and becomes its own card listing the days it
+        covers.</p>
+      <div class="pane">
+        <div class="spanCard"><div class="hd"><b>Venue — Shubhmangal Lawns</b><span class="amt">₹1,80,000</span></div>
+          <div style="font-size:.72rem;color:var(--muted)">One arrangement across two days</div>
+          <div class="days"><i>26 Nov · Haldi</i><i>27 Nov · Wedding</i></div></div>
+        <div class="fn"><div class="fh"><div class="d"><b>27</b><span>Nov</span></div>
+          <div class="nm"><b>Wedding</b><span>Evening · 600</span></div></div>
+          <div class="sv"><span class="g">Catering — Annapurna</span><span class="amt">₹2,40,000</span></div></div>
+      </div>
+      <p class="verdict"><b>Impossible to misread</b> — the Span is literally one object. But it
+        breaks By-Function's premise: "what's sorted for the Haldi?" no longer answers in one place,
+        because the venue has left the Haldi card.</p>
+    </div>
+
+    <div class="opt">
+      <h3>C · Words only<span class="rejected">rejected</span></h3>
+      <p class="s">No rail, no card. The repeated row simply says what it is.</p>
+      <div class="pane">
+        <div class="fn"><div class="fh"><div class="d"><b>26</b><span>Nov</span></div>
+          <div class="nm"><b>Haldi</b><span>Morning · 150</span></div></div>
+          <div class="sv"><span class="g textOnly">Venue — Shubhmangal Lawns<br>
+            <span class="cont">26–27 Nov · counted once</span></span><span class="amt">₹1,80,000</span></div></div>
+        <div class="fn"><div class="fh"><div class="d"><b>27</b><span>Nov</span></div>
+          <div class="nm"><b>Wedding</b><span>Evening · 600</span></div></div>
+          <div class="sv"><span class="g textOnly">Venue — Shubhmangal Lawns<br>
+            <span class="cont">26–27 Nov · already counted</span></span></div></div>
+      </div>
+      <p class="verdict"><b>Cheapest and most fragile.</b> It relies on someone reading a small
+        italic line. Scanning is exactly what a person does on a screen like this.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 2 ================= -->
+<div class="block">
+  <div class="n">Critical · rubric</div>
+  <h2>2 · The availability signal</h2>
+  <p class="why">Three states, never two — a Vendor <b>shows available</b>, shows unavailable, or
+    <b>has said nothing</b>. The third is not a failure and must not look like one: it happens
+    whenever there is no Anchor Date yet, or the Service has no duration, or the Listing has no
+    active Subscription. Each state needs a glyph <b>and</b> a word. No glyph was ever named.</p>
+  <div class="opts">
+    <div class="opt">
+      <h3>A · One ring, three treatments<span class="chosen">chosen</span></h3>
+      <p class="s">One ring, three treatments. Nothing is red, nothing is green.</p>
+      <div class="pane">
+        <div class="av"><span class="gl gl-y"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.6 12.6l2.4 2.4 4.6-5" stroke-width="2.6"/></svg></span><div class="t"><b>Shows available</b>
+          <span>For all three days of your 27 Nov block</span></div></div>
+        <div class="av"><span class="gl gl-n"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.4 13h7.2" stroke-width="2.8"/></svg></span><div class="t"><b>Shows unavailable</b>
+          <span>Booked out on 27 November</span></div></div>
+        <div class="av"><span class="gl gl-u"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2" stroke-dasharray="3.4 3.2"/><path d="M6.5 3.2v3.4M13.5 3.2v3.4"/></svg></span><div class="t"><b>Not stated</b>
+          <span>This vendor hasn't set dates yet</span></div></div>
+      </div>
+      <div class="pane gray" style="margin-top:8px">
+        <div class="av"><span class="gl gl-y"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.6 12.6l2.4 2.4 4.6-5" stroke-width="2.6"/></svg></span><div class="t"><b>Shows available</b></div></div>
+        <div class="av"><span class="gl gl-n"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.4 13h7.2" stroke-width="2.8"/></svg></span><div class="t"><b>Shows unavailable</b></div></div>
+        <div class="av"><span class="gl gl-u"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2" stroke-dasharray="3.4 3.2"/><path d="M6.5 3.2v3.4M13.5 3.2v3.4"/></svg></span><div class="t"><b>Not stated</b></div></div>
+      </div>
+      <p class="grayNote">greyscale</p>
+      <p class="verdict"><b>Survives grey completely.</b> Solid ring, thin ring, dashed ring — the
+        border style alone separates all three, before colour or glyph. Note the copy says
+        <em>shows</em> available, never <em>available</em>.</p>
+    </div>
+    <div class="opt">
+      <h3>B · Words alone<span class="rejected">rejected</span></h3>
+      <p class="s">No glyph at all. The state is a phrase and nothing else.</p>
+      <div class="pane">
+        <div class="av"><div class="t"><b>Shows available</b><span>All three days</span></div></div>
+        <div class="av"><div class="t"><b>Shows unavailable</b><span>27 November</span></div></div>
+        <div class="av"><div class="t"><b>Not stated</b><span>No dates set</span></div></div>
+      </div>
+      <p class="verdict"><b>Unambiguous, and slow.</b> Fine in a list row, useless on a vendor card
+        in a grid where there is room for a mark but not a sentence.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 3 ================= -->
+<div class="block">
+  <div class="n">Critical · rubric</div>
+  <h2>3 · What the screen shows while it waits</h2>
+  <p class="why">There is no loading state anywhere in 1,110 lines, in a product whose stated target
+    is <b>mid-range Android phones on patchy mobile data, often at a venue or in a market</b>. Every
+    prototype assumes the data has already arrived.</p>
+  <div class="opts">
+    <div class="opt">
+      <h3>A · Skeleton of the real thing<span class="chosen">chosen</span></h3>
+      <p class="s">The shape of what is coming, in hairline, with a slow sheen.</p>
+      <div class="pane">
+        <div class="sk"><div class="ph shim"></div><div class="bar w70 shim"></div>
+          <div class="bar w45 shim"></div></div>
+        <div class="sk"><div class="ph shim"></div><div class="bar w90 shim"></div>
+          <div class="bar w45 shim"></div></div>
+      </div>
+      <p class="verdict"><b>The layout does not jump</b> when content lands, which on a slow
+        connection is the difference between a calm screen and a flickering one. Uses only
+        {colors.hairline}; the sheen is a transform, so it costs nothing on a weak GPU.</p>
+    </div>
+    <div class="opt">
+      <h3>B · A spinner<span class="rejected">rejected</span></h3>
+      <p class="s">One mark in the middle, honest and content-free.</p>
+      <div class="pane"><div class="spin"><span class="ring"></span>Loading venues near Shrirampur…</div></div>
+      <p class="verdict"><b>Cheapest to build, worst to wait on.</b> It says nothing about how much is
+        coming, and the layout jumps when it resolves. On a two-bar connection this is the screen
+        someone stares at for eight seconds.</p>
+    </div>
+    <div class="opt">
+      <h3>C · Named progress<span class="rejected">rejected</span></h3>
+      <p class="s">Says what it is doing, in the product's own voice.</p>
+      <div class="pane"><div class="prog"><div class="l">Checking who's free across all three of your dates…</div>
+        <div class="t"><i></i></div><div class="c">4 of 11 venues checked</div></div></div>
+      <p class="verdict"><b>Best for the one screen that earns it</b> — cross-service block matching
+        genuinely takes time and this makes the wait feel like work being done. Overkill everywhere
+        else, and a lie if the number is invented.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 4 ================= -->
+<div class="block">
+  <div class="n">Critical · accessibility</div>
+  <h2>4 · The vendor calendar, without colour</h2>
+  <p class="why">Today <b>Engaged</b> (vermillion fill) and <b>Enquiries pending</b> (gold-tint fill)
+    are separated by fill colour alone. This is the default landing surface of the portal, and
+    getting it wrong means Dattatray marks himself free on a date he has already committed.</p>
+  <div class="opts">
+    <div class="opt">
+      <h3>A · Fill plus corner mark<span class="rec">was recommended</span><span class="rejected">rejected</span></h3>
+      <p class="s">Keeps today's colour, adds a mark in the corner of each state.</p>
+      <div class="pane"><div class="cal cA">
+        <div class="dow"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+        <div class="days"><b>23</b><b>24</b><b>25</b><b class="ask">26<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 6.6a3.5 3.5 0 1 1 3.5 3.6v2.2"/><path d="M10 16.4v.2"/></svg></span></b><b class="eng">27<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 10.5l4 4 9-10"/></svg></span></b>
+          <b class="ask">28<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 6.6a3.5 3.5 0 1 1 3.5 3.6v2.2"/><path d="M10 16.4v.2"/></svg></span></b><b>29</b><b>30</b><b class="blk">1</b><b>2</b><b>3</b>
+          <b class="ask">4<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 6.6a3.5 3.5 0 1 1 3.5 3.6v2.2"/><path d="M10 16.4v.2"/></svg></span></b><b>5</b><b>6</b></div>
+        <div class="k"><span><i class="one"></i>Engaged — an Agreement holds it</span>
+          <span><i class="two"></i>Enquiries pending — two segments, a count not a colour</span>
+          <span><i class="non">1</i>You marked unavailable — no bar, struck number</span></div>
+      </div></div>
+      <div class="pane gray" style="margin-top:8px"><div class="cal cA">
+        <div class="days"><b>23</b><b>24</b><b>25</b><b class="ask">26<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 6.6a3.5 3.5 0 1 1 3.5 3.6v2.2"/><path d="M10 16.4v.2"/></svg></span></b><b class="eng">27<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 10.5l4 4 9-10"/></svg></span></b>
+          <b class="ask">28<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 6.6a3.5 3.5 0 1 1 3.5 3.6v2.2"/><path d="M10 16.4v.2"/></svg></span></b><b>29</b></div></div></div>
+      <p class="grayNote">greyscale</p>
+      <p class="verdict"><b>Survives grey.</b> Tick, question mark, strike — three different marks
+        before colour does anything. Costs the least change to what already exists.</p>
+    </div>
+    <div class="opt">
+      <h3>B · Shape, not fill<span class="rejected">rejected</span></h3>
+      <p class="s">Solid border for engaged, dashed for pending. Colour becomes decoration.</p>
+      <div class="pane"><div class="cal cB">
+        <div class="days"><b>23</b><b>24</b><b>25</b><b class="ask">26<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 6.6a3.5 3.5 0 1 1 3.5 3.6v2.2"/><path d="M10 16.4v.2"/></svg></span></b><b class="eng">27<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 10.5l4 4 9-10"/></svg></span></b>
+          <b class="ask">28<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 6.6a3.5 3.5 0 1 1 3.5 3.6v2.2"/><path d="M10 16.4v.2"/></svg></span></b><b>29</b></div></div></div>
+      <p class="verdict"><b>Cleanest in grey, coldest in colour.</b> A month of outlined boxes loses
+        the warmth the rest of the product is built on.</p>
+    </div>
+    <div class="opt">
+      <h3>C · Underbar<span class="chosen">chosen</span></h3>
+      <p class="s">A solid bar under engaged days, a dashed bar under pending ones.</p>
+      <div class="pane"><div class="cal cC">
+        <div class="days"><b>23</b><b>24</b><b>25</b><b class="ask">26<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 6.6a3.5 3.5 0 1 1 3.5 3.6v2.2"/><path d="M10 16.4v.2"/></svg></span></b><b class="eng">27<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 10.5l4 4 9-10"/></svg></span></b>
+          <b class="ask">28<span class="m"><svg width="8" height="8" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 6.6a3.5 3.5 0 1 1 3.5 3.6v2.2"/><path d="M10 16.4v.2"/></svg></span></b><b>29</b></div></div></div>
+      <p class="verdict"><b>Quietest, and hardest to see</b> at a glance on a small phone — the bar is
+        3px on a cell that is already tight.</p>
+    </div>
+  </div>
+</div>
+
+<div class="lede" style="margin-top:10px">
+  <p class="hint">Working artifact · <code>.working/critical-four.html</code> · 2026-09-07.
+    Requires network for Playfair. Built only from DESIGN.md tokens — no new colours, no new type.
+    Touch targets in this file illustrate the mark, not the hit area; the remediation pass raises
+    every interactive element to the 44/48 floor separately.</p>
+  <p class="hint" style="margin-top:9px"><b>All four calls are made.</b> 1 · B, one card with its days
+    inside — the Workspace gains an <em>Across the wedding</em> section above the Functions.
+    2 · A, one ring in three treatments, redrawn in <code>{colors.muted}</code> at 2px solid / 1px
+    solid / 1px dashed, with the Set B calendar icons as the second signal.
+    3 · A, skeleton everywhere. 4 · C, the underbar, strengthened into a count — one bar engaged,
+    two segments pending, no bar and a struck number for unavailable, both bars
+    <code>{colors.vermillion}</code>. Referenced from <code>EXPERIENCE.md</code> §Span,
+    §Availability signal, §Cold load and §Vendor calendar day.</p>
+</div>
+</div>
+</body>
+</html>

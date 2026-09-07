@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — Set B at two optical sizes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   SET B — THE CALENDAR MARKS, DRAWN AT TWO OPTICAL SIZES
+   Chosen by the author. The full drawing loses legibility at 16px, so the
+   family carries two cuts, as icon systems normally do:
+     LARGE  >=24px : body + two binding tabs + header bar + inner grid + mark
+     SMALL  <=20px : body + two binding tabs + header bar + mark only.
+                     Inner grid removed, stroke 1.7 -> 2.4.
+   The calendar identity survives on the silhouette that carries it -- the
+   body, the tabs, the header bar -- not on the grid lines, which are the
+   first thing to alias on a density-2.0 Android.
+   Ring treatment (solid / thin / dashed) still carries the state on its own.
+
+   ---- 2026-09-07 · RECONCILIATION D5 / C16 / C7 ----------------------------
+   [DECISION HELD] Set B is not reopened -- .memlog.md:101 chose the calendar.
+   Two measured defects inside it are fixed.
+   (1) THE SMALL CUT FILLED ITS BOX EDGE TO EDGE. The .r16 ring is 16px with a
+       2px border, so the inner box is 12px, and the drawing was rendered at
+       12 x 12 -- 100% of the area. Drawn extents reached 6.23px against a 6px
+       inner radius, so the icon's corners sat ON the ring stroke. It is drawn
+       at 10 x 10 now: 1px of optical padding each side, corners clear.
+   (2) THE DISTINGUISHING MARK WAS AN INTERIOR DETAIL. DESIGN.md:608's own
+       Don't predicts the failure -- "two icons that differ only by an inner
+       detail stop differing at all" -- and at 12px the tick and the bar both
+       sat inside the calendar body, so the silhouette was identical. The mark
+       now BREAKS the silhouette: the tick crosses the body's right edge, the
+       "unavailable" bar crosses both side edges, and "not stated" is the dashed body
+       with no mark at all. Bounding boxes did not grow, so (1) still holds.
+   (3) C7 · every <svg> in this file asserted in prose that it was hidden and
+       none of them carried aria-hidden. Chromium exposed them as unnamed
+       image nodes, so a screen-reader user heard a graphic before each
+       availability phrase. All 17 now carry aria-hidden="true" and
+       focusable="false"; the WORD beside each is the accessible name.
+
+   ---- 2026-09-07 · COPY NORMALISED · PRD §3 ----------------------------
+   "Shows free" and "Shows taken" were a SYNONYM invented during this run
+   and are gone. The canonical strings are the ones the spines already
+   carry -- PRD :117, :501, :579, the architecture spine :144 and :464,
+   restated at EXPERIENCE.md:482. On a CARD: "Shows available" /
+   "Shows unavailable" / "Not stated". On a LIST ROW it opens up:
+   "Shows available across all three days" /
+   "Shows unavailable on 27 November" / "Hasn't set dates yet".
+   Inventing a second word for a state the glossary already names is the
+   divergence the glossary exists to prevent, so no shortening may buy
+   the width back. Measured after, at the tight case: the longest string,
+   "Shows unavailable", is 117.83px inside the 141.5px content box of a
+   161.5px card in the 360px two-up grid. One line, no overflow, card
+   heights unchanged -- the layout needed no adjustment.
+   ========================================================================== */
+:root{
+  --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
+  --vermillion:#E01B33;--turmeric:#FFC300;--gold-tint:#FFEBB0;--hairline:#F6E2C2;
+  --e1:0 2px 9px rgba(190,30,50,.10);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --disp:'Playfair Display',Georgia,serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/1.55 var(--sans)}
+.wrap{max-width:1080px;margin:0 auto}
+.lede{max-width:74ch;margin:0 auto 26px}
+.lede h1{font-family:var(--disp);font-size:1.76rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.cols{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.col{flex:1 1 320px;max-width:400px}
+.col>h2{font-family:var(--disp);font-size:1.14rem;margin:0 0 3px}
+.col>.s{font-size:.8rem;color:#8d868b;margin:0 0 12px;min-height:2.8em}
+.pane{background:var(--ground);border-radius:9px;padding:14px;color:var(--ink)}
+.big{display:flex;gap:18px;justify-content:center;margin-bottom:14px;padding-bottom:14px;
+  border-bottom:1px solid var(--hairline)}
+.big figure{margin:0;text-align:center}
+.big figcaption{font-size:.59rem;color:var(--muted);margin-top:5px;line-height:1.3}
+.r{border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.r40{width:40px;height:40px}.r16{width:16px;height:16px}
+.y{background:var(--gold-tint);border:2px solid var(--muted);color:var(--ink)}
+.n{background:var(--surface);border:1px solid var(--muted);color:var(--muted)}
+.u{background:var(--surface);border:1px dashed var(--muted);color:var(--muted)}
+svg{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.vc{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;overflow:hidden;
+  box-shadow:var(--e1)}
+.vc .ph{height:56px;background:linear-gradient(150deg,#FFE7A8,#FFBDB6)}
+.vc .tx{padding:8px 9px 9px}
+.vc h5{margin:0 0 2px;font-size:.79rem;font-family:var(--disp);font-weight:400;line-height:1.25}
+.vc .pr{font-weight:700;font-size:.73rem}
+.sig{display:inline-flex;align-items:center;gap:5px;font-size:.65rem;margin-bottom:5px;line-height:1.2}
+.sig.q{color:var(--muted)}
+.gray{filter:grayscale(1)}
+/* C22/C20 · these captions sit on {colors.ground}: #8D868B there is 3.458:1
+   at 10.08px. {colors.muted} is 4.766:1, at the 11px label floor. */
+.grayNote{font-size:11px;color:var(--muted);text-align:center;margin-top:5px}
+.verdict{font-size:.79rem;color:#a9a3a8;margin:11px 0 0;line-height:1.5}
+.verdict b{color:#ddd8dc}
+.blur{filter:blur(.6px)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>Set B, cut twice</h1>
+  <p>Your calendar marks, drawn at two optical sizes so they hold up where they actually get used.
+     Left is the drawing as it was; right is the small cut. Both are the same icon family.</p>
+  <p class="hint">The bottom strip of each column is blurred slightly — that is roughly what a
+     1.7px stroke does on a density-2.0 Android at 16px, where a hairline lands on one device pixel
+     and either aliases or drops out. It is the cheapest honest simulation of the real device.</p>
+</div>
+<div class="cols">
+
+  <!-- ======= AS DRAWN ======= -->
+  <div class="col">
+    <h2>As drawn — one cut</h2>
+    <p class="s">Full calendar at every size: body, tabs, header bar, inner grid line, mark.</p>
+    <div class="pane">
+      <div class="big">
+        <figure><span class="r r40 y"><svg width="22" height="22" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+          <path d="M3 8h14M6.5 3v3M13.5 3v3M7 12l2 2 4-4.5"/></svg></span>
+          <figcaption>40px</figcaption></figure>
+        <figure><span class="r r16 y"><svg width="10" height="10" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+          <path d="M3 8h14M6.5 3v3M13.5 3v3M7 12l2 2 4-4.5"/></svg></span>
+          <figcaption>16px</figcaption></figure>
+      </div>
+      <div class="grid2">
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 y"><svg width="10" height="10" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+            <path d="M3 8h14M6.5 3v3M13.5 3v3M7 12l2 2 4-4.5"/></svg></span>Shows available</span>
+          <h5>Shubhmangal Lawns</h5><span class="pr">₹1,80,000</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 n"><svg width="10" height="10" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+            <path d="M3 8h14M6.5 3v3M13.5 3v3M7 12.5h6"/></svg></span>Shows unavailable</span>
+          <h5>Annapurna Caterers</h5><span class="pr">₹420 / plate</span></div></div>
+      </div>
+      <div class="blur" style="margin-top:10px">
+        <div class="grid2">
+          <div class="vc"><div class="ph"></div><div class="tx">
+            <span class="sig"><span class="r r16 y"><svg width="10" height="10" viewBox="0 0 20 20"
+              fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+              <path d="M3 8h14M6.5 3v3M13.5 3v3M7 12l2 2 4-4.5"/></svg></span>Shows available</span>
+            <h5>Shubhmangal Lawns</h5></div></div>
+          <div class="vc"><div class="ph"></div><div class="tx">
+            <span class="sig"><span class="r r16 n"><svg width="10" height="10" viewBox="0 0 20 20"
+              fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+              <path d="M3 8h14M6.5 3v3M13.5 3v3M7 12.5h6"/></svg></span>Shows unavailable</span>
+            <h5>Annapurna Caterers</h5></div></div>
+        </div>
+      </div>
+      <p class="grayNote">as it renders on a low-density screen</p>
+    </div>
+    <p class="verdict"><b>Available and unavailable stop separating.</b> The header bar, the grid line and the
+      mark all sit within four pixels of each other and merge into one grey band.</p>
+  </div>
+
+  <!-- ======= TWO CUTS ======= -->
+  <div class="col">
+    <h2>Two cuts — small variant</h2>
+    <p class="s">Below 20px the inner grid comes out and the stroke goes 1.7 → 2.4. Body, tabs,
+      header bar and mark remain. The cut is drawn at <b>10×10 inside the 12px inner box</b> so no
+      corner rides the ring stroke, and the mark <b>breaks the body silhouette</b> — the tick
+      crosses the right edge, the bar crosses both — rather than sitting inside it as an interior
+      detail, which is where two icons stop differing.</p>
+    <div class="pane">
+      <div class="big">
+        <figure><span class="r r40 y"><svg width="22" height="22" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="1.5"/>
+          <path d="M3 8h14M6.5 3v3M13.5 3v3M7 12l2 2 4-4.5"/></svg></span>
+          <figcaption>40px<br>large cut</figcaption></figure>
+        <figure><span class="r r16 y"><svg width="10" height="10" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/>
+          <path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/>
+          <path d="M6.4 12.4l2.6 2.6 9.1-9.3" stroke-width="2.6"/></svg></span>
+          <figcaption>16px<br>small cut</figcaption></figure>
+      </div>
+      <div class="grid2">
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 y"><svg width="10" height="10" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/>
+            <path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/>
+            <path d="M6.4 12.4l2.6 2.6 9.1-9.3" stroke-width="2.6"/></svg></span>Shows available</span>
+          <h5>Shubhmangal Lawns</h5><span class="pr">₹1,80,000</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 n"><svg width="10" height="10" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/>
+            <path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/>
+            <path d="M1.6 13h16.8" stroke-width="2.8"/></svg></span>Shows unavailable</span>
+          <h5>Annapurna Caterers</h5><span class="pr">₹420 / plate</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig q"><span class="r r16 u"><svg width="10" height="10" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"
+            stroke-dasharray="3.4 3.2"/><path d="M6.5 3.2v3.4M13.5 3.2v3.4"/></svg></span>Not stated</span>
+          <h5>Sant Sakhu Karyalay</h5><span class="pr">₹95,000</span></div></div>
+        <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="sig"><span class="r r16 y"><svg width="10" height="10" viewBox="0 0 20 20"
+            fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/>
+            <path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/>
+            <path d="M6.4 12.4l2.6 2.6 9.1-9.3" stroke-width="2.6"/></svg></span>Shows available</span>
+          <h5>Ravi Studios</h5><span class="pr">₹65,000</span></div></div>
+      </div>
+      <div class="blur" style="margin-top:10px">
+        <div class="grid2">
+          <div class="vc"><div class="ph"></div><div class="tx">
+            <span class="sig"><span class="r r16 y"><svg width="10" height="10" viewBox="0 0 20 20"
+              fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/>
+              <path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/>
+              <path d="M6.4 12.4l2.6 2.6 9.1-9.3" stroke-width="2.6"/></svg></span>Shows available</span>
+            <h5>Shubhmangal Lawns</h5></div></div>
+          <div class="vc"><div class="ph"></div><div class="tx">
+            <span class="sig"><span class="r r16 n"><svg width="10" height="10" viewBox="0 0 20 20"
+              fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/>
+              <path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/>
+              <path d="M1.6 13h16.8" stroke-width="2.8"/></svg></span>Shows unavailable</span>
+            <h5>Annapurna Caterers</h5></div></div>
+        </div>
+      </div>
+      <p class="grayNote">as it renders on a low-density screen</p>
+
+      <div class="gray" style="margin-top:10px"><div class="big" style="border:0;padding:0;margin:0">
+        <figure><span class="r r40 y"><svg width="22" height="22" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="2.5" y="5" width="15" height="12" rx="2"/>
+          <path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/>
+          <path d="M6.4 12.4l2.6 2.6 9.1-9.3" stroke-width="2.6"/></svg></span></figure>
+        <figure><span class="r r40 n"><svg width="22" height="22" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="2.5" y="5" width="15" height="12" rx="2"/>
+          <path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/>
+          <path d="M1.6 13h16.8" stroke-width="2.8"/></svg></span></figure>
+        <figure><span class="r r40 u"><svg width="22" height="22" viewBox="0 0 20 20" fill="none"
+          stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="2.5" y="5" width="15" height="12" rx="2" stroke-dasharray="3.4 3.2"/>
+          <path d="M6.5 3.2v3.4M13.5 3.2v3.4"/></svg></span></figure>
+      </div></div>
+      <p class="grayNote">greyscale</p>
+    </div>
+    <p class="verdict"><b>Holds.</b> Tick, bar and empty-dashed stay separable blurred and in grey.
+      Still unmistakably a calendar — the tabs and the header bar do that work, not the grid lines.</p>
+  </div>
+</div>
+
+<div class="lede" style="margin-top:26px">
+  <p class="hint">Working artifact · <code>.working/availability-icons-b.html</code> · 2026-09-07.
+    Both cuts are inline SVG inheriting <code>currentColor</code>, <code>aria-hidden</code>, with the
+    word beside them carrying the meaning for a screen reader. The ring treatment — solid, thin,
+    dashed — still carries the state without the icon at all.</p>
+</div>
+</div>
+</body>
+</html>

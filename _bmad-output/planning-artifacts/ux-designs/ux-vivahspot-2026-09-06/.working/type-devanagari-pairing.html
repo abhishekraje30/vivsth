@@ -9,6 +9,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&family=Rozha+One&family=Tiro+Devanagari+Marathi&family=Martel:wght@200;400;700;900&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
+   ACCESSIBILITY REMEDIATION · 2026-09-07 · against review-accessibility.md
+   S7 SC 3.1.2 Language of Parts, Level AA. Every Devanagari run in this file
+      now carries lang="mr". Without it TalkBack and VoiceOver read Marathi
+      with an English voice, which produces noise rather than words — and
+      this file is nothing but Devanagari runs inside an English document.
+      Detecting the script is not asking the Family to declare a language:
+      the Unicode block is in the string. The English lines beside them are
+      left unmarked, so they stay in the document language.
+   This file is a type specimen. Nothing about the faces, the sizes, the
+   palette or the comparison was changed.
+   ==========================================================================
    DEVANAGARI PAIRING FOR THE INVITATION CARD
    Palette: Kumkum & Turmeric (chosen). bg #FFFCF2 card #fff ink #2B0A0E
    muted #8C6A50 vermillion #E01B33 turmeric #FFC300 rule2 #FFEBB0 line #F6E2C2
@@ -26,6 +37,17 @@
      interface chrome + dates ... English, always        -> Playfair
      couple names ............... user-entered content   -> may be Devanagari
      venue name ................. vendor-entered Listing -> may be Devanagari
+   ==========================================================================    ---- SUPERSESSION (Reconciliation contract, Rule C-0) · 2026-09-07 --------
+   THIS FILE IS EVIDENCE, NOT A SPECIFICATION. It is round 1 of the Devanagari search and
+   it did not settle anything: INKNUT ANTIQUA won in round 2 (.memlog.md:40),
+   and the Devanagari type ramp has since moved again -- body-long-devanagari
+   is 0.94rem/400 and review-devanagari 0.92rem/400 (.memlog.md:98). The
+   specimens here render neither. Fixed here anyway: C12, the "not chosen"
+   line was {colors.muted} at opacity .8, 3.319:1 -- a fade that arrived by
+   being copied from the previous mock rather than by anyone choosing it.
+   Contrast, motion and accessibility DEFECTS are still fixed here, because a
+   defect is not design content and a rejected drawing is no place to leave
+   one travelling; the design content itself is frozen.
    ========================================================================== */
 *{box-sizing:border-box}
 body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
@@ -55,7 +77,10 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
   color:#8C6A50;margin-bottom:10px;font-family:'Playfair Display',serif}
 .ln{text-align:center;font-size:.86rem;padding:2px 0}
 .ln.en{font-family:'Playfair Display',serif}
-.ln.todo{color:#8C6A50;opacity:.8;font-size:.78rem;font-family:'Playfair Display',serif}
+/* C12 · {colors.muted} at opacity .8 recomputes to 3.319:1 on surface -- the
+   back-door fade DESIGN.md:595 bans, and it arrived here by being copied
+   from the last mock rather than by anyone deciding it. Full strength. */
+.ln.todo{color:#8C6A50;font-size:.78rem;font-family:'Playfair Display',serif}
 .pg{margin-top:10px;display:flex;align-items:center;gap:7px}
 .pg .b{flex:1;height:3px;background:#FFEBB0}
 .pg .b i{display:block;height:100%;width:60%;background:#FFC300}
@@ -82,7 +107,7 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
 <div class="lede">
   <h1>Which Devanagari serif goes on the card</h1>
   <p>The same invitation card, in Kumkum &amp; Turmeric, with the couple named
-     <b>ओंकार आणि स्नेहल</b> and the venue <b>शुभमंगल लॉन्स</b> — both of which are
+     <b lang="mr">ओंकार आणि स्नेहल</b> and the venue <b lang="mr">शुभमंगल लॉन्स</b> — both of which are
      user-entered content and can arrive in any script. Underneath each card, a vendor's
      Rules in Marathi, because that is where Devanagari appears at length and small sizes.</p>
   <p class="hint">The English lines — the date, the labels, the progress count — stay in Playfair
@@ -98,16 +123,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
       </div>
     </div>
     <p class="verdict"><b>The failure mode.</b> The names drop to the phone's default UI sans while
@@ -120,16 +145,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
       </div>
     </div>
     <p class="verdict"><b>The tonal match.</b> Same thick-thin drama as Playfair — on the card
@@ -143,16 +168,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
       </div>
     </div>
     <p class="verdict"><b>The correct one.</b> Cut for Marathi rather than Hindi, and a proper book
@@ -166,16 +191,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
       </div>
     </div>
     <p class="verdict"><b>The workhorse.</b> Names set at 700 here to hold their own against Playfair.

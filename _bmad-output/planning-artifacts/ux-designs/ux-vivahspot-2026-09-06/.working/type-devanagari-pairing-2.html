@@ -9,6 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&family=Rozha+One&family=Inknut+Antiqua:wght@400;700;900&family=Tillana:wght@400;700&family=Ranga:wght@400;700&family=Amita:wght@400;700&family=Yatra+One&family=Vesper+Libre:wght@400;700;900&family=Anek+Devanagari:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
+   ACCESSIBILITY REMEDIATION · 2026-09-07 · against review-accessibility.md
+   S7 SC 3.1.2 Language of Parts, Level AA. Every Devanagari run now carries
+      lang="mr" so a screen reader switches voice. Without it TalkBack and
+      VoiceOver read Marathi with an English voice — noise, not words. The
+      English lines beside them stay unmarked and inherit the document
+      language, which is the point of marking the run and not the page.
+   This file is a type specimen. Nothing about the nine faces, the sizes, the
+   palette or the comparison was changed.
+   ==========================================================================
    DEVANAGARI PAIRING — ROUND 2, WIDER SEARCH
    Palette: Kumkum & Turmeric. bg #FFFCF2 card #fff ink #2B0A0E muted #8C6A50
    vermillion #E01B33 turmeric #FFC300 rule2 #FFEBB0 line #F6E2C2
@@ -27,6 +36,15 @@
    Rejected before rendering, wrong register for an invitation: Modak, Baloo 2,
    Khand, Kurale, Asar, Gotu, Jaini, Palanquin, Kadwa, Sumana, Sahitya, Halant,
    Laila, Noto Serif Devanagari (correct but characterless).
+   ==========================================================================    ---- SUPERSESSION (Reconciliation contract, Rule C-0) · 2026-09-07 --------
+   THIS FILE IS EVIDENCE, NOT A SPECIFICATION. It is the round-2 comparison of nine faces.
+   INKNUT ANTIQUA won it (.memlog.md:40); the other eight are the record of
+   why. The ramp has since moved to 0.94rem/400 and 0.92rem/400
+   (.memlog.md:98) and is not what these specimens render. Fixed here anyway:
+   C12, the "not chosen" line was {colors.muted} at opacity .8, 3.319:1.
+   Contrast, motion and accessibility DEFECTS are still fixed here, because a
+   defect is not design content and a rejected drawing is no place to leave
+   one travelling; the design content itself is frozen.
    ========================================================================== */
 *{box-sizing:border-box}
 body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
@@ -57,7 +75,10 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
   color:#8C6A50;margin-bottom:8px;font-family:'Playfair Display',serif}
 .ln{text-align:center;font-size:.8rem;padding:1px 0}
 .ln.en{font-family:'Playfair Display',serif}
-.ln.todo{color:#8C6A50;opacity:.8;font-size:.7rem;font-family:'Playfair Display',serif}
+/* C12 · {colors.muted} at opacity .8 recomputes to 3.319:1 on surface -- the
+   back-door fade DESIGN.md:595 bans, and it arrived here by being copied
+   from the last mock rather than by anyone deciding it. Full strength. */
+.ln.todo{color:#8C6A50;font-size:.7rem;font-family:'Playfair Display',serif}
 .pg{margin-top:8px;display:flex;align-items:center;gap:6px}
 .pg .b{flex:1;height:3px;background:#FFEBB0}
 .pg .b i{display:block;height:100%;width:60%;background:#FFC300}
@@ -93,7 +114,7 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
 <div class="lede">
   <h1>Devanagari, wider search</h1>
   <p>Eight faces this time, all verified to carry both scripts. Same card, same kumkum palette,
-     same test: <b>ओंकार आणि स्नेहल</b> on the card, and a vendor's Rules underneath at the size
+     same test: <b lang="mr">ओंकार आणि स्नेहल</b> on the card, and a vendor's Rules underneath at the size
      someone actually reads them.</p>
   <p class="hint">Rozha is ringed in gold so you can hold the others against it. The last card is a
      different proposition — <b>Inknut Antiqua setting everything</b>, English included, which would
@@ -110,16 +131,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
       </div>
     </div>
     <p class="verdict"><b>Your current pick.</b> High-contrast display, closest tonal match to Playfair. One weight, and it stiffens at paragraph size.</p>
@@ -131,16 +152,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
       </div>
     </div>
     <p class="verdict"><b>The printed book.</b> Ornate old-style with heavy serifs and real weight range. Feels letterpressed rather than rendered — the closest thing here to an actual wedding card.</p>
@@ -152,16 +173,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
       </div>
     </div>
     <p class="verdict"><b>The brush.</b> Calligraphic, with the stroke modulation of hand lettering. Festive without being cartoonish, and it has the weights to stay legible small.</p>
@@ -173,16 +194,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
       </div>
     </div>
     <p class="verdict"><b>The invitation script.</b> Semi-connected, decorative, unmistakably a wedding card. Beautiful for three names, hard work for a paragraph.</p>
@@ -194,16 +215,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
       </div>
     </div>
     <p class="verdict"><b>The signboard.</b> Traditional display with strong flat strokes — the lettering on an old sweet shop. Loud and warm, low subtlety.</p>
@@ -215,16 +236,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
       </div>
     </div>
     <p class="verdict"><b>The quirky one.</b> Idiosyncratic display with a hand-cut feel. Full of personality and completely inflexible — one weight, and it never whispers.</p>
@@ -236,16 +257,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
       </div>
     </div>
     <p class="verdict"><b>The sturdy serif.</b> Squarer and heavier than Rozha, four weights, built for screens. Least romantic, most reliable across the whole app.</p>
@@ -257,16 +278,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
       </div>
     </div>
     <p class="verdict"><b>The modern one.</b> Clean, contemporary, no ornament at all. If the celebration is going to come from colour and motion rather than type, this gets out of the way.</p>
@@ -278,16 +299,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="card">
       <div class="inv">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div>
         <div class="ln en">27 November 2026</div>
-        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln dev" lang="mr">शुभमंगल लॉन्स</div>
         <div class="ln todo">· · · caterer not chosen · · ·</div>
         <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
       </div>
       <div class="rules">
         <div class="h">Rules</div>
-        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+        <p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
       </div>
     </div>
     <p class="verdict"><b>One family, both scripts.</b> Every string on the card set in Inknut, English included. No pairing to maintain, no seam where the scripts meet, and a single decision in DESIGN.md instead of a rule about when to switch.</p>

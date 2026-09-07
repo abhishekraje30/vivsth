@@ -6,12 +6,54 @@
 <title>Vivah Spot — which home screen?</title>
 <style>
 /*
+  ACCESSIBILITY REMEDIATION · 2026-09-07 · against review-accessibility.md
+  C1  every control — tab item, search button, hero CTA, "See all", "Enquire" —
+      now clears a 44px hit area. Nothing was scaled down to fit.
+  S1  the active tab carries an indicator rule as well as colour and weight.
+  S3  the search field's boundary was 1.23:1, so a text input had no visible
+      edge; --soft draws it now at 5.49:1.
+  S4  Screen B's budget bar had no text label at all. DESIGN.md makes the
+      "n OF 5" label mandatory because a progress fill cannot carry state on
+      its own; the label is now part of the bar.
+  1.4.1  the service state dot separated done / part / none by hue alone. It
+      keeps the hue and gains a glyph. This skin is provisional and its own
+      values were left untouched; the glyph colour #2a242a was recomputed
+      against all three fills — 5.81:1, 8.19:1 and 9.86:1.
+  D12 the three service-state dots and the "block locked" line were Unicode
+      state marks (U+2713, U+25D1, U+2013, U+25CF). They are inline SVG now,
+      currentColor, aria-hidden, with the adjacent word carrying the name.
+  Nothing about the provisional palette, the type or the two structures was
+  changed. This file compares STRUCTURE; the remediation does not touch that.
+
+  ---- SUPERSESSION (Reconciliation contract, Rule C-0) ----------------------
+  THIS FILE IS EVIDENCE, NOT A SPECIFICATION. Its skin predates every visual
+  decision the product now holds: the palette (T3 Kumkum & Turmeric), the
+  type pairing (Playfair Display + Inknut Antiqua), the Invitation-card
+  direction, and the tab bar. Read it for STRUCTURE ONLY — Screen A (the shop)
+  won, and that choice is recorded in .memlog.md. Contrast and accessibility
+  defects are still fixed here; design content is frozen.
+
   GOVERNED BY:
   Screen A  -> .working/extract-site-ia.md (index.html as published; structure verbatim)
   Screen B  -> prd.md FR-10 (Workspace is home), FR-68 (Services chosen at the Wedding),
                FR-8 (budget fills itself; "not yet estimated", never Rs 0), UJ-1 (Rutuja / Omkar & Snehal)
   SKIN      -> PROVISIONAL AND IDENTICAL ACROSS BOTH. Visual identity is undecided
                (.memlog.md: PRD NFR 5.10 marked stale). Judge structure only.
+  ---- 2026-09-07 · NAVIGATION GLYPHS -> INLINE SVG ---------------------
+  The previous pass converted the state marks and vendor-calendar-360's
+  navigation glyphs but left this file's as Unicode, so the prototypes
+  disagreed with each other -- the exact divergence class the whole
+  reconciliation exists to remove. Converted here on the same reasoning
+  the state marks were: a heart, an envelope and a smiling face
+  take emoji presentation on several Android builds, which puts unchosen
+  colour into a system where colour is the one thing that carries meaning.
+  ONE set for the whole product: a 20x20 grid, 1.9 stroke (2px-
+  equivalent), round caps and joins, currentColor, aria-hidden="true"
+  focusable="false", and the adjacent tab LABEL carrying the accessible
+  name. The calendar is the availability ring's cut verbatim, so there
+  is one calendar mark and not two. The drawings and the centring rule
+  are in the NAVIGATION ICONS block at the foot of this stylesheet.
+  Measured after: every tab is still 48.00px tall and nothing overflows.
 */
 :root{
   --bg:#fff7fb; --surface:#fff; --text:#3a2f37; --soft:#736570;
@@ -133,6 +175,61 @@ header.page p{margin:0 0 6px;max-width:64ch;color:#4a444a}
 .notes .k{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
   color:var(--soft);display:block;margin-bottom:5px}
 footer.page{margin-top:34px;font-size:.8rem;color:#5a545a;border-top:1px solid #dcd8dc;padding-top:14px}
+
+/* =========================================================================
+   REMEDIATION BLOCK — overrides only, nothing above was restructured
+   ========================================================================= */
+
+/* C1 · 44px hit areas on every control. */
+.tabs{padding:0 4px}
+.tab{position:relative;min-height:48px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:4px 2px}
+/* S3 · the search field's only edge was --border at 1.23:1 against the card,
+   so a text input had no perceivable shape. --soft draws it: 5.49:1. The
+   token's value is untouched; only which token draws the boundary changed. */
+.search{padding:5px 5px 5px 15px;border-color:var(--soft)}
+.search b,.hero b,.vcard .cta{min-height:44px;display:inline-flex;align-items:center;
+  justify-content:center;padding:8px 17px;line-height:1.2}
+.rowhead a{min-height:44px;display:inline-flex;align-items:center;padding:0 2px}
+.svc,.fn{min-height:44px}
+
+/* S1 · A third signal for the active tab that is a shape rather than a hue. */
+.tab.on::before{content:"";position:absolute;top:0;left:20%;right:20%;
+  height:3px;background:currentColor}
+
+/* S4 · The bar cannot carry the state alone, so it never appears without its
+   count. Bar and label are one component. */
+.barlab{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--soft);margin-top:5px}
+
+/* SC 1.4.1 · The service state dot keeps its hue and gains a mark, so the
+   three states read in greyscale. Glyph colour recomputed against each fill:
+   5.81:1 on the done green, 8.19:1 on the part amber, 9.86:1 on the none
+   grey. The fills themselves are untouched — this skin is provisional.
+
+   2026-09-07 · RECONCILIATION D12/C5. The marks WERE Unicode — U+2713,
+   U+25D1, U+2013 on ::before. DESIGN.md:607 bans a Unicode state glyph
+   outright: U+2713 takes emoji presentation on several Android builds, which
+   would put an unchosen green tick into a system whose stated rule is that
+   nothing means "good" by being green. They are now inline SVG inheriting
+   currentColor, aria-hidden, and the WORD beside each one carries the
+   accessible name. */
+.svc .dot{width:14px;height:14px;display:inline-flex;align-items:center;
+  justify-content:center;font-style:normal;color:#2a242a}
+.svc .dot svg{display:block}
+
+/* ==========================================================================
+   NAVIGATION ICONS — INLINE SVG, NOT UNICODE
+   The reasoning that forced SVG on the state marks applies unchanged here:
+   the heart and the envelope take emoji presentation on several Android
+   builds, which drops unchosen colour into a system where colour carries
+   meaning. One set, 20x20 grid, 1.9 stroke, round caps, currentColor,
+   aria-hidden="true" focusable="false" -- the adjacent tab LABEL is the
+   accessible name. The calendar is the availability ring's cut verbatim, so
+   the product has one calendar mark rather than two. The glyphs were text
+   and are now replaced elements, so each one is centred explicitly.
+   ========================================================================== */
+.tab .ic svg{display:block;margin:0 auto}
 </style>
 </head>
 <body>
@@ -196,11 +293,11 @@ footer.page{margin-top:34px;font-size:.8rem;color:#5a545a;border-top:1px solid #
         </div>
       </div>
       <div class="tabs">
-        <div class="tab on"><i class="ic">&#9750;</i>Home</div>
-        <div class="tab"><i class="ic">&#9906;</i>Explore</div>
-        <div class="tab"><i class="ic">&#9829;</i>Saved</div>
-        <div class="tab"><i class="ic">&#9635;</i>Planner</div>
-        <div class="tab"><i class="ic">&#9711;</i>Account</div>
+        <div class="tab on"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.9 9.3L10 3.3l7.1 6"/><path d="M4.7 8.5v8.3h10.6V8.5"/></svg></i>Home</div>
+        <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="8.9" cy="8.9" r="5.2"/><path d="M12.8 12.8l4 4"/></svg></i>Explore</div>
+        <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.37 3.84a4.58 4.58 0 0 0-6.48 0L10 4.72l-.88-.88a4.58 4.58 0 1 0-6.48 6.48l.88.88L10 17.69l6.48-6.48.88-.88a4.58 4.58 0 0 0 0-6.48z"/></svg></i>Saved</div>
+        <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="7" cy="10" r="4.9"/><circle cx="13" cy="10" r="4.9"/></svg></i>Planner</div>
+        <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>Account</div>
       </div>
     </div></div>
 
@@ -231,10 +328,11 @@ footer.page{margin-top:34px;font-size:.8rem;color:#5a545a;border-top:1px solid #
       <div class="wed">
         <h3>Omkar &amp; Snehal</h3>
         <div class="place">Shrirampur &middot; ~600 guests</div>
-        <div class="lock">&#9679; 27 November block locked</div>
+        <div class="lock"><svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4.5" y="9" width="11" height="8" rx="1.5"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9"/></svg>27 November block locked</div>
         <div class="bud">
           <div class="line"><span>Running total</span><b>&#8377;4,20,000 <span style="font-weight:400;color:var(--soft)">of &#8377;8,00,000</span></b></div>
           <div class="bar"><i></i></div>
+          <div class="barlab">2 OF 5 services costed</div>
         </div>
       </div>
       <div class="body"><div class="pad">
@@ -247,28 +345,28 @@ footer.page{margin-top:34px;font-size:.8rem;color:#5a545a;border-top:1px solid #
           <div class="n"><b>Reception</b><span>Evening &middot; 400 guests</span></div></div>
 
         <div class="sec">Services &mdash; 5 chosen</div>
-        <div class="svc"><span class="dot d-done"></span>
+        <div class="svc"><span class="dot d-done"><svg width="9" height="9" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 10.6l4 4 8-9"/></svg></span>
           <div class="n"><b>Venue</b><span>Shubhmangal Lawns selected</span></div>
           <div class="amt">&#8377;1,80,000</div></div>
-        <div class="svc"><span class="dot d-done"></span>
+        <div class="svc"><span class="dot d-done"><svg width="9" height="9" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 10.6l4 4 8-9"/></svg></span>
           <div class="n"><b>Catering</b><span>Annapurna Caterers selected</span></div>
           <div class="amt">&#8377;2,40,000<em>&#8377;400 &times; 600</em></div></div>
-        <div class="svc"><span class="dot d-part"></span>
+        <div class="svc"><span class="dot d-part"><svg width="9" height="9" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 3.4a6.6 6.6 0 0 0 0 13.2z" fill="currentColor" stroke="none"/><circle cx="10" cy="10" r="6.6"/></svg></span>
           <div class="n"><b>Photography</b><span>3 shortlisted &middot; 1 enquiry awaiting quote</span></div>
           <div class="amt" style="font-weight:400;font-size:.73rem;color:var(--soft)">not yet<br>estimated</div></div>
-        <div class="svc"><span class="dot d-none"></span>
+        <div class="svc"><span class="dot d-none"><svg width="9" height="9" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.4 10h11.2"/></svg></span>
           <div class="n"><b>D&eacute;cor &amp; Mandap</b><span>Not started</span></div>
           <div class="amt" style="font-weight:400;font-size:.73rem;color:var(--soft)">not yet<br>estimated</div></div>
-        <div class="svc"><span class="dot d-none"></span>
+        <div class="svc"><span class="dot d-none"><svg width="9" height="9" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.4 10h11.2"/></svg></span>
           <div class="n"><b>Band Baaja Baraat</b><span>Not started</span></div>
           <div class="amt" style="font-weight:400;font-size:.73rem;color:var(--soft)">not yet<br>estimated</div></div>
       </div></div>
       <div class="tabs">
-        <div class="tab on"><i class="ic">&#9635;</i>Wedding</div>
-        <div class="tab"><i class="ic">&#9906;</i>Services</div>
-        <div class="tab"><i class="ic">&#9993;</i>Enquiries</div>
-        <div class="tab"><i class="ic">&#9787;</i>Guests</div>
-        <div class="tab"><i class="ic">&#9711;</i>Account</div>
+        <div class="tab on"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="7" cy="10" r="4.9"/><circle cx="13" cy="10" r="4.9"/></svg></i>Wedding</div>
+        <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="8.9" cy="8.9" r="5.2"/><path d="M12.8 12.8l4 4"/></svg></i>Services</div>
+        <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Enquiries</div>
+        <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="7.8" cy="7.2" r="3"/><path d="M2.7 16.8c0-2.9 2.3-4.7 5.1-4.7s5.1 1.8 5.1 4.7"/><path d="M13.9 5.1a3 3 0 0 1 0 5.8M15.2 12.5c1.5.7 2.5 2.2 2.5 4.3"/></svg></i>Guests</div>
+        <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>Account</div>
       </div>
     </div></div>
 

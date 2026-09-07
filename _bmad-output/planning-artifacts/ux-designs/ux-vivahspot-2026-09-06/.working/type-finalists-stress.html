@@ -9,6 +9,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&family=Rozha+One&family=Amita:wght@400;700&family=Inknut+Antiqua:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
+   ACCESSIBILITY REMEDIATION · 2026-09-07 · against review-accessibility.md
+   S7 SC 3.1.2 Language of Parts, Level AA. Every Devanagari run now carries
+      lang="mr" so a screen reader switches voice. The English strings beside
+      them — the capacity line, the price, the reviewer's name and date —
+      stay unmarked and inherit the document language.
+   C1 the "Enquire" control in the list row and the filter chips now clear a
+      44px hit area. Only the box grew: the type sizes this file exists to
+      compare are untouched, and each specimen is still labelled with the
+      size it renders at.
+   ---- SUPERSESSION (Reconciliation contract, Rule C-0 / D13) · 2026-09-07 --
+   THIS FILE IS FROZEN COMPARISON EVIDENCE. The Rules and review blocks below
+   render Inknut Antiqua at 0.84rem / weight 300 and 0.82rem / weight 300.
+   THOSE VALUES NO LONGER EXIST. The tokens were changed after this file was
+   drawn, and the current values are:
+       body-long-devanagari   0.94rem / 400 / line-height 1.9
+       review-devanagari      0.92rem / 400 / line-height 1.85
+   (.memlog.md:98; DESIGN.md tokens.) Indic typography needs roughly
+   1.15-1.3x the Latin optical size for equivalent legibility, and weight 300
+   Devanagari lands matras on a single device pixel on a mid-range Android.
+   THE SPECIMENS HERE ARE DELIBERATELY NOT UPDATED: they are the evidence the
+   finding rests on, and bringing them up to date would erase the reason the
+   token moved. The current values are drawn instead in the new specimen
+   .working/type-devanagari-ramp-current.html, so 0.94rem/400 Inknut has been
+   seen at least once. Read this file only as the BEFORE.
+   ==========================================================================
    THE THREE FINALISTS, IN EVERY PLACE DEVANAGARI ACTUALLY LANDS
    All three look good on three names at 1.3rem. They come apart at small
    sizes, in long paragraphs, and on lines where both scripts share a row.
@@ -96,6 +121,18 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
 .solo p{font-size:.76rem;color:#a9c9c3;margin:9px 0 0;line-height:1.5}
 .verdict{font-size:.78rem;color:#a9a3a8;margin:12px 0 0;line-height:1.55}
 .verdict b{color:#ddd8dc}
+
+/* ==========================================================================
+   REMEDIATION BLOCK — overrides only, nothing above was restructured
+   ========================================================================== */
+
+/* C1 · 44px hit areas on the two controls in these specimens. The chips keep
+   their 0.7rem type — that is what the specimen is measuring — and grow only
+   in box, so the letterforms under comparison are unchanged. */
+.vr .p i{min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+  padding:6px 12px}
+.chips i{min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+  padding:4px 14px}
 </style>
 </head>
 <body>
@@ -118,29 +155,29 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="pane">
       <div class="lab">On the card — 1.35rem</div>
       <div class="inv"><div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div></div>
 
       <div class="lab">Vendor row in a list — 0.95rem</div>
       <div class="vr"><div class="th"></div>
-        <div class="t"><b>शुभमंगल लॉन्स</b><span>Lawns &amp; Venues · 800 capacity</span></div>
+        <div class="t"><b lang="mr">शुभमंगल लॉन्स</b><span>Lawns &amp; Venues · 800 capacity</span></div>
         <div class="p"><b>₹1,80,000</b><i>Enquire</i></div></div>
 
       <div class="lab">Both scripts on one line — 0.86rem</div>
-      <div class="mix"><span class="dv">अन्नपूर्णा केटरर्स</span>
+      <div class="mix"><span class="dv" lang="mr">अन्नपूर्णा केटरर्स</span>
         <span class="l"> · veg &amp; jain · ₹420 / plate</span></div>
 
       <div class="lab">A vendor's Rules — 0.84rem</div>
-      <div class="rules"><p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.
+      <div class="rules"><p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.
         फटाके पूर्णपणे बंद. पार्किंग २०० गाड्यांसाठी उपलब्ध.</p></div>
 
       <div class="lab">A family's review — 0.82rem</div>
       <div class="rev"><div class="who">Rutuja B. · November 2026</div>
-        <p>लॉन खूप छान आहे. स्वच्छता उत्तम होती आणि व्यवस्थापन वेळेवर हजर होते.
+        <p lang="mr">लॉन खूप छान आहे. स्वच्छता उत्तम होती आणि व्यवस्थापन वेळेवर हजर होते.
         जेवणाची जागा मोठी आहे.</p></div>
 
       <div class="lab">Filter chips — 0.7rem</div>
-      <div class="chips"><i>शाकाहारी</i><i>पार्किंग</i><i>AC हॉल</i></div>
+      <div class="chips"><i lang="mr">शाकाहारी</i><i lang="mr">पार्किंग</i><i lang="mr">AC हॉल</i></div>
     </div>
     <p class="verdict"><b>Strongest on the card, weakest everywhere else.</b> The high contrast that makes the names sing turns the Rules into thin, spiky lines at 0.84rem. And with one weight, the vendor name in a list row cannot be any bolder than the review text beneath it — the hierarchy has to come entirely from size and colour.</p>
   </section>
@@ -151,29 +188,29 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="pane">
       <div class="lab">On the card — 1.35rem</div>
       <div class="inv"><div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div></div>
 
       <div class="lab">Vendor row in a list — 0.95rem</div>
       <div class="vr"><div class="th"></div>
-        <div class="t"><b>शुभमंगल लॉन्स</b><span>Lawns &amp; Venues · 800 capacity</span></div>
+        <div class="t"><b lang="mr">शुभमंगल लॉन्स</b><span>Lawns &amp; Venues · 800 capacity</span></div>
         <div class="p"><b>₹1,80,000</b><i>Enquire</i></div></div>
 
       <div class="lab">Both scripts on one line — 0.86rem</div>
-      <div class="mix"><span class="dv">अन्नपूर्णा केटरर्स</span>
+      <div class="mix"><span class="dv" lang="mr">अन्नपूर्णा केटरर्स</span>
         <span class="l"> · veg &amp; jain · ₹420 / plate</span></div>
 
       <div class="lab">A vendor's Rules — 0.84rem</div>
-      <div class="rules"><p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.
+      <div class="rules"><p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.
         फटाके पूर्णपणे बंद. पार्किंग २०० गाड्यांसाठी उपलब्ध.</p></div>
 
       <div class="lab">A family's review — 0.82rem</div>
       <div class="rev"><div class="who">Rutuja B. · November 2026</div>
-        <p>लॉन खूप छान आहे. स्वच्छता उत्तम होती आणि व्यवस्थापन वेळेवर हजर होते.
+        <p lang="mr">लॉन खूप छान आहे. स्वच्छता उत्तम होती आणि व्यवस्थापन वेळेवर हजर होते.
         जेवणाची जागा मोठी आहे.</p></div>
 
       <div class="lab">Filter chips — 0.7rem</div>
-      <div class="chips"><i>शाकाहारी</i><i>पार्किंग</i><i>AC हॉल</i></div>
+      <div class="chips"><i lang="mr">शाकाहारी</i><i lang="mr">पार्किंग</i><i lang="mr">AC हॉल</i></div>
     </div>
     <p class="verdict"><b>The most wedding-like, and the most demanding.</b> On the card it is genuinely lovely. In the Rules block the connected strokes and tight counters make a paragraph real work on a mid-range screen — and Dattatray's Rules are load-bearing text a family must read correctly before they enquire.</p>
   </section>
@@ -184,29 +221,29 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
     <div class="pane">
       <div class="lab">On the card — 1.35rem</div>
       <div class="inv"><div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार <span class="amp">आणि</span> स्नेहल</div>
         <div class="sub">Shrirampur</div></div>
 
       <div class="lab">Vendor row in a list — 0.95rem</div>
       <div class="vr"><div class="th"></div>
-        <div class="t"><b>शुभमंगल लॉन्स</b><span>Lawns &amp; Venues · 800 capacity</span></div>
+        <div class="t"><b lang="mr">शुभमंगल लॉन्स</b><span>Lawns &amp; Venues · 800 capacity</span></div>
         <div class="p"><b>₹1,80,000</b><i>Enquire</i></div></div>
 
       <div class="lab">Both scripts on one line — 0.86rem</div>
-      <div class="mix"><span class="dv">अन्नपूर्णा केटरर्स</span>
+      <div class="mix"><span class="dv" lang="mr">अन्नपूर्णा केटरर्स</span>
         <span class="l"> · veg &amp; jain · ₹420 / plate</span></div>
 
       <div class="lab">A vendor's Rules — 0.84rem</div>
-      <div class="rules"><p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.
+      <div class="rules"><p lang="mr">बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.
         फटाके पूर्णपणे बंद. पार्किंग २०० गाड्यांसाठी उपलब्ध.</p></div>
 
       <div class="lab">A family's review — 0.82rem</div>
       <div class="rev"><div class="who">Rutuja B. · November 2026</div>
-        <p>लॉन खूप छान आहे. स्वच्छता उत्तम होती आणि व्यवस्थापन वेळेवर हजर होते.
+        <p lang="mr">लॉन खूप छान आहे. स्वच्छता उत्तम होती आणि व्यवस्थापन वेळेवर हजर होते.
         जेवणाची जागा मोठी आहे.</p></div>
 
       <div class="lab">Filter chips — 0.7rem</div>
-      <div class="chips"><i>शाकाहारी</i><i>पार्किंग</i><i>AC हॉल</i></div>
+      <div class="chips"><i lang="mr">शाकाहारी</i><i lang="mr">पार्किंग</i><i lang="mr">AC हॉल</i></div>
     </div>
     <p class="verdict"><b>The one that holds up in all six places.</b> Names at 700, vendor row at 500, Rules and reviews dropped to 300 so the paragraphs breathe. That weight range is doing real work here — it is the only finalist that can build hierarchy without changing size or colour.</p>
   </section>
@@ -218,7 +255,7 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
       <div class="h">The other option — Inknut for English too, retiring Playfair</div>
       <div class="inv2">
         <div class="orn">❁❁❁</div>
-        <div class="nm">ओंकार आणि स्नेहल</div>
+        <div class="nm" lang="mr">ओंकार आणि स्नेहल</div>
         <div class="sb">Shrirampur</div>
         <div class="en">27 November 2026</div>
         <div class="en">Shubhmangal Lawns</div>

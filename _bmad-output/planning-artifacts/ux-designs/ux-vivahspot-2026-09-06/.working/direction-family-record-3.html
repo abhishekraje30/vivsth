@@ -9,6 +9,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
+   ACCESSIBILITY REMEDIATION · 2026-09-07 · against review-accessibility.md
+   C3 two runs sat on {colors.gold-tint} in a colour DESIGN.md forbids there.
+      "There is no dispute process…" was {colors.muted} at 4.14:1 — the one
+      sentence EXPERIENCE.md says must be stated rather than hidden — and the
+      "Add my account first" ghost label was {colors.vermillion} at 4.06:1.
+      Both are now {colors.ink} at 15.41:1. Recomputed, not eyeballed; the
+      ghost keeps a vermillion rule, which clears the 3:1 non-text floor.
+   C1 buttons, menu rows and tab items clear a 44px hit area.
+   S1 the active tab carries an indicator rule as well as colour and weight.
+   No palette value, type choice or layout concept was changed.
+   ==========================================================================
    FR-47 — THE STRUCTURED RECORD A VENDOR KEEPS ABOUT A FAMILY
    Three fixed questions, no free text, no money question, never public,
    visible to Vendors receiving her Enquiry AND to her. NO DISPUTE PROCESS
@@ -19,6 +30,22 @@
    {colors.danger}. The platform does not judge these answers and cannot change
    them; colouring "No" as a failure would be Vivah Spot taking a side, which
    PRD 7.2 excludes. The answer is a word in {colors.ink}. Nothing else.
+
+   ---- 2026-09-07 · NAVIGATION GLYPHS -> INLINE SVG ---------------------
+   The previous pass converted the state marks and vendor-calendar-360's
+   navigation glyphs but left this file's as Unicode, so the prototypes
+   disagreed with each other -- the exact divergence class the whole
+   reconciliation exists to remove. Converted here on the same reasoning
+   the state marks were: a heart and an envelope
+   take emoji presentation on several Android builds, which puts unchosen
+   colour into a system where colour is the one thing that carries meaning.
+   ONE set for the whole product: a 20x20 grid, 1.9 stroke (2px-
+   equivalent), round caps and joins, currentColor, aria-hidden="true"
+   focusable="false", and the adjacent tab LABEL carrying the accessible
+   name. The calendar is the availability ring's cut verbatim, so there
+   is one calendar mark and not two. The drawings and the centring rule
+   are in the NAVIGATION ICONS block at the foot of this stylesheet.
+   Measured after: every tab is still 48.00px tall and nothing overflows.
    ========================================================================== */
 :root{
   --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
@@ -98,6 +125,46 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
 .discl p{margin:0 0 8px;font-size:.77rem;line-height:1.5}
 .discl ul{margin:0 0 9px;padding-left:16px;font-size:.77rem}
 .discl li{margin-bottom:3px}
+
+/* ==========================================================================
+   REMEDIATION BLOCK — overrides only, nothing above was restructured
+   ========================================================================== */
+
+/* C1 · 44px hit areas. */
+.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+  padding:8px 14px;line-height:1.2;white-space:nowrap}
+/* the 44px buttons are wider than the 35px ones were; let the pair stack onto
+   two rows rather than breaking a label across lines */
+.discl .acts{display:flex;gap:7px;flex-wrap:wrap}
+.menu a{min-height:44px}
+.tabs{padding:0 3px}
+.tab{position:relative;min-height:48px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:4px 2px}
+
+/* S1 · A third signal for the active tab that is a shape rather than a hue. */
+.tab.on::before{content:"";position:absolute;top:0;left:20%;right:20%;
+  height:3px;background:currentColor}
+
+/* C3 · Anything sitting on {colors.gold-tint} takes {colors.ink}. The two
+   fills that carry it here are .own and .discl, plus the highlighted menu
+   row. Ratios recomputed from hex: ink/gold-tint 15.412, muted/gold-tint
+   4.138 (banned), vermillion/gold-tint 4.061 (banned). */
+.discl p,.discl li,.discl ul{color:var(--ink)}
+.discl .btn.ghost,.own .btn.ghost{color:var(--ink);border-color:var(--vermillion)}
+.menu a.hi .ar{color:var(--ink)}
+
+/* ==========================================================================
+   NAVIGATION ICONS — INLINE SVG, NOT UNICODE
+   The reasoning that forced SVG on the state marks applies unchanged here:
+   the heart and the envelope take emoji presentation on several Android
+   builds, which drops unchosen colour into a system where colour carries
+   meaning. One set, 20x20 grid, 1.9 stroke, round caps, currentColor,
+   aria-hidden="true" focusable="false" -- the adjacent tab LABEL is the
+   accessible name. The calendar is the availability ring's cut verbatim, so
+   the product has one calendar mark rather than two. The glyphs were text
+   and are now replaced elements, so each one is centred explicitly.
+   ========================================================================== */
+.tab .ic svg{display:block;margin:0 auto}
 </style>
 </head>
 <body>
@@ -132,9 +199,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
            the wedding. You can see what they said.</p>
       </div>
     </div>
-    <div class="tabs"><div class="tab"><i class="ic">◳</i>Home</div><div class="tab"><i class="ic">◆</i>Wedding</div>
-      <div class="tab"><i class="ic">♡</i>Shortlists</div><div class="tab"><i class="ic">✉</i>Enquiries</div>
-      <div class="tab on"><i class="ic">◯</i>You</div></div>
+    <div class="tabs"><div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.9 9.3L10 3.3l7.1 6"/><path d="M4.7 8.5v8.3h10.6V8.5"/></svg></i>Home</div><div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="7" cy="10" r="4.9"/><circle cx="13" cy="10" r="4.9"/></svg></i>Wedding</div>
+      <div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.37 3.84a4.58 4.58 0 0 0-6.48 0L10 4.72l-.88-.88a4.58 4.58 0 1 0-6.48 6.48l.88.88L10 17.69l6.48-6.48.88-.88a4.58 4.58 0 0 0 0-6.48z"/></svg></i>Shortlists</div><div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Enquiries</div>
+      <div class="tab on"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
   </div></div>
   <p class="verdict"><b>Honest, and hard.</b> It is symmetrical — his answers become visible at the
     same instant hers do, so neither side learns first. The copy deliberately does not say
@@ -182,9 +249,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
           <span class="btn">Write your account</span></div>
       </div>
     </div>
-    <div class="tabs"><div class="tab"><i class="ic">◳</i>Home</div><div class="tab"><i class="ic">◆</i>Wedding</div>
-      <div class="tab"><i class="ic">♡</i>Shortlists</div><div class="tab"><i class="ic">✉</i>Enquiries</div>
-      <div class="tab on"><i class="ic">◯</i>You</div></div>
+    <div class="tabs"><div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.9 9.3L10 3.3l7.1 6"/><path d="M4.7 8.5v8.3h10.6V8.5"/></svg></i>Home</div><div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="7" cy="10" r="4.9"/><circle cx="13" cy="10" r="4.9"/></svg></i>Wedding</div>
+      <div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.37 3.84a4.58 4.58 0 0 0-6.48 0L10 4.72l-.88-.88a4.58 4.58 0 1 0-6.48 6.48l.88.88L10 17.69l6.48-6.48.88-.88a4.58 4.58 0 0 0 0-6.48z"/></svg></i>Shortlists</div><div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Enquiries</div>
+      <div class="tab on"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
   </div></div>
   <p class="verdict"><b>The gentlest, and the one that risks a nasty surprise.</b> Nothing intrudes on
     her month. But a family who never opens that menu is being assessed silently for as long as she
@@ -216,16 +283,16 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
           <li>Headcount held — <b>Yes</b></li>
           <li>Premises left as agreed — <b>No</b></li>
         </ul>
-        <p style="color:#8C6A50">There is no dispute process. You can add your own account and it
+        <p>There is no dispute process. You can add your own account and it
           travels beside their answers.</p>
-        <div style="display:flex;gap:7px">
+        <div class="acts">
           <span class="btn">Send the Enquiry</span>
           <span class="btn ghost">Add my account first</span></div>
       </div>
     </div>
-    <div class="tabs"><div class="tab"><i class="ic">◳</i>Home</div><div class="tab"><i class="ic">◆</i>Wedding</div>
-      <div class="tab"><i class="ic">♡</i>Shortlists</div><div class="tab on"><i class="ic">✉</i>Enquiries</div>
-      <div class="tab"><i class="ic">◯</i>You</div></div>
+    <div class="tabs"><div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.9 9.3L10 3.3l7.1 6"/><path d="M4.7 8.5v8.3h10.6V8.5"/></svg></i>Home</div><div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="7" cy="10" r="4.9"/><circle cx="13" cy="10" r="4.9"/></svg></i>Wedding</div>
+      <div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.37 3.84a4.58 4.58 0 0 0-6.48 0L10 4.72l-.88-.88a4.58 4.58 0 1 0-6.48 6.48l.88.88L10 17.69l6.48-6.48.88-.88a4.58 4.58 0 0 0 0-6.48z"/></svg></i>Shortlists</div><div class="tab on"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Enquiries</div>
+      <div class="tab"><i class="ic"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
   </div></div>
   <p class="verdict"><b>The most useful, and the most likely to feel like a gate.</b> It arrives when
     she can still do something — add her account before the Vendor reads it — which is the only

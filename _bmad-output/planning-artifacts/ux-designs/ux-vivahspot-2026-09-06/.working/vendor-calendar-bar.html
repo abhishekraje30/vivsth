@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — the underbar calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   THE VENDOR CALENDAR — UNDERBAR, MADE LEGIBLE
+   Author chose the bar. As first drawn it was 3px inset to 14% each side on a
+   ~40px cell -- the quietest of the three options and the hardest to see.
+   Strengthened: bar spans 70% of the cell, 4px tall, sits 3px from the bottom.
+   "Being asked about" becomes TWO COUNTABLE SEGMENTS, not a dash pattern:
+   at 4px on a 40px cell a dash reads as a smudge, two segments read as chosen.
+   Blocked keeps the struck-through number and takes no bar, so only two of the
+   three states use the bar at all.
+
+   ---- 2026-09-07 · RECONCILIATION CONTRACT, Part 2 §2.1 / §2.2 / §2.3 -------
+   THREE CHANGES, ALL MEASURED, NONE COSMETIC.
+
+   (1) ::after IS RESERVED FOR THE HIT AREA AND NOTHING ELSE. The second
+       pending segment used to be drawn on .new .ask::after -- two classes
+       against the overlay's one -- so specificity handed the pseudo-element
+       to the bar and the overlay collapsed to 13.19 x 4px on exactly the
+       cells Dattatray has to act on. Both segments are now ONE ::before
+       carrying a hard-stop gradient: no extra node, one paint, and ::after
+       is free. A state mark never again shares a pseudo-element with a hit
+       area, because specificity decides which survives and the loser is the
+       one nobody can see is missing.
+
+   (2) THE OVERLAY MAY NEVER EXCEED THE COLUMN PITCH. It was a fixed 44x44
+       box centred on a 42.58px cell, so neighbours overlapped by 1.42px and
+       the later sibling won the hit test: at a 284px column, elementFromPoint
+       on the visible right edge of "9" returned "10". It is now inset:-1px --
+       exactly half of the 2px gap on each side -- so the reachable box equals
+       the pitch, no two overlays intersect, and every target stays concentric
+       with its own number. The 44px floor is met by the CELL, never by the
+       overlay.
+
+   (3) BOTH BARS ARE {colors.vermillion} #E01B33. Turmeric measured 1.608:1
+       against {colors.surface} -- a sixth of the 3:1 SC 1.4.11 floor -- on
+       the very mark introduced to close a colour-alone finding. Vermillion is
+       4.801:1. The COUNT is now the only differentiator, in both columns of
+       this study, which is also what makes the comparison honest: the left
+       column varies the TEXTURE and nothing else. Segments are 29% / 12% gap
+       / 29% of the cell (the bar still spans 70%), widened from 31/8/31 so
+       the gap is 5.1px at a 42.58px cell and 4.25px at 35.44px -- clear of
+       the range in which a gap averages away.
+   ========================================================================== */
+:root{
+  --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
+  --vermillion:#E01B33;--turmeric:#FFC300;--gold-tint:#FFEBB0;--hairline:#F6E2C2;
+  --e1:0 2px 9px rgba(190,30,50,.10);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --disp:'Playfair Display',Georgia,serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/1.55 var(--sans)}
+.wrap{max-width:980px;margin:0 auto}
+.lede{max-width:72ch;margin:0 auto 26px}
+.lede h1{font-family:var(--disp);font-size:1.76rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.cols{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.col{flex:1 1 330px;max-width:400px}
+.col>h2{font-family:var(--disp);font-size:1.14rem;margin:0 0 3px}
+.col>.s{font-size:.8rem;color:#8d868b;margin:0 0 12px;min-height:3em}
+.pane{background:var(--ground);border-radius:9px;padding:13px;color:var(--ink)}
+.phone{width:334px;max-width:100%;margin:0 auto}
+.cal{background:var(--surface);border:1px solid var(--hairline);padding:11px;box-shadow:var(--e1)}
+.mh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
+.mh b{font-family:var(--disp);font-size:1rem}
+.mh span{font-size:11px;color:var(--muted)}
+.dow,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+/* C20 · weekday labels were 9.28px. 11px is the label floor. */
+.dow span{text-align:center;font-size:11px;color:var(--muted);padding-bottom:4px}
+.days b{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:400}
+.days b::after{content:"";position:absolute;inset:-1px}
+  /* HIT AREA ONLY -- reserved, never shared with a state mark. inset:-1px is
+     half the 2px gap, so the overlay is exactly the column pitch and two
+     overlays can never intersect. */
+.days b.off{color:var(--muted);opacity:1}
+.days b.blk{color:var(--muted);text-decoration:line-through}
+.k{display:flex;flex-direction:column;gap:6px;margin-top:11px;font-size:11px;color:var(--ink)}
+.k .sw{display:inline-block;width:22px;height:4px;margin-right:7px;vertical-align:2px}
+
+/* ---- OLD: 3px, inset 14% ---- */
+.old .eng{font-weight:700}
+.old .eng::before{content:"";position:absolute;left:14%;right:14%;bottom:2px;height:3px;
+  background:var(--vermillion)}
+.old .ask{font-weight:700}
+.old .ask::before{content:"";position:absolute;left:14%;right:14%;bottom:2px;height:3px;
+  background-image:repeating-linear-gradient(90deg,var(--vermillion) 0 3px,transparent 3px 6px)}
+
+/* ---- NEW: 4px, 70% width, two segments ---- */
+.new .eng{font-weight:700}
+.new .eng::before{content:"";position:absolute;left:15%;width:70%;bottom:3px;height:4px;
+  border-radius:1px;background:var(--vermillion)}
+.new .ask{font-weight:700}
+/* TWO segments drawn as ONE ::before. The box spans 15%-85% of the cell (70%,
+   same as the engaged bar); the hard stops put each segment at 29% of the
+   cell and the gap at 12%: 29/70 = 41.4286%, 41/70 = 58.5714%. ::after stays
+   free for the hit area. */
+.new .ask::before{content:"";position:absolute;left:15%;width:70%;bottom:3px;height:4px;
+  border-radius:1px;
+  background:linear-gradient(90deg,var(--vermillion) 0 41.4286%,
+    transparent 41.4286% 58.5714%,var(--vermillion) 58.5714% 100%)}
+.blur{filter:blur(.6px)}
+.gray{filter:grayscale(1)}
+/* C22 · these captions sit on {colors.ground}, not on the dark page: #8D868B there is
+   3.458:1 and 10.08px. {colors.muted} is 4.766:1, and the size goes to the 11px label floor. */
+.note{font-size:11px;color:var(--muted);text-align:center;margin-top:5px}
+.verdict{font-size:.79rem;color:#a9a3a8;margin:11px 0 0;line-height:1.5}
+.verdict b{color:#ddd8dc}
+.block-284{max-width:980px;margin:30px auto 0}
+.s284{font-family:var(--disp);font-size:1.14rem;margin:0 0 6px}
+.p284{font-size:.84rem;color:#b3adb1;max-width:82ch;margin:0 0 13px;line-height:1.6}
+.p284 b{color:#ddd8dc}
+.mm284{font-family:ui-monospace,monospace;font-size:.68rem;color:#b3adb1;margin-top:7px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>The underbar, made legible</h1>
+  <p>Your choice, drawn twice. Both at a real 334px column, which puts each day cell at about 46px —
+     the tight case on Dattatray's phone.</p>
+  <p class="hint">Both bars are <code>{colors.vermillion}</code> — turmeric was 1.608:1 against the
+     surface and could not carry a mark. Under each grid: <b>blurred</b>, which is roughly what these strokes do on a
+     density-2.0 Android, and <b>greyscale</b>, which is the whole reason the bar exists. The blocked
+     state takes no bar at all — its struck-through number already separates it — so only two of the
+     three states need the bar to work.</p>
+</div>
+<div class="cols">
+
+  <div class="col">
+    <h2>As first drawn</h2>
+    <p class="s">3px tall, inset 14% each side, dashed for "being asked about".</p>
+    <div class="pane"><div class="phone"><div class="cal old">
+      <div class="mh"><b>November 2026</b><span>The lawn</span></div>
+      <div class="dow"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+      <div class="days">
+        <b class="off">26</b><b class="off">27</b><b class="off">28</b><b class="off">29</b><b class="off">30</b><b class="off">31</b><b>1</b>
+        <b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b>
+        <b>9</b><b>10</b><b>11</b><b>12</b><b>13</b><b class="eng">14</b><b>15</b>
+        <b>16</b><b>17</b><b>18</b><b>19</b><b>20</b><b>21</b><b class="ask">22</b>
+        <b>23</b><b>24</b><b>25</b><b class="ask">26</b><b class="eng">27</b><b class="ask">28</b><b>29</b>
+        <b>30</b><b class="blk">1</b><b>2</b><b>3</b><b class="ask">4</b><b>5</b><b>6</b></div>
+    </div></div>
+    <div class="blur" style="margin-top:9px"><div class="phone"><div class="cal old">
+      <div class="days">
+        <b>23</b><b>24</b><b>25</b><b class="ask">26</b><b class="eng">27</b><b class="ask">28</b><b>29</b></div>
+    </div></div></div><p class="note">blurred</p>
+    <div class="gray" style="margin-top:6px"><div class="phone"><div class="cal old">
+      <div class="days">
+        <b>23</b><b>24</b><b>25</b><b class="ask">26</b><b class="eng">27</b><b class="ask">28</b><b>29</b></div>
+    </div></div></div><p class="note">greyscale</p>
+    </div>
+    <p class="verdict"><b>The dash disappears.</b> At 3px the repeating pattern averages into a solid
+      line, so committed and being-asked-about become the same mark in grey and near-identical blurred.</p>
+  </div>
+
+  <div class="col">
+    <h2>Strengthened</h2>
+    <p class="s">4px tall, 70% of the cell, and two countable segments instead of a dash.</p>
+    <div class="pane"><div class="phone"><div class="cal new">
+      <div class="mh"><b>November 2026</b><span>The lawn</span></div>
+      <div class="dow"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+      <div class="days">
+        <b class="off">26</b><b class="off">27</b><b class="off">28</b><b class="off">29</b><b class="off">30</b><b class="off">31</b><b>1</b>
+        <b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b>
+        <b>9</b><b>10</b><b>11</b><b>12</b><b>13</b><b class="eng">14</b><b>15</b>
+        <b>16</b><b>17</b><b>18</b><b>19</b><b>20</b><b>21</b><b class="ask">22</b>
+        <b>23</b><b>24</b><b>25</b><b class="ask">26</b><b class="eng">27</b><b class="ask">28</b><b>29</b>
+        <b>30</b><b class="blk">1</b><b>2</b><b>3</b><b class="ask">4</b><b>5</b><b>6</b></div>
+      <div class="k">
+        <span><i class="sw" style="background:var(--vermillion)"></i>Engaged — an Agreement holds it</span>
+        <span><i class="sw" style="background:linear-gradient(90deg,var(--vermillion) 0 41.4286%,transparent 41.4286% 58.5714%,var(--vermillion) 58.5714%)"></i>Enquiries pending — still yours to confirm</span>
+        <span><i class="sw" style="background:transparent"></i><span style="text-decoration:line-through">You marked unavailable</span></span>
+      </div>
+    </div></div>
+    <div class="blur" style="margin-top:9px"><div class="phone"><div class="cal new">
+      <div class="days">
+        <b>23</b><b>24</b><b>25</b><b class="ask">26</b><b class="eng">27</b><b class="ask">28</b><b>29</b></div>
+    </div></div></div><p class="note">blurred</p>
+    <div class="gray" style="margin-top:6px"><div class="phone"><div class="cal new">
+      <div class="days">
+        <b>23</b><b>24</b><b>25</b><b class="ask">26</b><b class="eng">27</b><b class="ask">28</b><b>29</b></div>
+    </div></div></div><p class="note">greyscale</p>
+    </div>
+    <p class="verdict"><b>One bar versus two.</b> That difference survives blur and greyscale, because
+      it is a count rather than a texture. The grid stays as calm as you wanted — nothing is filled,
+      nothing is outlined, the month still reads as dates first.</p>
+  </div>
+</div>
+
+<div class="block-284">
+  <h2 class="s284">The 284px case, actually rendered</h2>
+  <p class="p284">The sentence this file used to carry — <em>"vertical ones never overlap"</em> — was
+     false, and it described a width this file never drew. With square cells and a uniform gap the
+     horizontal and vertical overlaps are <b>equal by construction</b>: row pitch and column pitch are
+     both <code>cell + gap</code>. So the honest rule is the one now in the stylesheet — the overlay is
+     never wider than the column pitch, and the 44px floor is met by the cell, not by the overlay.
+     Below a 44px pitch the cell cannot reach the floor, which is the bounded exception the phone month
+     grid now carries (40×40, 2px gap, 42px pitch).</p>
+  <div class="pane" style="max-width:310px"><div class="phone" style="width:284px"><div class="cal new">
+    <div class="mh"><b>November 2026</b><span>284px</span></div>
+    <div class="dow"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+    <div class="days">
+      <b>23</b><b>24</b><b>25</b><b class="ask">26</b><b class="eng">27</b><b class="ask">28</b><b>29</b>
+      <b>30</b><b class="blk">1</b><b>2</b><b>3</b><b class="ask">4</b><b>5</b><b>6</b></div>
+  </div></div></div>
+  <p class="mm284">measured below, not asserted</p>
+</div>
+
+<div class="lede" style="margin-top:26px">
+  <p class="hint">Working artifact · <code>.working/vendor-calendar-bar.html</code> · 2026-09-07.
+    Day cells keep a dense visual box; the hit overlay is <code>inset:-1px</code>, exactly half the gap,
+    so it equals the column pitch and never reaches into a neighbour. Seven clean 44px targets need
+    308px of cell width and a 360px phone offers 284px, so the shipped phone grid takes the named,
+    bounded exception at 40×40 with a 2px gap — comfortably above WCAG 2.2 SC 2.5.8's 24px, 4px under
+    the product's own 44px bar, knowingly, and licensing nothing else. Above 768px the full grid meets
+    44px with no exception.</p>
+</div>
+</div>
+</body>
+</html>

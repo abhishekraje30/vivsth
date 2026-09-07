@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — the Featured band, and a selected chip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   TWO THINGS THAT HAD NEVER BEEN DRAWN — C18 / A5
+   1 · THE FEATURED BAND. grep -ic "featured|paid placement" returned 0 across
+       seventeen of the eighteen working files; the two hits were a "Featured
+       near you" browse rail, which is the anti-pattern EXPERIENCE.md:702
+       names. FR-20 requires paid placement be IDENTIFIED TO THE FAMILY, and
+       the author chose the heading word "Featured" (.memlog.md:84) knowing it
+       is the euphemism FR-20 was written against. That choice stands, and it
+       is met the only way it can be: THE HEADING NEVER APPEARS ALONE. Three
+       non-colour signals carry it --
+         (a) a BOUNDED CONTAINER, 1px {colors.muted} (4.766:1 on ground), so
+             the band is visibly a different region from the results below;
+         (b) the heading, plus a NON-OPTIONAL, NON-COLLAPSIBLE identifying
+             line: "Vendors pay for placement here. It does not affect the
+             results below." with a link to the FR-20 ordering disclosure.
+             If that line is ever softened or hidden the disclosure fails and
+             the heading will not save it;
+         (c) a per-card {components.badge-paid}: {colors.surface} fill, 1px
+             {colors.muted}, {colors.ink} label at {typography.meta}, and
+             {rounded.none} -- SQUARE, so it cannot be mistaken for the one
+             pill in the system. The literal word is "Featured".
+       A Featured chip built from {components.chip} would read as a SELECTED
+       FILTER, which is why badge-paid is its own component and not a variant.
+   2 · THE CHIP'S SELECTED STATE. DESIGN.md:565 says selection is never
+       carried by colour alone and specifies a leading check -- and that check
+       had never been drawn anywhere. It is here, INLINE SVG inheriting
+       currentColor and aria-hidden, with the word carrying the name. The chip
+       boundary is {colors.muted} (4.892 on surface), not turmeric: turmeric
+       is 1.608 and a chip edge nobody can see is not an edge.
+   Every colour is a DESIGN.md token; nothing new was invented. Requires
+   network for Playfair.
+   ========================================================================== */
+:root{
+  --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
+  --vermillion:#E01B33;--turmeric:#FFC300;--gold-tint:#FFEBB0;--hairline:#F6E2C2;
+  --e1:0 2px 9px rgba(190,30,50,.10);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --disp:'Playfair Display',Georgia,serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/1.55 var(--sans)}
+.wrap{max-width:1000px;margin:0 auto}
+.lede{max-width:76ch;margin:0 auto 26px}
+.lede h1{font-family:var(--disp);font-size:1.76rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.cols{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.col{flex:1 1 340px;max-width:440px}
+.col>h2{font-family:var(--disp);font-size:1.14rem;margin:0 0 3px}
+.col>.s{font-size:.82rem;color:#b3adb1;margin:0 0 12px;min-height:3.2em}
+.pane{background:var(--ground);border-radius:9px;padding:14px;color:var(--ink)}
+.phone{width:330px;max-width:100%;margin:0 auto}
+.verdict{font-size:.8rem;color:#a9a3a8;margin:11px 0 0;line-height:1.55}
+.verdict b{color:#ddd8dc}
+.gray{filter:grayscale(1)}
+.note{font-size:11px;color:#b3adb1;text-align:center;margin-top:6px}
+
+/* ---- {components.featured-band} ---- */
+.band{border:1px solid var(--muted);background:var(--surface);padding:11px 12px 12px}
+.band > h3{font-family:var(--disp);font-size:1rem;font-weight:400;margin:0}
+.band > .disc{font-size:11px;line-height:1.5;color:var(--ink);margin:4px 0 10px}
+.band > .disc a{color:var(--vermillion);text-underline-offset:2px}
+.band .cards{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.vc{background:var(--surface);border:1px solid var(--hairline);overflow:hidden;box-shadow:var(--e1)}
+.vc .ph{height:58px;background:linear-gradient(150deg,#FFE7A8,#FFBDB6)}
+.vc .tx{padding:8px 9px 9px}
+.vc h5{margin:0 0 3px;font-size:.8rem;font-family:var(--disp);font-weight:400;line-height:1.25}
+.vc .pr{font-weight:700;font-size:.74rem}
+/* {components.badge-paid} — SQUARE, so it is not the one pill in the system */
+.badge-paid{display:inline-block;background:var(--surface);border:1px solid var(--muted);
+  border-radius:0;color:var(--ink);font-size:11px;font-weight:700;letter-spacing:.06em;
+  padding:1px 6px;margin-bottom:5px}
+
+/* ---- the results below, for contrast ---- */
+.results{margin-top:12px}
+.results > h3{font-family:var(--disp);font-size:1rem;font-weight:400;margin:0 0 8px}
+
+/* ---- {components.chip}: rest and SELECTED ---- */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:6px 12px;
+  background:var(--gold-tint);border:1px solid var(--muted);border-radius:0;
+  color:var(--ink);font-size:.78rem}
+.chip svg{display:block}
+.chip .tick{display:none}
+.chip.on{background:var(--vermillion);border-color:var(--vermillion);color:#fff;font-weight:700}
+.chip.on .tick{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>The Featured band, and a chip that is selected</h1>
+  <p>Two things every review found missing and nothing had ever drawn. Both exist to stop a signal
+     being carried by colour alone — and in the band's case, to stop paid placement reading as
+     editorial choice.</p>
+  <p class="hint">Under each, the same thing in <b>greyscale</b>. If either stops working there it has
+     failed the test it was built for.</p>
+</div>
+<div class="cols">
+
+  <div class="col">
+    <h2>1 · The Featured band</h2>
+    <p class="s">A bounded region, a heading, a non-collapsible line that says what it is, and a
+      square badge on every card inside it. Four signals, one of them colour.</p>
+    <div class="pane"><div class="phone">
+      <div class="band">
+        <h3>Featured</h3>
+        <p class="disc">Vendors pay for placement here. It does not affect the results below.
+          <a href="#">How results are ordered</a></p>
+        <div class="cards">
+          <div class="vc"><div class="ph"></div><div class="tx">
+            <span class="badge-paid">Featured</span>
+            <h5>Shubhmangal Lawns</h5><span class="pr">₹1,80,000</span></div></div>
+          <div class="vc"><div class="ph"></div><div class="tx">
+            <span class="badge-paid">Featured</span>
+            <h5>Annapurna Caterers</h5><span class="pr">₹420 / plate</span></div></div>
+        </div>
+      </div>
+      <div class="results">
+        <h3>Lawns &amp; Venues in Shrirampur</h3>
+        <div class="cards" style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+          <div class="vc"><div class="ph"></div><div class="tx">
+            <h5>Sant Sakhu Karyalay</h5><span class="pr">₹95,000</span></div></div>
+          <div class="vc"><div class="ph"></div><div class="tx">
+            <h5>Ravi Studios</h5><span class="pr">₹65,000</span></div></div>
+        </div>
+      </div>
+    </div></div>
+    <div class="pane gray" style="margin-top:9px"><div class="phone">
+      <div class="band"><h3>Featured</h3>
+        <p class="disc">Vendors pay for placement here. It does not affect the results below.</p>
+        <div class="cards"><div class="vc"><div class="ph"></div><div class="tx">
+          <span class="badge-paid">Featured</span><h5>Shubhmangal Lawns</h5></div></div>
+          <div class="vc"><div class="ph"></div><div class="tx">
+          <span class="badge-paid">Featured</span><h5>Annapurna Caterers</h5></div></div></div></div>
+    </div></div>
+    <p class="note">greyscale</p>
+    <p class="verdict"><b>The heading never appears alone.</b> That is the whole of FR-20 here. The
+      identifying line is not optional, not collapsible and not a tooltip; if it is ever softened,
+      the disclosure fails and the word <em>Featured</em> will not save it.</p>
+  </div>
+
+  <div class="col">
+    <h2>2 · A chip that is selected</h2>
+    <p class="s">The selected state was specified as “never colour alone, with a leading check”, and
+      the check had never been drawn. Here it is, as inline SVG.</p>
+    <div class="pane"><div class="phone">
+      <div class="chips">
+        <span class="chip on"><span class="tick"><svg width="13" height="13" viewBox="0 0 20 20"
+          fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 10.4l4.3 4.3 9-10"/>
+          </svg></span>Under ₹2,00,000</span>
+        <span class="chip">800+ capacity</span>
+        <span class="chip on"><span class="tick"><svg width="13" height="13" viewBox="0 0 20 20"
+          fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 10.4l4.3 4.3 9-10"/>
+          </svg></span>Parking</span>
+        <span class="chip">AC hall</span>
+      </div>
+    </div></div>
+    <div class="pane gray" style="margin-top:9px"><div class="phone">
+      <div class="chips">
+        <span class="chip on"><span class="tick"><svg width="13" height="13" viewBox="0 0 20 20"
+          fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 10.4l4.3 4.3 9-10"/>
+          </svg></span>Under ₹2,00,000</span>
+        <span class="chip">800+ capacity</span>
+      </div>
+    </div></div>
+    <p class="note">greyscale</p>
+    <p class="verdict"><b>Check, weight and fill — three signals.</b> The chip's boundary is
+      <code>{colors.muted}</code> at 4.892:1 on surface; turmeric measured 1.608 and could not draw
+      an edge at all. White on vermillion is 4.801:1. The word beside the check carries the
+      accessible name; the mark itself is <code>aria-hidden</code>.</p>
+  </div>
+</div>
+
+<div class="lede" style="margin-top:26px">
+  <p class="hint">Working artifact · <code>.working/featured-band.html</code> · 2026-09-07.
+    Drawn under Reconciliation C18 and §A5. <code>{components.badge-paid}</code> is deliberately
+    SQUARE so it cannot be read as the one pill in the system, and deliberately NOT built from
+    <code>{components.chip}</code> so it cannot be read as a selected filter. Every target clears
+    44px. Every colour is a DESIGN.md token; no new value was introduced.</p>
+</div>
+</div>
+</body>
+</html>

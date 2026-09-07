@@ -9,6 +9,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
+   ACCESSIBILITY REMEDIATION · 2026-09-07 · against review-accessibility.md
+   S5 "Retry" was a 34x20 unstyled span identified only by right-alignment —
+      a control conveyed by position. It is now a button at 44px in all three
+      treatments, each drawn so it reads as a control against its own band.
+      The photo placeholder's "tap to retry" is a button too, rather than a
+      dashed box whose tappability rested on the word "tap".
+   C3 T3 put {colors.muted} (4.138:1) and {colors.vermillion} (4.061:1) on
+      {colors.gold-tint}, which DESIGN.md forbids as text. Both are now
+      {colors.ink} at 15.412:1. Recomputed from hex.
+   C1 every button clears 44px.
+   Contrast of the new retry fills, all recomputed: ink/white 18.222,
+   danger/white 8.279, white/ink 18.222, danger/turmeric 5.148.
+   No palette value, type choice or layout concept was changed.
+   ==========================================================================
    WHAT FAILURE LOOKS LIKE — THREE TREATMENTS, THREE REAL CASES
    The problem: vermillion #E01B33 means ACTION and sits on every primary
    button. Red cannot also mean danger. DESIGN.md has no error colour.
@@ -109,6 +123,47 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
   display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--muted);
   border-radius:4px;flex-direction:column;gap:4px}
 .acts{display:flex;gap:8px;margin-top:10px}
+
+/* ==========================================================================
+   REMEDIATION BLOCK — overrides only, nothing above was restructured
+   ========================================================================== */
+
+/* C1 · every button clears the 44px floor. */
+.btn,.t2 .btn2,.t3 .btn3{min-height:44px;display:inline-flex;align-items:center;
+  justify-content:center;padding:8px 16px;line-height:1.2}
+
+/* S5 · The retry. DESIGN.md:243 specifies "button-primary with a
+   {colors.danger} background"; each treatment renders that idea in the
+   colour it is allowed to use, because the band it sits on differs.
+     T1  ink fill, white label       — T1 introduces no new colour   18.22:1
+     T2  white fill, clay label      — the band is already clay       8.28:1
+     T3  ink fill, white label       — the band is turmeric          18.22:1
+   In every case the fill's own boundary against the band clears 3:1
+   (ink/surface 18.22, white/clay 8.28, ink/turmeric 11.33). */
+.off .rt{min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+  padding:6px 16px;font-size:.78rem;font-weight:700;flex:none;margin-left:12px}
+.off{padding:6px 12px;min-height:56px}
+.t1 .off .rt{background:var(--ink);color:#fff}
+.t2 .off .rt{background:#fff;color:var(--clay)}
+.t3 .off .rt{background:var(--ink);color:#fff}
+
+/* S5 · The photo placeholder's retry is a button too, not a whole dashed box
+   whose tappability was carried by the word "tap". */
+/* specificity must match .t1/.t2/.t3 .brk above, which set height:78px */
+.t1 .brk,.t2 .brk,.t3 .brk{height:auto;min-height:112px;padding:10px 8px;gap:6px}
+.brk .rt{min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+  padding:6px 16px;font-size:.75rem;font-weight:700;margin-top:2px}
+.t1 .brk .rt{background:var(--ink);color:#fff}
+.t2 .brk .rt{background:var(--clay);color:#fff}
+.t3 .brk .rt{background:var(--ink);color:#fff}
+
+/* C3 · Nothing but {colors.ink} sits on {colors.gold-tint}. */
+.t3 .fail .btn.ghost{color:var(--ink);border-color:var(--vermillion)}
+.t3 .brk{color:var(--ink)}
+/* D12 · the broken-photo mark was U+25A2. Inline SVG now, currentColor,
+   aria-hidden; the words beside it carry the accessible name. */
+.brk .ic{display:inline-flex;align-items:center;margin-right:6px}
+.brk .ic svg{display:block}
 </style>
 </head>
 <body>
@@ -144,11 +199,11 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
     </div>
 
     <div class="lab">Offline while browsing</div>
-    <div class="off"><span><b>No connection.</b> Showing what was loaded.</span><span>Retry</span></div>
+    <div class="off"><span><b>No connection.</b> Showing what was loaded.</span><span class="rt">Retry</span></div>
 
     <div class="lab">A photo didn't load</div>
     <div class="card" style="margin-top:0">
-      <div class="brk"><span>▢</span>Photo didn't load — tap to retry</div>
+      <div class="brk"><span class="ic"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4" width="15" height="12" rx="1.5"/><path d="M2.5 12.5l4-3.5 3.4 3M12.3 11.2l1.6-1.4 3.6 3.1"/><circle cx="12.6" cy="7.6" r="1.1"/><path d="M4 16.6L16 3.4"/></svg></span>Photo didn't load<span class="rt">Retry</span></div>
       <div class="qt" style="margin-top:9px">Shubhmangal Lawns</div>
       <div class="mt">Lawns &amp; Venues · 800 capacity</div>
     </div>
@@ -180,11 +235,11 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
     </div>
 
     <div class="lab">Offline while browsing</div>
-    <div class="off"><span><b>No connection.</b> Showing what was loaded.</span><span>Retry</span></div>
+    <div class="off"><span><b>No connection.</b> Showing what was loaded.</span><span class="rt">Retry</span></div>
 
     <div class="lab">A photo didn't load</div>
     <div class="card" style="margin-top:0">
-      <div class="brk"><span>▢</span>Photo didn't load — tap to retry</div>
+      <div class="brk"><span class="ic"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4" width="15" height="12" rx="1.5"/><path d="M2.5 12.5l4-3.5 3.4 3M12.3 11.2l1.6-1.4 3.6 3.1"/><circle cx="12.6" cy="7.6" r="1.1"/><path d="M4 16.6L16 3.4"/></svg></span>Photo didn't load<span class="rt">Retry</span></div>
       <div class="qt" style="margin-top:9px">Shubhmangal Lawns</div>
       <div class="mt">Lawns &amp; Venues · 800 capacity</div>
     </div>
@@ -214,11 +269,11 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
     </div>
 
     <div class="lab">Offline while browsing</div>
-    <div class="off"><span><b>No connection.</b> Showing what was loaded.</span><span>Retry</span></div>
+    <div class="off"><span><b>No connection.</b> Showing what was loaded.</span><span class="rt">Retry</span></div>
 
     <div class="lab">A photo didn't load</div>
     <div class="card" style="margin-top:0">
-      <div class="brk"><span>▢</span>Photo didn't load — tap to retry</div>
+      <div class="brk"><span class="ic"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4" width="15" height="12" rx="1.5"/><path d="M2.5 12.5l4-3.5 3.4 3M12.3 11.2l1.6-1.4 3.6 3.1"/><circle cx="12.6" cy="7.6" r="1.1"/><path d="M4 16.6L16 3.4"/></svg></span>Photo didn't load<span class="rt">Retry</span></div>
       <div class="qt" style="margin-top:9px">Shubhmangal Lawns</div>
       <div class="mt">Lawns &amp; Venues · 800 capacity</div>
     </div>

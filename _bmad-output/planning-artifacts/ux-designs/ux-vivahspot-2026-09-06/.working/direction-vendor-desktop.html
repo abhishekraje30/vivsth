@@ -9,6 +9,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&family=Inknut+Antiqua:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
+   ACCESSIBILITY REMEDIATION · 2026-09-07 · against review-accessibility.md
+   C1 buttons, pills-as-controls, left-rail rows and calendar day cells all
+      clear a 44px hit area. The calendar keeps its visual density and takes
+      the hit area from an invisible ::after overlay.
+   C3 ghost buttons on {colors.gold-tint} carry an ink label (15.41:1) with a
+      vermillion rule, not a vermillion label at 4.06:1.
+   C4 the three calendar states carry a non-colour mark — filled dot, hollow
+      ring, strike + cross — and the legend shows the mark.
+   m2 the "marked unavailable" day number is ink on hairline (14.38:1).
+   Every ratio quoted was recomputed from hex, not recalled.
+   No palette value, type choice or layout concept was changed.
+   ==========================================================================
    THE VENDOR PORTAL AT DESKTOP WIDTH
    apps/vendor-web is Next.js 16.3.0 + React 19 + Tailwind 4, deploying to
    vendor.vivahspot.com. It is a RESPONSIVE WEB APP. NFR 5.2 says phone-first
@@ -16,6 +28,22 @@
    priority, not the ceiling. These are the same four surfaces at >=1024px.
    Below 768px each collapses to the phone in direction-vendor-4.html.
    Built from DESIGN.md tokens. Requires network.
+
+   ---- 2026-09-07 · NAVIGATION GLYPHS -> INLINE SVG ---------------------
+   The previous pass converted the state marks and vendor-calendar-360's
+   navigation glyphs but left this file's as Unicode, so the prototypes
+   disagreed with each other -- the exact divergence class the whole
+   reconciliation exists to remove. Converted here on the same reasoning
+   the state marks were: an envelope
+   take emoji presentation on several Android builds, which puts unchosen
+   colour into a system where colour is the one thing that carries meaning.
+   ONE set for the whole product: a 20x20 grid, 1.9 stroke (2px-
+   equivalent), round caps and joins, currentColor, aria-hidden="true"
+   focusable="false", and the adjacent tab LABEL carrying the accessible
+   name. The calendar is the availability ring's cut verbatim, so there
+   is one calendar mark and not two. The drawings and the centring rule
+   are in the NAVIGATION ICONS block at the foot of this stylesheet.
+   Measured after: every rail row is still 44.00px and nothing overflows.
    ========================================================================== */
 :root{
   --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
@@ -59,6 +87,7 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
 .side a.on{background:var(--gold-tint);border-left:3px solid var(--vermillion);
   padding-left:12px;font-weight:600}
 .side a.on .ic{color:var(--vermillion)}
+/* C3 · overridden below: the glyph is text, and vermillion on gold-tint is 4.061:1 */
 .side .sub{margin-top:auto;padding:12px 15px 0;border-top:1px solid var(--hairline);
   font-size:.7rem;color:var(--muted)}
 .side .sub b{display:block;font-family:var(--disp);font-size:.82rem;color:var(--ink)}
@@ -123,6 +152,115 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
   padding:11px 13px;margin-bottom:9px;box-shadow:var(--e1)}
 .today b{font-family:var(--disp);font-size:.94rem;display:block}
 .today span{font-size:.76rem;color:var(--muted)}
+
+/* ==========================================================================
+   REMEDIATION BLOCK — overrides only, nothing above was restructured
+   ========================================================================== */
+
+/* C1 · 44px hit areas. EXPERIENCE.md holds the portal to the same floor as
+   the app: it is read one-handed at somebody else's function. */
+.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+  padding:8px 16px;line-height:1.2}
+.pill{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:3px 11px}
+.pill.act{min-height:0;padding:3px 9px}      /* a status badge, not a control */
+.side a{min-height:44px}
+
+/* C1 · The month grid stays dense — seven columns is the layout concept —
+   so the visible cell keeps its width and an invisible ::after overlay
+   carries the 44x44 hit area. At desktop width the cell is wider than 44px
+   so the overlay sits entirely inside it; vertically the cell is raised to a
+   real 44px. Nothing overlaps at this width. */
+
+/* ==========================================================================
+   RECONCILIATION CONTRACT · 2026-09-07 · Part 2 §2.1 / §2.2 / §2.4
+   (a) THE DOTS DIE, THE BAR LIVES. This file drew the three calendar states
+       as Unicode dot / ring / cross on ::before. DESIGN.md:607 bans a Unicode
+       state glyph outright -- U+2713 and its neighbours take emoji
+       presentation on several Android builds -- and .memlog.md:106 is a user
+       decision that chose the underbar. The mark is now a COUNT: ONE bar =
+       engaged, TWO segments = Enquiries pending, NO bar plus a struck number
+       = unavailable. Segments are 29% / 12% gap / 29% of the cell so the
+       count survives blur at a small cell; the bar still spans 70%.
+   (b) BAR COLOUR. {colors.turmeric} was 1.608:1 on {colors.surface} and could
+       not carry a mark at all. Pending draws in {colors.vermillion} #E01B33,
+       4.061:1 on the gold-tint fill it sits on. Engaged sits on a VERMILLION
+       fill, where a vermillion bar would be invisible, so it draws in
+       {colors.surface} at 4.801:1 -- one ink per surface, the count unchanged.
+       This is the single place the one-ink rule bends, and it bends because
+       the alternative is a mark nobody can see. Cell FILLS are unchanged:
+       they are what make the month scannable.
+   (c) THE HIT OVERLAY MAY NEVER EXCEED THE COLUMN PITCH. It was a fixed
+       44x44 box centred on a desktop-width cell, so neighbours overlapped and the
+       later sibling won the hit test -- elementFromPoint on a date's right
+       edge returned the NEXT date. It is now inset:-(gap/2): the reachable
+       box equals the pitch exactly and no two overlays intersect, on either
+       axis. ::after is reserved for the hit area alone.
+   (d) The 44px floor is met by the CELL, never by the overlay. At desktop width the cell exceeds 44px on both axes, so no exception is needed here.
+   ========================================================================== */
+.cal .dow,.cal .days{gap:var(--calgap,5px)}
+.cal .days b{position:relative;aspect-ratio:auto;min-height:44px}
+.cal .days b::after{content:"";position:absolute;
+  inset:calc(var(--calgap,5px) / -2 - 1px)}   /* -1px absorbs the cell's own 1px
+     transparent border, so the reachable box is EXACTLY the pitch, never more */
+  /* HIT AREA ONLY. Reserved -- never shared with a state mark. */
+
+/* C4 · Non-colour marks for the three calendar states. */
+/* The three states, drawn as a count. .blk deliberately takes no bar. */
+.cal .days b.eng::before,.cal .days b.ask::before{
+  content:"";position:absolute;left:15%;width:70%;bottom:3px;height:4px;border-radius:1px}
+.cal .days b.eng::before{background:var(--surface)}
+.cal .days b.ask::before{background:linear-gradient(90deg,
+  var(--vermillion) 0 41.4286%,transparent 41.4286% 58.5714%,var(--vermillion) 58.5714% 100%)}
+.cal .days b.blk{color:var(--ink)}                   /* m2 · 14.38:1, was 3.86:1 */
+/* legend swatches render the actual marks, not glyphs */
+.key i{width:20px;height:4px;display:inline-block;margin-right:6px;vertical-align:2px;
+  border-radius:1px;font-style:normal;background:none;border:0}
+.key i.one{background:var(--vermillion)}
+.key i.two{background:linear-gradient(90deg,var(--vermillion) 0 41.4286%,
+  transparent 41.4286% 58.5714%,var(--vermillion) 58.5714% 100%)}
+.key i.non{width:20px;height:auto;vertical-align:0;text-align:center;color:var(--ink);
+  text-decoration:line-through;font-weight:400}
+
+/* C3 · Ghost button on {colors.gold-tint}: ink label 15.41:1, vermillion
+   rule 4.06:1 which still clears the 3:1 non-text floor. */
+.nudge .btn.ghost{color:var(--ink);border-color:var(--vermillion)}
+.side a.on .ic{color:var(--ink)}   /* 15.412:1; the row still has its fill, rule and weight */
+
+/* ==========================================================================
+   C9 · THE BREAKPOINT THIS FILE NEVER HAD
+   No @media rule existed in any vendor prototype. At a 320px viewport -- and
+   at a 32px root, which is what SC 1.4.4 asks the page to survive -- the
+   desktop WINDOW MOCK clipped rather than scrolled: .win carries
+   overflow:hidden, so the 536px application clipped to 284px and the content became unreachable.
+   Two changes:
+   (a) the window mock SCROLLS instead of clipping, so nothing is unreachable
+       at any width or any text size;
+   (b) both rails shrink first, because a fixed navigation rail and a fixed
+       context rail are the two things that should give way before the column
+       a Vendor actually reads.
+   EXPERIENCE.md:830 asserts the >=768px behaviour and nothing demonstrated it;
+   this is the demonstration. The PHONE frames are pixel-exact device mocks and
+   are deliberately NOT responsive -- being exactly 360px wide is their point.
+   ========================================================================== */
+@media (max-width:900px){
+  .win{overflow-x:auto;overflow-y:hidden}
+  .app{min-width:760px}
+  .side{width:168px}
+  .rail{width:232px}
+}
+
+/* ==========================================================================
+   NAVIGATION ICONS — INLINE SVG, NOT UNICODE
+   The reasoning that forced SVG on the state marks applies unchanged here:
+   the heart and the envelope take emoji presentation on several Android
+   builds, which drops unchosen colour into a system where colour carries
+   meaning. One set, 20x20 grid, 1.9 stroke, round caps, currentColor,
+   aria-hidden="true" focusable="false" -- the adjacent tab LABEL is the
+   accessible name. The calendar is the availability ring's cut verbatim, so
+   the product has one calendar mark rather than two. The glyphs were text
+   and are now replaced elements, so each one is centred explicitly.
+   ========================================================================== */
+.side a .ic svg{display:block;margin:0 auto}
 </style>
 </head>
 <body>
@@ -152,11 +290,11 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
     <div class="app">
       <div class="side">
         <div class="biz"><b>Shubhmangal Lawns</b><span>Shrirampur · Verified</span></div>
-        <a class="on"><span class="ic">✉</span>Enquiries<span class="ct">3</span></a>
-        <a><span class="ic">▦</span>Calendar</a>
-        <a><span class="ic">◈</span>Listings</a>
-        <a><span class="ic">◮</span>Performance</a>
-        <a><span class="ic">◯</span>Account</a>
+        <a class="on"><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></span>Enquiries<span class="ct">3</span></a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.5 11.8h.01M10 11.8h.01M13.5 11.8h.01M6.5 14.6h.01M10 14.6h.01"/></svg></span>Calendar</a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.4" y="6.4" width="12.2" height="11.2" rx="2"/><path d="M6.2 3.2h9.2a2.2 2.2 0 0 1 2.2 2.2v9.2"/></svg></span>Listings</a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.2 16.8v-4.4M10 16.8V6.2M14.8 16.8v-2.6"/></svg></span>Performance</a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></span>Account</a>
         <div class="sub"><b>Tier 2 · renews 1 June</b>Twelve months, paid in full</div>
       </div>
       <div class="main">
@@ -217,11 +355,11 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
     <div class="app">
       <div class="side">
         <div class="biz"><b>Shubhmangal Lawns</b><span>Thursday, 6 September</span></div>
-        <a class="on"><span class="ic">◳</span>Today</a>
-        <a><span class="ic">✉</span>Enquiries<span class="ct">3</span></a>
-        <a><span class="ic">▦</span>Calendar</a>
-        <a><span class="ic">◈</span>Listings</a>
-        <a><span class="ic">◯</span>Account</a>
+        <a class="on"><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.9 9.3L10 3.3l7.1 6"/><path d="M4.7 8.5v8.3h10.6V8.5"/></svg></span>Today</a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></span>Enquiries<span class="ct">3</span></a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.5 11.8h.01M10 11.8h.01M13.5 11.8h.01M6.5 14.6h.01M10 14.6h.01"/></svg></span>Calendar</a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.4" y="6.4" width="12.2" height="11.2" rx="2"/><path d="M6.2 3.2h9.2a2.2 2.2 0 0 1 2.2 2.2v9.2"/></svg></span>Listings</a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></span>Account</a>
         <div class="sub"><b>Tier 2 · renews 1 June</b>Twelve months, paid in full</div>
       </div>
       <div class="main">
@@ -271,11 +409,11 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
     <div class="app">
       <div class="side">
         <div class="biz"><b>Shubhmangal Lawns</b><span>The lawn · 800 capacity</span></div>
-        <a class="on"><span class="ic">▦</span>Calendar</a>
-        <a><span class="ic">✉</span>Enquiries<span class="ct">3</span></a>
-        <a><span class="ic">◈</span>Listings</a>
-        <a><span class="ic">◮</span>Performance</a>
-        <a><span class="ic">◯</span>Account</a>
+        <a class="on"><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.5 11.8h.01M10 11.8h.01M13.5 11.8h.01M6.5 14.6h.01M10 14.6h.01"/></svg></span>Calendar</a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></span>Enquiries<span class="ct">3</span></a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.4" y="6.4" width="12.2" height="11.2" rx="2"/><path d="M6.2 3.2h9.2a2.2 2.2 0 0 1 2.2 2.2v9.2"/></svg></span>Listings</a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.2 16.8v-4.4M10 16.8V6.2M14.8 16.8v-2.6"/></svg></span>Performance</a>
+        <a><span class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></span>Account</a>
         <div class="sub"><b>Tier 2 · renews 1 June</b>Twelve months, paid in full</div>
       </div>
       <div class="main">
@@ -294,9 +432,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/
               <b>30</b><b class="blk">1</b><b>2</b><b>3</b><b class="ask">4</b><b>5</b><b>6</b>
             </div>
             <div class="key">
-              <span><i style="background:var(--vermillion)"></i>Engaged — an Agreement holds it</span>
-              <span><i style="background:var(--gold-tint);border:1px solid var(--turmeric)"></i>Enquiries pending</span>
-              <span><i style="background:var(--hairline)"></i>You marked unavailable</span>
+              <span><i class="one"></i>Engaged — an Agreement holds it</span>
+              <span><i class="two"></i>Enquiries pending</span>
+              <span><i class="non">1</i><s>You marked unavailable</s></span>
             </div>
           </div>
         </div>

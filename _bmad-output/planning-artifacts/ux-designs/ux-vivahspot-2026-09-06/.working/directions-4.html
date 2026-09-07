@@ -6,7 +6,17 @@
 <title>Vivah Spot — four directions for home</title>
 <style>
 /* ============================================================
-   VIVAH SPOT — FOUR DESIGN DIRECTIONS FOR THE FAMILY HOME SCREEN
+   ACCESSIBILITY REMEDIATION · 2026-09-07 · against review-accessibility.md
+   C1 every control — tab item, search button, "See all", "Enquire", the
+      countdown ribbon segments, the "One next thing" link and the bell —
+      now clears a 44px hit area. Nothing was scaled down to fit.
+   S1 the active tab carries an indicator rule as well as colour and weight.
+   S3 the search field's hairline boundary computed 1.23:1, so a text input
+      had no visible edge; each direction's own --soft token draws it now.
+      Only which token draws the boundary changed, not the token's value.
+   Each direction here is a complete provisional personality; palette, type,
+   density, corner language and motion are all left exactly as they were.
+   ============================================================
    Governed by: .memlog.md (home = the shop; festive first; micro-animations;
    celebratory), extract-site-ia.md (component vocabulary), prd.md UJ-1 (content),
    FR-8 ("not yet estimated", never Rs 0), Sec 7.9 (no book/booking/cart/checkout).
@@ -16,7 +26,37 @@
    D2 ROSE & CREAM    shell #FFFBF9  ink #33262C  rose #D6446E  blush #FCE7EE  grey #7A6B72
    D3 HALDI BRIGHT    milk  #FFFDF5  plum #3A1B4A  turmeric #FFC42E  magenta #E12E6B
    D4 PEACOCK & GOLD  sand  #F7F2E7  ink #10262A  teal #0E4F52  peacock #12857F  gold #D7A64A
-   ============================================================ */
+   ============================================================    ---- SUPERSESSION (Reconciliation contract, Rule C-0) · 2026-09-07 --------
+   THIS FILE IS EVIDENCE, NOT A SPECIFICATION. It predates every decision it was drawn to
+   inform. DIRECTION 1, the Invitation card -- letterpress serif, square
+   corners, gold rule -- won (.memlog.md:26), and its palette was then replaced
+   wholesale: the four provisional palettes here are superseded by T3 KUMKUM &
+   TURMERIC (.memlog.md:29), and the type by Playfair Display + Inknut Antiqua
+   (.memlog.md:40). Read it for STRUCTURE and PERSONALITY only. Fixed here
+   anyway: C10 the foil and the benchmark meter animated background-position
+   and width; C12 the "not chosen" line was #BBAE9C at 2.177:1; M4 the empty
+   card's dashes were #C8BCA9 at 1.871:1; C19 the foil left a permanent band
+   under prefers-reduced-motion.
+   Contrast, motion and accessibility DEFECTS are still fixed here, because a
+   defect is not design content and a rejected drawing is no place to leave
+   one travelling; the design content itself is frozen.
+
+   ---- 2026-09-07 · NAVIGATION GLYPHS -> INLINE SVG ---------------------
+   The previous pass converted the state marks and vendor-calendar-360's
+   navigation glyphs but left this file's as Unicode, so the prototypes
+   disagreed with each other -- the exact divergence class the whole
+   reconciliation exists to remove. Converted here on the same reasoning
+   the state marks were: a heart
+   take emoji presentation on several Android builds, which puts unchosen
+   colour into a system where colour is the one thing that carries meaning.
+   ONE set for the whole product: a 20x20 grid, 1.9 stroke (2px-
+   equivalent), round caps and joins, currentColor, aria-hidden="true"
+   focusable="false", and the adjacent tab LABEL carrying the accessible
+   name. The calendar is the availability ring's cut verbatim, so there
+   is one calendar mark and not two. The drawings and the centring rule
+   are in the NAVIGATION ICONS block at the foot of this stylesheet.
+   Measured after: every tab is still 48.00px tall and nothing overflows.
+   ========================================================================== */
 
 *{box-sizing:border-box}
 body{margin:0;background:#1a1a1d;color:#e8e4e6;padding:30px 18px 70px;
@@ -56,7 +96,7 @@ body{margin:0;background:#1a1a1d;color:#e8e4e6;padding:30px 18px 70px;
 .pad{padding:14px 15px 20px}
 
 /* ---------- shop ---------- */
-.search{display:flex;align-items:center;background:var(--card);border:1px solid var(--line);
+.search{display:flex;align-items:center;background:var(--card);border:1px solid var(--soft);
   border-radius:var(--rPill);padding:5px 5px 5px 14px;box-shadow:var(--sh)}
 .search span{flex:1;color:var(--soft);font-size:.84rem}
 .search b{background:var(--brand);color:var(--onBrand);border-radius:var(--rPill);
@@ -108,18 +148,33 @@ body{margin:0;background:#1a1a1d;color:#e8e4e6;padding:30px 18px 70px;
   color:var(--soft);margin-bottom:11px}
 .inv .ln{text-align:center;font-size:.86rem;padding:3px 0;position:relative;overflow:hidden}
 .inv .ln.done{color:var(--ink)}
-.inv .ln.todo{color:#BBAE9C}
+/* C12 · #BBAE9C on surface is 2.177:1 -- the back-door fade DESIGN.md:595
+   bans, in hex rather than in opacity. {colors.muted} at full strength is
+   4.892:1 and is the rule already governing every other open fact on a card. */
+.inv .ln.todo{color:#8C6A50}
 .inv .ln.done::after{content:"";position:absolute;left:22%;right:22%;bottom:1px;height:1px;
   background:var(--gold);transform-origin:left;animation:ink 7s ease-in-out infinite}
-.inv .foil{position:absolute;inset:0;pointer-events:none;
+/* C10/C19 · 2026-09-07. The foil animated BACKGROUND-POSITION, which
+   DESIGN.md:600 bans: it repaints the whole overlay every frame and janks on
+   the mid-range Android NFR 5.3 targets. It is a translateX on an absolutely
+   positioned overlay now -- compositor-only, byte-for-byte the same sweep.
+   And under prefers-reduced-motion the overlay is DISPLAY:NONE rather than
+   merely animation:none: with the animation stopped it froze at its default
+   position and left a permanent diagonal gold band across the brand object.
+   Nothing becomes unreadable -- ink over the foil tint is 15.250:1 -- but a
+   band nobody asked for is a visible defect. */
+.inv .foil{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.inv .foil::before{content:"";position:absolute;top:0;bottom:0;left:0;width:260%;
   background:linear-gradient(105deg,transparent 38%,rgba(255,231,168,.75) 50%,transparent 62%);
-  background-size:260% 100%;animation:foil 5.5s ease-in-out infinite}
+  transform:translateX(-26.9231%);animation:foil 5.5s ease-in-out infinite}
 .inv .prog{margin-top:11px;display:flex;align-items:center;gap:8px}
 .inv .prog .bar{flex:1;height:3px;background:#F1E4CB}
 .inv .prog .bar i{display:block;height:100%;width:60%;background:var(--gold)}
 .inv .prog span{font-size:.68rem;color:var(--soft);letter-spacing:.06em}
 @keyframes ink{0%,12%{transform:scaleX(0)}38%,88%{transform:scaleX(1)}100%{transform:scaleX(1)}}
-@keyframes foil{0%,55%{background-position:170% 0}92%,100%{background-position:-70% 0}}
+/* the same two stops, expressed as a transform: 170% and -70% of a 260%-wide
+   overlay across its own box are -26.9231% and +65.3846% of the overlay. */
+@keyframes foil{0%,55%{transform:translateX(-26.9231%)}92%,100%{transform:translateX(65.3846%)}}
 
 /* =======================================================================
    D2 · ROSE & CREAM — One Next Thing
@@ -195,19 +250,58 @@ body{margin:0;background:#1a1a1d;color:#e8e4e6;padding:30px 18px 70px;
 .bm .r .tr i{display:block;height:100%;border-radius:999px;background:rgba(255,255,255,.4)}
 .bm .r .n{font-size:.72rem;width:34px;text-align:right;flex:none;opacity:.82}
 .bm .r.win .dt,.bm .r.win .n{opacity:1;font-weight:700;color:var(--gold)}
-.bm .r.win .tr i{background:var(--gold);animation:fill 6.5s ease-in-out infinite}
+/* C10 · this animated WIDTH, which DESIGN.md:600 bans: every frame relayouts
+   the row. scaleX with transform-origin:left is the same motion on the
+   compositor. The track starts at 60% and the transform takes it to 100%,
+   so the scale factor is 1 / 0.6 = 1.6667. */
+.bm .r.win .tr i{background:var(--gold);transform-origin:left;
+  animation:fill 6.5s ease-in-out infinite}
 .bm .r1 .tr i{width:60%}.bm .r3 .tr i{width:40%}
 .bm .foot{margin-top:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,.15);
   font-size:.74rem;opacity:.85}
 .bm .foot b{color:var(--gold)}
-@keyframes fill{0%,10%{width:60%}42%,88%{width:100%}100%{width:100%}}
+@keyframes fill{0%,10%{transform:scaleX(1)}42%,88%{transform:scaleX(1.6667)}100%{transform:scaleX(1.6667)}}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   .inv .ln.done::after{transform:scaleX(1)}
   .next .m1{opacity:0}.next .m2{opacity:1}
-  .bm .r.win .tr i{width:100%}
+  .bm .r.win .tr i{transform:scaleX(1.6667)}
+  .inv .foil{display:none}   /* C19 · not merely stopped: removed */
 }
+
+/* ============================================================
+   REMEDIATION BLOCK — overrides only, nothing above was restructured
+   ============================================================ */
+
+/* C1 · 44px hit areas on every control. */
+.tabs{padding:0 3px}
+.tab{position:relative;min-height:48px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:4px 2px}
+.search b,.vcard .cta{min-height:44px;display:inline-flex;align-items:center;
+  justify-content:center;padding:8px 16px;line-height:1.2}
+.rowhead a,.next .go{min-height:44px;display:inline-flex;align-items:center;padding:0 2px}
+.bell{min-width:44px;min-height:44px;display:inline-flex;align-items:center;
+  justify-content:center;margin-right:-8px}   /* the glyph keeps its optical position */
+.cd .rib{height:52px;padding:4px}
+.cd .rib div{line-height:44px}
+
+/* S1 · A third signal for the active tab that is a shape rather than a hue. */
+.tab.on::before{content:"";position:absolute;top:0;left:20%;right:20%;
+  height:3px;background:currentColor}
+
+/* ==========================================================================
+   NAVIGATION ICONS — INLINE SVG, NOT UNICODE
+   The reasoning that forced SVG on the state marks applies unchanged here:
+   the heart and the envelope take emoji presentation on several Android
+   builds, which drops unchosen colour into a system where colour carries
+   meaning. One set, 20x20 grid, 1.9 stroke, round caps, currentColor,
+   aria-hidden="true" focusable="false" -- the adjacent tab LABEL is the
+   accessible name. The calendar is the availability ring's cut verbatim, so
+   the product has one calendar mark rather than two. The glyphs were text
+   and are now replaced elements, so each one is centred explicitly.
+   ========================================================================== */
+.tab .ic svg{display:block;margin:0 auto}
 </style>
 </head>
 <body>
@@ -266,16 +360,16 @@ body{margin:0;background:#1a1a1d;color:#e8e4e6;padding:30px 18px 70px;
           <div class="ft"><span class="pr">&#8377;420 / plate</span><span class="cta">Enquire</span></div></div></div>
       </div>
     </div>
-    <div class="tabs"><div class="tab on"><i class="ic">&#9750;</i>Home</div>
-      <div class="tab"><i class="ic">&#9906;</i>Explore</div><div class="tab"><i class="ic">&#9829;</i>Shortlists</div>
-      <div class="tab"><i class="ic">&#9635;</i>Wedding</div><div class="tab"><i class="ic">&#9711;</i>You</div></div>
+    <div class="tabs"><div class="tab on"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.9 9.3L10 3.3l7.1 6"/><path d="M4.7 8.5v8.3h10.6V8.5"/></svg></i>Home</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="8.9" cy="8.9" r="5.2"/><path d="M12.8 12.8l4 4"/></svg></i>Explore</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.37 3.84a4.58 4.58 0 0 0-6.48 0L10 4.72l-.88-.88a4.58 4.58 0 1 0-6.48 6.48l.88.88L10 17.69l6.48-6.48.88-.88a4.58 4.58 0 0 0 0-6.48z"/></svg></i>Shortlists</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="7" cy="10" r="4.9"/><circle cx="13" cy="10" r="4.9"/></svg></i>Wedding</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
   </div></div>
 
   <div class="vhead">First run</div>
   <div class="variant">
     <div class="strip"><div class="inv">
       <div class="orn">&#10087;&#10087;&#10087;</div>
-      <div class="names" style="color:#C8BCA9">&mdash; <span class="amp">&amp;</span> &mdash;</div>
+      <div class="names" style="color:#8C6A50">&mdash; <span class="amp">&amp;</span> &mdash;</div>
       <div class="sub">&middot; &middot; &middot; &middot; &middot;</div>
       <div class="ln todo">&middot; &middot; &middot; &nbsp;date not set&nbsp; &middot; &middot; &middot;</div>
       <div class="prog"><div class="bar"><i style="width:0"></i></div><span>0 OF 5</span></div>
@@ -329,9 +423,9 @@ body{margin:0;background:#1a1a1d;color:#e8e4e6;padding:30px 18px 70px;
           <div class="ft"><span class="pr">&#8377;420 / plate</span><span class="cta">Enquire</span></div></div></div>
       </div>
     </div>
-    <div class="tabs"><div class="tab on"><i class="ic">&#9750;</i>Home</div>
-      <div class="tab"><i class="ic">&#9906;</i>Explore</div><div class="tab"><i class="ic">&#9829;</i>Shortlists</div>
-      <div class="tab"><i class="ic">&#9635;</i>Wedding</div><div class="tab"><i class="ic">&#9711;</i>You</div></div>
+    <div class="tabs"><div class="tab on"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.9 9.3L10 3.3l7.1 6"/><path d="M4.7 8.5v8.3h10.6V8.5"/></svg></i>Home</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="8.9" cy="8.9" r="5.2"/><path d="M12.8 12.8l4 4"/></svg></i>Explore</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.37 3.84a4.58 4.58 0 0 0-6.48 0L10 4.72l-.88-.88a4.58 4.58 0 1 0-6.48 6.48l.88.88L10 17.69l6.48-6.48.88-.88a4.58 4.58 0 0 0 0-6.48z"/></svg></i>Shortlists</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="7" cy="10" r="4.9"/><circle cx="13" cy="10" r="4.9"/></svg></i>Wedding</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
   </div></div>
 
   <div class="vhead">First run</div>
@@ -389,9 +483,9 @@ body{margin:0;background:#1a1a1d;color:#e8e4e6;padding:30px 18px 70px;
           <div class="ft"><span class="pr">&#8377;420 / plate</span><span class="cta">Enquire</span></div></div></div>
       </div>
     </div>
-    <div class="tabs"><div class="tab on"><i class="ic">&#9750;</i>Home</div>
-      <div class="tab"><i class="ic">&#9906;</i>Explore</div><div class="tab"><i class="ic">&#9829;</i>Shortlists</div>
-      <div class="tab"><i class="ic">&#9635;</i>Wedding</div><div class="tab"><i class="ic">&#9711;</i>You</div></div>
+    <div class="tabs"><div class="tab on"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.9 9.3L10 3.3l7.1 6"/><path d="M4.7 8.5v8.3h10.6V8.5"/></svg></i>Home</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="8.9" cy="8.9" r="5.2"/><path d="M12.8 12.8l4 4"/></svg></i>Explore</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.37 3.84a4.58 4.58 0 0 0-6.48 0L10 4.72l-.88-.88a4.58 4.58 0 1 0-6.48 6.48l.88.88L10 17.69l6.48-6.48.88-.88a4.58 4.58 0 0 0 0-6.48z"/></svg></i>Shortlists</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="7" cy="10" r="4.9"/><circle cx="13" cy="10" r="4.9"/></svg></i>Wedding</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
   </div></div>
 
   <div class="vhead">First run</div>
@@ -450,9 +544,9 @@ body{margin:0;background:#1a1a1d;color:#e8e4e6;padding:30px 18px 70px;
           <div class="ft"><span class="pr">&#8377;420 / plate</span><span class="cta">Enquire</span></div></div></div>
       </div>
     </div>
-    <div class="tabs"><div class="tab on"><i class="ic">&#9750;</i>Home</div>
-      <div class="tab"><i class="ic">&#9906;</i>Explore</div><div class="tab"><i class="ic">&#9829;</i>Shortlists</div>
-      <div class="tab"><i class="ic">&#9635;</i>Wedding</div><div class="tab"><i class="ic">&#9711;</i>You</div></div>
+    <div class="tabs"><div class="tab on"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.9 9.3L10 3.3l7.1 6"/><path d="M4.7 8.5v8.3h10.6V8.5"/></svg></i>Home</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="8.9" cy="8.9" r="5.2"/><path d="M12.8 12.8l4 4"/></svg></i>Explore</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17.37 3.84a4.58 4.58 0 0 0-6.48 0L10 4.72l-.88-.88a4.58 4.58 0 1 0-6.48 6.48l.88.88L10 17.69l6.48-6.48.88-.88a4.58 4.58 0 0 0 0-6.48z"/></svg></i>Shortlists</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="7" cy="10" r="4.9"/><circle cx="13" cy="10" r="4.9"/></svg></i>Wedding</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
   </div></div>
 
   <div class="vhead">First run</div>

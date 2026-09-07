@@ -9,6 +9,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&family=Inknut+Antiqua:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
+   ACCESSIBILITY REMEDIATION · 2026-09-07 · against review-accessibility.md
+   C1 every interactive element clears a 44px hit area; calendar day cells
+      keep their dense visual box and take the hit area from an invisible
+      ::after overlay. See the remediation block at the end of this sheet.
+   C3 ghost buttons standing on {colors.gold-tint} carry an ink label
+      (15.41:1) with a vermillion rule, not a vermillion label at 4.06:1.
+   C4 the three calendar states carry a non-colour mark — filled dot,
+      hollow ring, strike + cross — and the legend shows the mark.
+   S1 the active tab carries an indicator rule as well as colour and weight.
+   S7 Devanagari runs are marked lang="mr" so a screen reader switches voice.
+   m2 the "marked unavailable" day number is ink on hairline (14.38:1).
+   Every ratio quoted was recomputed from hex, not recalled.
+   No palette value, type choice or layout concept was changed.
+   ==========================================================================
    THE VENDOR PORTAL — FOUR LANDING SURFACES FOR DATTATRAY
    Built from DESIGN.md tokens. Phone-first per NFR 5.2: "designed for that
    case rather than tolerating it." Requires network. Content from UJ-2.
@@ -21,6 +35,22 @@
    Contact Reveal, Lead Dashboard, Subscription, Tier. Never book/booking/checkout.
    CONTRAST: muted never faded; turmeric never carries white; vermillion never on
    turmeric or gold-tint; every bar carries a text label.
+
+   ---- 2026-09-07 · NAVIGATION GLYPHS -> INLINE SVG ---------------------
+   The previous pass converted the state marks and vendor-calendar-360's
+   navigation glyphs but left this file's as Unicode, so the prototypes
+   disagreed with each other -- the exact divergence class the whole
+   reconciliation exists to remove. Converted here on the same reasoning
+   the state marks were: an envelope
+   take emoji presentation on several Android builds, which puts unchosen
+   colour into a system where colour is the one thing that carries meaning.
+   ONE set for the whole product: a 20x20 grid, 1.9 stroke (2px-
+   equivalent), round caps and joins, currentColor, aria-hidden="true"
+   focusable="false", and the adjacent tab LABEL carrying the accessible
+   name. The calendar is the availability ring's cut verbatim, so there
+   is one calendar mark and not two. The drawings and the centring rule
+   are in the NAVIGATION ICONS block at the foot of this stylesheet.
+   Measured after: every tab is still 48.00px tall and nothing overflows.
    ========================================================================== */
 :root{
   --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
@@ -123,6 +153,117 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/
   padding:10px 12px;margin-bottom:8px;box-shadow:var(--e1)}
 .today b{font-family:var(--disp);font-size:.92rem;display:block}
 .today span{font-size:.74rem;color:var(--muted)}
+
+/* ==========================================================================
+   REMEDIATION BLOCK — overrides only, nothing above was restructured
+   ========================================================================== */
+
+/* C1 · 44px hit areas on every control. */
+.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+  padding:8px 16px;line-height:1.2}
+.pill{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:3px 11px}
+.pill.act,.pill.new{min-height:0;padding:3px 9px}   /* status badges, not controls */
+.tabs{padding:0 4px}
+.tab{position:relative;min-height:48px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:4px 2px}
+
+/* C1 · The avatar keeps its 30px visual box — it is an identity mark inside a
+   crowded app bar — and gains its hit area from a centred 44px overlay. */
+.appbar .av{position:relative}
+.appbar .av::after{content:"";position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);width:44px;height:44px}
+
+/* C1 · The calendar is the density case. Seven columns inside a 360px phone
+   leave roughly 37px of width per cell, so widening the visible box would
+   break the month grid. The visual cell is left alone horizontally and an
+   invisible ::after overlay carries a 44x44 hit area, growing about 3px into
+   the 3px grid gap. Vertically the cell is raised to a real 44px, so rows
+   never overlap; horizontally, measured in Chromium, two neighbouring 44px
+   hit areas share a few px, because seven 44px targets need 308px and a
+   360px phone's month grid has less. That sliver is the accepted cost of
+   clearing the floor, against the 27px cell the audit measured. */
+
+/* ==========================================================================
+   RECONCILIATION CONTRACT · 2026-09-07 · Part 2 §2.1 / §2.2 / §2.4
+   (a) THE DOTS DIE, THE BAR LIVES. This file drew the three calendar states
+       as Unicode dot / ring / cross on ::before. DESIGN.md:607 bans a Unicode
+       state glyph outright -- U+2713 and its neighbours take emoji
+       presentation on several Android builds -- and .memlog.md:106 is a user
+       decision that chose the underbar. The mark is now a COUNT: ONE bar =
+       engaged, TWO segments = Enquiries pending, NO bar plus a struck number
+       = unavailable. Segments are 29% / 12% gap / 29% of the cell so the
+       count survives blur at a small cell; the bar still spans 70%.
+   (b) BAR COLOUR. {colors.turmeric} was 1.608:1 on {colors.surface} and could
+       not carry a mark at all. Pending draws in {colors.vermillion} #E01B33,
+       4.061:1 on the gold-tint fill it sits on. Engaged sits on a VERMILLION
+       fill, where a vermillion bar would be invisible, so it draws in
+       {colors.surface} at 4.801:1 -- one ink per surface, the count unchanged.
+       This is the single place the one-ink rule bends, and it bends because
+       the alternative is a mark nobody can see. Cell FILLS are unchanged:
+       they are what make the month scannable.
+   (c) THE HIT OVERLAY MAY NEVER EXCEED THE COLUMN PITCH. It was a fixed
+       44x44 box centred on a 40.84px cell, so neighbours overlapped and the
+       later sibling won the hit test -- elementFromPoint on a date's right
+       edge returned the NEXT date. It is now inset:-(gap/2): the reachable
+       box equals the pitch exactly and no two overlays intersect, on either
+       axis. ::after is reserved for the hit area alone.
+   (d) The 44px floor is met by the CELL, never by the overlay. Inside the phone frame the grid takes the named, bounded exception at 40x40 with a 2px gap (pitch 42px): comfortably above WCAG 2.2 SC 2.5.8's 24px, 4px under the product's own 44px bar, knowingly, and licensing nothing else.
+   ========================================================================== */
+.cal .dow,.cal .days{gap:var(--calgap,3px)}
+.cal .days b{position:relative;aspect-ratio:auto;min-height:44px}
+.cal .days b::after{content:"";position:absolute;
+  inset:calc(var(--calgap,3px) / -2 - 1px)}   /* -1px absorbs the cell's own 1px
+     transparent border, so the reachable box is EXACTLY the pitch, never more */
+  /* HIT AREA ONLY. Reserved -- never shared with a state mark. */
+
+/* The phone month grid: the NAMED, BOUNDED exception the user chose
+   (.memlog.md:116/117). 40x40 cells, 2px gap, 42px pitch, and the overlay is
+   inset:-1px so the reachable box IS the pitch -- no two hit areas intersect.
+   The month at a glance is what makes a stale calendar visible, and a stale
+   calendar silently corrupts every Family's cross-Service matching, so the
+   month is worth 4px. This licenses nothing else. */
+.scr .cal{--calgap:2px}
+.scr .cal .days b{min-height:40px;height:40px}
+
+
+/* C4 · Non-colour marks for the three calendar states, so they stay
+   separable in greyscale and on a bleached screen in daylight. */
+/* The three states, drawn as a count. .blk deliberately takes no bar. */
+.cal .days b.eng::before,.cal .days b.ask::before{
+  content:"";position:absolute;left:15%;width:70%;bottom:3px;height:4px;border-radius:1px}
+.cal .days b.eng::before{background:var(--surface)}
+.cal .days b.ask::before{background:linear-gradient(90deg,
+  var(--vermillion) 0 41.4286%,transparent 41.4286% 58.5714%,var(--vermillion) 58.5714% 100%)}
+.cal .days b.blk{color:var(--ink)}                   /* m2 · 14.38:1, was 3.86:1 */
+/* legend swatches render the actual marks, not glyphs */
+.key i{width:20px;height:4px;display:inline-block;margin-right:6px;vertical-align:2px;
+  border-radius:1px;font-style:normal;background:none;border:0}
+.key i.one{background:var(--vermillion)}
+.key i.two{background:linear-gradient(90deg,var(--vermillion) 0 41.4286%,
+  transparent 41.4286% 58.5714%,var(--vermillion) 58.5714% 100%)}
+.key i.non{width:20px;height:auto;vertical-align:0;text-align:center;color:var(--ink);
+  text-decoration:line-through;font-weight:400}
+
+/* S1 · A third signal for the active tab that is a shape rather than a hue. */
+.tab.on::before{content:"";position:absolute;top:0;left:20%;right:20%;
+  height:3px;background:currentColor}
+
+/* C3 · Ghost button on {colors.gold-tint}: ink label at 15.41:1, vermillion
+   rule still clearing the 3:1 non-text floor at 4.06:1. */
+.nudge .btn.ghost{color:var(--ink);border-color:var(--vermillion)}
+
+/* ==========================================================================
+   NAVIGATION ICONS — INLINE SVG, NOT UNICODE
+   The reasoning that forced SVG on the state marks applies unchanged here:
+   the heart and the envelope take emoji presentation on several Android
+   builds, which drops unchosen colour into a system where colour carries
+   meaning. One set, 20x20 grid, 1.9 stroke, round caps, currentColor,
+   aria-hidden="true" focusable="false" -- the adjacent tab LABEL is the
+   accessible name. The calendar is the availability ring's cut verbatim, so
+   the product has one calendar mark rather than two. The glyphs were text
+   and are now replaced elements, so each one is centred explicitly.
+   ========================================================================== */
+.tab .ic svg{display:block;margin:0 auto}
 </style>
 </head>
 <body>
@@ -147,7 +288,7 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/
   <p class="idea">He came to answer leads. The app opens on the ones nobody has replied to yet,
      newest first, each carrying the whole wedding. Everything else is a tab away.</p>
   <div class="phone"><div class="scr">
-    <div class="appbar"><div class="av">श</div><div class="biz"><b>Shubhmangal Lawns</b>
+    <div class="appbar"><div class="av" lang="mr">श</div><div class="biz"><b>Shubhmangal Lawns</b>
       <span>Shrirampur · Verified</span></div></div>
     <div class="body"><div class="pad">
       <div class="eyebrow">Needs a reply <em>3</em></div>
@@ -176,9 +317,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/
         <div class="facts">700 guests · <em>No reply from the family yet</em></div>
         <div class="foot"><span class="pill act">Contacted</span><span class="pill">Update</span></div></div>
     </div></div>
-    <div class="tabs"><div class="tab on"><i class="ic">✉</i>Enquiries</div>
-      <div class="tab"><i class="ic">▦</i>Calendar</div><div class="tab"><i class="ic">◈</i>Listings</div>
-      <div class="tab"><i class="ic">◮</i>Performance</div><div class="tab"><i class="ic">◯</i>You</div></div>
+    <div class="tabs"><div class="tab on"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Enquiries</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.5 11.8h.01M10 11.8h.01M13.5 11.8h.01M6.5 14.6h.01M10 14.6h.01"/></svg></i>Calendar</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.4" y="6.4" width="12.2" height="11.2" rx="2"/><path d="M6.2 3.2h9.2a2.2 2.2 0 0 1 2.2 2.2v9.2"/></svg></i>Listings</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.2 16.8v-4.4M10 16.8V6.2M14.8 16.8v-2.6"/></svg></i>Performance</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
   </div></div>
   <p class="verdict"><b>The obvious one, and probably the right one.</b> It matches the ninety seconds
     he actually has — open, read a wedding, quote, back to work. Reply speed affects his ranking
@@ -193,7 +334,7 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/
   <p class="idea">He came to find out what today needs from him. Enquiries waiting, a site visit at
      four, a date the platform wants confirmed. The day, not the queue.</p>
   <div class="phone"><div class="scr">
-    <div class="appbar"><div class="av">श</div><div class="biz"><b>Shubhmangal Lawns</b>
+    <div class="appbar"><div class="av" lang="mr">श</div><div class="biz"><b>Shubhmangal Lawns</b>
       <span>Thursday, 6 September</span></div></div>
     <div class="body"><div class="pad">
       <div class="nudge"><b>Still free on 27 November?</b>
@@ -213,9 +354,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/
         <div class="facts">600 guests · Haldi, Wedding, Reception · <em>₹8,00,000</em></div>
         <div class="foot"><span class="pill new">New</span><span class="btn">Send a Quote</span></div></div>
     </div></div>
-    <div class="tabs"><div class="tab on"><i class="ic">◳</i>Today</div>
-      <div class="tab"><i class="ic">✉</i>Enquiries</div><div class="tab"><i class="ic">▦</i>Calendar</div>
-      <div class="tab"><i class="ic">◈</i>Listings</div><div class="tab"><i class="ic">◯</i>You</div></div>
+    <div class="tabs"><div class="tab on"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.9 9.3L10 3.3l7.1 6"/><path d="M4.7 8.5v8.3h10.6V8.5"/></svg></i>Today</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Enquiries</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.5 11.8h.01M10 11.8h.01M13.5 11.8h.01M6.5 14.6h.01M10 14.6h.01"/></svg></i>Calendar</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.4" y="6.4" width="12.2" height="11.2" rx="2"/><path d="M6.2 3.2h9.2a2.2 2.2 0 0 1 2.2 2.2v9.2"/></svg></i>Listings</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
   </div></div>
   <p class="verdict"><b>The one that respects his day.</b> It is the only surface where the
     stale-calendar nudge has an obvious home rather than being an interruption, and site visits stop
@@ -230,7 +371,7 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/
   <p class="idea">He came to find out whether this is worth the money. The Lead Dashboard leads,
      the enquiries sit underneath. Every open is an answer to "what am I paying for?"</p>
   <div class="phone"><div class="scr">
-    <div class="appbar"><div class="av">श</div><div class="biz"><b>Shubhmangal Lawns</b>
+    <div class="appbar"><div class="av" lang="mr">श</div><div class="biz"><b>Shubhmangal Lawns</b>
       <span>This season · since 1 June</span></div></div>
     <div class="body"><div class="pad">
       <div class="hero">
@@ -256,9 +397,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/
         <div class="facts">300 guests · AC hall · <em>₹2,50,000</em></div>
         <div class="foot"><span class="pill new">New</span><span class="btn">Send a Quote</span></div></div>
     </div></div>
-    <div class="tabs"><div class="tab on"><i class="ic">◮</i>Performance</div>
-      <div class="tab"><i class="ic">✉</i>Enquiries</div><div class="tab"><i class="ic">▦</i>Calendar</div>
-      <div class="tab"><i class="ic">◈</i>Listings</div><div class="tab"><i class="ic">◯</i>You</div></div>
+    <div class="tabs"><div class="tab on"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.2 16.8v-4.4M10 16.8V6.2M14.8 16.8v-2.6"/></svg></i>Performance</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Enquiries</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.5 11.8h.01M10 11.8h.01M13.5 11.8h.01M6.5 14.6h.01M10 14.6h.01"/></svg></i>Calendar</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.4" y="6.4" width="12.2" height="11.2" rx="2"/><path d="M6.2 3.2h9.2a2.2 2.2 0 0 1 2.2 2.2v9.2"/></svg></i>Listings</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
   </div></div>
   <p class="verdict"><b>The one that defends the subscription.</b> Renewal is decided by whether he
     believes this worked, and this screen argues the case every time he opens it — including the
@@ -275,7 +416,7 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/
      side that quietly breaks the family's side. Availability is the home screen; everything hangs
      off a date.</p>
   <div class="phone"><div class="scr">
-    <div class="appbar"><div class="av">श</div><div class="biz"><b>Shubhmangal Lawns</b>
+    <div class="appbar"><div class="av" lang="mr">श</div><div class="biz"><b>Shubhmangal Lawns</b>
       <span>The lawn · 800 capacity</span></div></div>
     <div class="body"><div class="pad">
       <div class="cal">
@@ -290,9 +431,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/
           <b>30</b><b class="blk">1</b><b>2</b><b>3</b><b class="ask">4</b><b>5</b><b>6</b>
         </div>
         <div class="key">
-          <span><i style="background:var(--vermillion)"></i>Engaged — an Agreement holds it</span>
-          <span><i style="background:var(--gold-tint);border:1px solid var(--turmeric)"></i>Enquiries pending</span>
-          <span><i style="background:var(--hairline)"></i>You marked unavailable</span>
+          <span><i class="one"></i>Engaged — an Agreement holds it</span>
+          <span><i class="two"></i>Enquiries pending</span>
+          <span><i class="non">1</i><s>You marked unavailable</s></span>
         </div>
       </div>
 
@@ -305,9 +446,9 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/
         <div class="facts">Haldi 26th · Wedding 27th · Reception 28th<br><em>₹8,00,000 across the event</em></div>
         <div class="foot"><span class="pill new">New</span><span class="btn">Send a Quote</span></div></div>
     </div></div>
-    <div class="tabs"><div class="tab on"><i class="ic">▦</i>Calendar</div>
-      <div class="tab"><i class="ic">✉</i>Enquiries</div><div class="tab"><i class="ic">◈</i>Listings</div>
-      <div class="tab"><i class="ic">◮</i>Performance</div><div class="tab"><i class="ic">◯</i>You</div></div>
+    <div class="tabs"><div class="tab on"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="15" height="12" rx="2"/><path d="M2.5 8.6h15M6.5 3.2v3.4M13.5 3.2v3.4"/><path d="M6.5 11.8h.01M10 11.8h.01M13.5 11.8h.01M6.5 14.6h.01M10 14.6h.01"/></svg></i>Calendar</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M2.9 5.4L10 10.6l7.1-5.2"/></svg></i>Enquiries</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.4" y="6.4" width="12.2" height="11.2" rx="2"/><path d="M6.2 3.2h9.2a2.2 2.2 0 0 1 2.2 2.2v9.2"/></svg></i>Listings</div>
+      <div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.2 16.8v-4.4M10 16.8V6.2M14.8 16.8v-2.6"/></svg></i>Performance</div><div class="tab"><i class="ic"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="6.9" r="3.2"/><path d="M3.9 17.2c0-3.3 2.7-5.3 6.1-5.3s6.1 2 6.1 5.3"/></svg></i>You</div></div>
   </div></div>
   <p class="verdict"><b>The one that protects the whole product.</b> UJ-1's cross-service matching is
     only as good as the least disciplined vendor's calendar, and your own spine says the nudge is the

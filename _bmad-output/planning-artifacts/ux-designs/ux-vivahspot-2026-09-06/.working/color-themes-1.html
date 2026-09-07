@@ -6,6 +6,17 @@
 <title>Vivah Spot — Direction 1, bright</title>
 <style>
 /* ==========================================================================
+   ACCESSIBILITY REMEDIATION · 2026-09-07 · against review-accessibility.md
+   C1 the "Enquire" CTA measured 73x27 and the Search button was no better.
+      Both now clear a 44px hit area.
+   S3 the search field's only boundary was {colors.hairline} at 1.234:1 on the
+      page ground, so a text input had no visible edge. Each theme's own
+      --soft token draws it instead; every one of the five clears 4.5:1
+      against its card, recomputed from hex — the palettes themselves are
+      untouched, only which token draws the boundary.
+   No palette value, type choice or layout concept was changed. The five
+   themes remain a colour-only comparison.
+   ==========================================================================
    DIRECTION 1 (THE INVITATION) — FIVE BRIGHT, CELEBRATORY PALETTES
    Structure, type and shape are IDENTICAL to directions-4.html D1.
    Only colour changes. Feedback being answered: "current one looks very dull."
@@ -20,6 +31,19 @@
    Where the accent is too light for white text (marigold #FF8A00, turmeric #FFC300),
    the label is dark ink instead. This is the rule from prd.md:1353 applied forward:
    an accessibility decision outranks an aesthetic one.
+   ==========================================================================    ---- SUPERSESSION (Reconciliation contract, Rule C-0) · 2026-09-07 --------
+   THIS FILE IS EVIDENCE, NOT A SPECIFICATION. It is the palette bake-off, and it has a
+   winner: T3 KUMKUM & TURMERIC (.memlog.md:29) -- ground #FFFCF2, ink #2B0A0E,
+   vermillion #E01B33, turmeric #FFC300, muted #8C6A50. T1, T2, T4 and T5 are
+   the rejected options and keep their original drawings as the record of why.
+   Fixed here anyway: C10/C19 the foil animated background-position and left a
+   permanent gold band when motion was reduced; C12 the "not chosen" line in
+   THE CHOSEN THEME was {colors.muted} at opacity .75 -- 3.040:1, the one copy
+   of that defect that would actually have shipped; C22 the marigold button
+   figure was printed as 7.7 and recomputes to 7.205.
+   Contrast, motion and accessibility DEFECTS are still fixed here, because a
+   defect is not design content and a rejected drawing is no place to leave
+   one travelling; the design content itself is frozen.
    ========================================================================== */
 *{box-sizing:border-box}
 body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
@@ -65,18 +89,34 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
 .inv .ln{text-align:center;font-size:.8rem;padding:2px 0;position:relative}
 .inv .ln.done::after{content:"";position:absolute;left:24%;right:24%;bottom:0;height:1px;
   background:var(--rule);transform-origin:left;animation:ink 7s ease-in-out infinite}
-.inv .ln.todo{color:var(--soft);opacity:.75}
-.inv .foil{position:absolute;inset:0;pointer-events:none;
+/* C12 · this was the back-door fade DESIGN.md:595 names by hand: {colors.muted}
+   at opacity .75 recomputes to 3.040:1 on surface and 2.996:1 on ground, under
+   the 4.5:1 body-text floor. It is the CHOSEN theme, so it is the one copy of
+   this pattern that would have shipped. Full strength now. */
+.inv .ln.todo{color:var(--soft)}
+/* C10/C19 · 2026-09-07. The foil animated BACKGROUND-POSITION, which
+   DESIGN.md:600 bans: it repaints the whole overlay every frame and janks on
+   the mid-range Android NFR 5.3 targets. It is a translateX on an absolutely
+   positioned overlay now -- compositor-only, byte-for-byte the same sweep.
+   And under prefers-reduced-motion the overlay is DISPLAY:NONE rather than
+   merely animation:none: with the animation stopped it froze at its default
+   position and left a permanent diagonal gold band across the brand object.
+   Nothing becomes unreadable -- ink over the foil tint is 15.250:1 -- but a
+   band nobody asked for is a visible defect. */
+.inv .foil{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.inv .foil::before{content:"";position:absolute;top:0;bottom:0;left:0;width:260%;
   background:linear-gradient(105deg,transparent 38%,var(--foil) 50%,transparent 62%);
-  background-size:260% 100%;animation:foil 5.5s ease-in-out infinite}
+  transform:translateX(-26.9231%);animation:foil 5.5s ease-in-out infinite}
 .inv .pg{margin-top:9px;display:flex;align-items:center;gap:7px}
 .inv .pg .b{flex:1;height:3px;background:var(--rule2)}
 .inv .pg .b i{display:block;height:100%;width:60%;background:var(--rule)}
 .inv .pg span{font-size:.62rem;color:var(--soft);letter-spacing:.06em}
 @keyframes ink{0%,12%{transform:scaleX(0)}38%,100%{transform:scaleX(1)}}
-@keyframes foil{0%,55%{background-position:170% 0}92%,100%{background-position:-70% 0}}
+/* the same two stops, expressed as a transform: 170% and -70% of a 260%-wide
+   overlay across its own box are -26.9231% and +65.3846% of the overlay. */
+@keyframes foil{0%,55%{transform:translateX(-26.9231%)}92%,100%{transform:translateX(65.3846%)}}
 
-.srch{display:flex;align-items:center;background:var(--card);border:1px solid var(--line);
+.srch{display:flex;align-items:center;background:var(--card);border:1px solid var(--soft);
   padding:4px 4px 4px 12px;margin-top:12px}
 .srch span{flex:1;color:var(--soft);font-size:.76rem}
 .srch b{background:var(--brand);color:var(--onBrand);padding:7px 12px;font-size:.72rem;font-weight:700}
@@ -94,9 +134,19 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
 .vc .pr{font-weight:700;font-size:.82rem}
 .vc .cta{background:var(--brand);color:var(--onBrand);padding:5px 12px;font-size:.7rem;font-weight:700}
 
+/* ==========================================================================
+   REMEDIATION BLOCK — overrides only, nothing above was restructured
+   ========================================================================== */
+
+/* C1 · 44px hit areas. The card and the invitation keep their proportions;
+   only the two controls grow. */
+.srch b,.vc .cta{min-height:44px;display:inline-flex;align-items:center;
+  justify-content:center;padding:8px 15px;line-height:1.2}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important}
   .inv .ln.done::after{transform:scaleX(1)}
+  .inv .foil{display:none}   /* C19 · not merely stopped: removed */
 }
 
 /* ============ T1 RANI PINK & GOLD ============ */
@@ -207,7 +257,7 @@ body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
       </div></div>
     </div>
   </div>
-  <p class="note"><b>Warmest and loudest.</b> Note the buttons: marigold is far too light to carry white text, so the label is dark ink. That reads as deliberate rather than as a compromise, and it clears 7.7:1.</p>
+  <p class="note"><b>Warmest and loudest.</b> Note the buttons: marigold is far too light to carry white text, so the label is dark ink. That reads as deliberate rather than as a compromise, and it clears 7.205:1 &mdash; recomputed, not carried.</p>
 </section>
 
 <section class="th t3">
