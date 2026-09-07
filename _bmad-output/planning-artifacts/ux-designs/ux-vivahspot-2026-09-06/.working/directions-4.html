@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — four directions for home</title>
+<style>
+/* ============================================================
+   VIVAH SPOT — FOUR DESIGN DIRECTIONS FOR THE FAMILY HOME SCREEN
+   Governed by: .memlog.md (home = the shop; festive first; micro-animations;
+   celebratory), extract-site-ia.md (component vocabulary), prd.md UJ-1 (content),
+   FR-8 ("not yet estimated", never Rs 0), Sec 7.9 (no book/booking/cart/checkout).
+   Each direction is a complete personality: palette + type + density + motion.
+
+   D1 MARIGOLD & INK  cream #FDF8EF  ink #241C16  marigold #E8871E  red #B3242B  gold #C9962E
+   D2 ROSE & CREAM    shell #FFFBF9  ink #33262C  rose #D6446E  blush #FCE7EE  grey #7A6B72
+   D3 HALDI BRIGHT    milk  #FFFDF5  plum #3A1B4A  turmeric #FFC42E  magenta #E12E6B
+   D4 PEACOCK & GOLD  sand  #F7F2E7  ink #10262A  teal #0E4F52  peacock #12857F  gold #D7A64A
+   ============================================================ */
+
+*{box-sizing:border-box}
+body{margin:0;background:#1a1a1d;color:#e8e4e6;padding:30px 18px 70px;
+  font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1560px;margin:0 auto}
+.lede{max-width:70ch;margin:0 auto 30px}
+.lede h1{font-family:Georgia,serif;font-size:1.85rem;margin:0 0 10px;letter-spacing:-.01em}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.grid{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.dir{flex:1 1 350px;max-width:392px}
+.dhead{margin-bottom:12px}
+.dhead .num{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#8d868b}
+.dhead h2{font-family:Georgia,serif;font-size:1.3rem;margin:3px 0 5px}
+.dhead .reg{font-size:.84rem;color:#b3adb1;margin:0 0 9px;min-height:2.6em}
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chips i{width:20px;height:20px;border-radius:5px;display:block;border:1px solid rgba(255,255,255,.16)}
+.why{font-size:.83rem;color:#a9a3a8;margin:13px 0 0;line-height:1.5}
+.why b{color:#ddd8dc}
+.vhead{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:#8d868b;margin:16px 0 7px}
+
+/* ---------- device ---------- */
+.phone{background:#0c0b0d;border-radius:36px;padding:9px;box-shadow:0 18px 44px rgba(0,0,0,.5)}
+.scr{border-radius:28px;overflow:hidden;height:700px;display:flex;flex-direction:column;
+  background:var(--bg);color:var(--ink);font-family:var(--sans)}
+.body{flex:1;overflow-y:auto}
+.appbar{flex:none;display:flex;align-items:center;gap:9px;padding:13px 16px;
+  background:var(--bar);border-bottom:1px solid var(--line)}
+.mark{width:27px;height:27px;border-radius:var(--markR);flex:none;display:flex;
+  align-items:center;justify-content:center;color:#fff;font-size:13px;background:var(--brand)}
+.bname{font-family:var(--disp);font-weight:var(--dispW);font-size:1.04rem;letter-spacing:var(--dispLS)}
+.bell{margin-left:auto;font-size:15px;color:var(--soft)}
+.tabs{flex:none;display:flex;background:var(--bar);border-top:1px solid var(--line);padding:7px 3px 9px}
+.tab{flex:1;text-align:center;font-size:.61rem;color:var(--soft);line-height:1.35}
+.tab .ic{display:block;font-size:15px;margin-bottom:2px}
+.tab.on{color:var(--brand);font-weight:600}
+.pad{padding:14px 15px 20px}
+
+/* ---------- shop ---------- */
+.search{display:flex;align-items:center;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--rPill);padding:5px 5px 5px 14px;box-shadow:var(--sh)}
+.search span{flex:1;color:var(--soft);font-size:.84rem}
+.search b{background:var(--brand);color:var(--onBrand);border-radius:var(--rPill);
+  padding:8px 14px;font-size:.78rem;font-weight:700}
+.rowhead{display:flex;justify-content:space-between;align-items:baseline;margin:20px 0 11px}
+.rowhead h4{margin:0;font-size:var(--h4);font-family:var(--disp);font-weight:var(--dispW);
+  letter-spacing:var(--dispLS)}
+.rowhead a{color:var(--brand);font-size:.77rem;font-weight:700}
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:13px 6px}
+.cat{text-align:center;font-size:.68rem;line-height:1.28;color:var(--ink)}
+.cat i{display:block;width:var(--catS);height:var(--catS);margin:0 auto 6px;
+  border-radius:var(--catR);background:var(--catBg);border:var(--catB);box-shadow:var(--sh)}
+.vcard{background:var(--card);border:1px solid var(--line);border-radius:var(--rCard);
+  overflow:hidden;box-shadow:var(--sh);margin-bottom:11px}
+.vcard .ph{height:104px;background:var(--photo);position:relative}
+.vcard .rate{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;
+  font-size:.68rem;padding:3px 8px;border-radius:999px}
+.vcard .tx{padding:10px 12px 12px}
+.vcard h5{margin:0 0 2px;font-size:.92rem;font-family:var(--disp);font-weight:var(--dispW)}
+.vcard .meta{font-size:.74rem;color:var(--soft);margin-bottom:8px}
+.vcard .ft{display:flex;justify-content:space-between;align-items:center}
+.vcard .pr{font-weight:700;font-size:.88rem}
+.vcard .cta{background:var(--brand);color:var(--onBrand);border-radius:var(--rPill);
+  padding:6px 14px;font-size:.74rem;font-weight:700}
+
+/* ---------- strip shell ---------- */
+.strip{margin:14px 15px 0;border-radius:var(--rCard);overflow:hidden}
+.variant .strip{margin:0}
+.variant{background:#242229;border:1px solid #35323a;border-radius:14px;padding:13px}
+.variant .cap{font-size:.75rem;color:#8d868b;margin:9px 0 0}
+
+/* =======================================================================
+   D1 · MARIGOLD & INK — the Invitation
+   ======================================================================= */
+.d1{--bg:#FDF8EF;--bar:#FFFCF6;--card:#fff;--ink:#241C16;--soft:#8A7B6B;
+  --line:#EFE3D2;--brand:#B3242B;--onBrand:#fff;--gold:#C9962E;--marigold:#E8871E;
+  --sans:system-ui,"Segoe UI",Roboto,sans-serif;--disp:Georgia,"Times New Roman",serif;
+  --dispW:400;--dispLS:.01em;--h4:1.06rem;--rCard:6px;--rPill:4px;--markR:6px;
+  --catS:60px;--catR:50%;--catB:2px solid #fff;--catBg:linear-gradient(160deg,#F6E4C8,#EFC9A4);
+  --photo:linear-gradient(150deg,#EADCC4,#E3C9AE);--sh:0 2px 10px rgba(80,50,20,.07)}
+.inv{background:#fff;border:1px solid var(--gold);padding:16px 15px 15px;position:relative;
+  box-shadow:0 3px 14px rgba(140,100,30,.1)}
+.inv::before{content:"";position:absolute;inset:5px;border:1px solid #EBD8AC;pointer-events:none}
+.inv .orn{text-align:center;color:var(--gold);font-size:.8rem;letter-spacing:.5em;margin-bottom:9px}
+.inv .names{font-family:Georgia,serif;font-size:1.5rem;text-align:center;line-height:1.2;
+  margin-bottom:3px}
+.inv .amp{color:var(--marigold);font-style:italic}
+.inv .sub{text-align:center;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--soft);margin-bottom:11px}
+.inv .ln{text-align:center;font-size:.86rem;padding:3px 0;position:relative;overflow:hidden}
+.inv .ln.done{color:var(--ink)}
+.inv .ln.todo{color:#BBAE9C}
+.inv .ln.done::after{content:"";position:absolute;left:22%;right:22%;bottom:1px;height:1px;
+  background:var(--gold);transform-origin:left;animation:ink 7s ease-in-out infinite}
+.inv .foil{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,231,168,.75) 50%,transparent 62%);
+  background-size:260% 100%;animation:foil 5.5s ease-in-out infinite}
+.inv .prog{margin-top:11px;display:flex;align-items:center;gap:8px}
+.inv .prog .bar{flex:1;height:3px;background:#F1E4CB}
+.inv .prog .bar i{display:block;height:100%;width:60%;background:var(--gold)}
+.inv .prog span{font-size:.68rem;color:var(--soft);letter-spacing:.06em}
+@keyframes ink{0%,12%{transform:scaleX(0)}38%,88%{transform:scaleX(1)}100%{transform:scaleX(1)}}
+@keyframes foil{0%,55%{background-position:170% 0}92%,100%{background-position:-70% 0}}
+
+/* =======================================================================
+   D2 · ROSE & CREAM — One Next Thing
+   ======================================================================= */
+.d2{--bg:#FFFBF9;--bar:#fff;--card:#fff;--ink:#33262C;--soft:#7A6B72;
+  --line:#F6E6EC;--brand:#D6446E;--onBrand:#fff;
+  --sans:system-ui,"Segoe UI",Roboto,sans-serif;--disp:Georgia,serif;
+  --dispW:400;--dispLS:-.005em;--h4:1.04rem;--rCard:18px;--rPill:999px;--markR:9px;
+  --catS:62px;--catR:50%;--catB:0;--catBg:linear-gradient(160deg,#FBDDE7,#F7CFC2);
+  --photo:linear-gradient(150deg,#F2DDE4,#F6DCCF);--sh:0 3px 14px rgba(180,90,120,.07)}
+.next{background:#fff;border:1px solid var(--line);padding:15px 16px;box-shadow:var(--sh);
+  position:relative;overflow:hidden;min-height:104px}
+.next .eyebrow{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--brand);font-weight:700;margin-bottom:9px}
+.next .slot{position:relative;height:46px}
+.next .msg{position:absolute;inset:0;font-family:Georgia,serif;font-size:1.06rem;
+  line-height:1.4;color:var(--ink)}
+.next .m1{animation:sw1 9s ease-in-out infinite}
+.next .m2{animation:sw2 9s ease-in-out infinite}
+.next .go{display:inline-block;margin-top:4px;color:var(--brand);font-family:var(--sans);
+  font-size:.79rem;font-weight:700}
+.next .dots{position:absolute;right:15px;bottom:13px;display:flex;gap:4px}
+.next .dots i{width:5px;height:5px;border-radius:50%;background:#EFD9E1}
+.next .dots i.on{background:var(--brand)}
+@keyframes sw1{0%,40%{opacity:1;transform:translateY(0)}
+  48%,92%{opacity:0;transform:translateY(-9px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes sw2{0%,40%{opacity:0;transform:translateY(9px)}
+  48%,92%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(9px)}}
+
+/* =======================================================================
+   D3 · HALDI BRIGHT — Countdown Ribbon
+   ======================================================================= */
+.d3{--bg:#FFFDF5;--bar:#fff;--card:#fff;--ink:#3A1B4A;--soft:#8A7796;
+  --line:#F3E7D2;--brand:#E12E6B;--onBrand:#fff;--turmeric:#FFC42E;
+  --sans:system-ui,"Segoe UI",Roboto,sans-serif;--disp:system-ui,sans-serif;
+  --dispW:800;--dispLS:-.02em;--h4:1.1rem;--rCard:22px;--rPill:999px;--markR:10px;
+  --catS:66px;--catR:22px;--catB:0;--catBg:linear-gradient(160deg,#FFE39A,#FFB0C4);
+  --photo:linear-gradient(150deg,#FFE6A8,#FFC0D0);--sh:0 4px 0 rgba(58,27,74,.07)}
+.cd{background:linear-gradient(135deg,#FFC42E 0%,#FF8FB1 58%,#E12E6B 100%);
+  color:#3A1B4A;padding:16px 16px 14px;position:relative;overflow:hidden}
+.cd .top{display:flex;align-items:flex-end;gap:9px;margin-bottom:3px}
+.cd .num{font-size:2.9rem;font-weight:800;letter-spacing:-.04em;line-height:.9;
+  height:2.6rem;overflow:hidden;display:block}
+.cd .num i{display:block;font-style:normal;animation:roll 6s cubic-bezier(.6,0,.2,1) infinite}
+.cd .num i b{display:block;height:2.6rem;font-weight:800}
+.cd .lab{font-size:.82rem;font-weight:700;padding-bottom:.35rem;opacity:.85}
+.cd .wd{font-size:.76rem;font-weight:700;opacity:.8;margin-bottom:12px}
+.cd .rib{background:rgba(255,255,255,.5);border-radius:999px;height:34px;display:flex;
+  padding:4px;position:relative}
+.cd .rib div{flex:1;text-align:center;font-size:.66rem;font-weight:700;line-height:26px;
+  border-radius:999px;color:#3A1B4A;opacity:.7}
+.cd .rib div.now{background:#fff;opacity:1;box-shadow:0 2px 6px rgba(58,27,74,.16);
+  animation:pop 6s ease-in-out infinite}
+@keyframes roll{0%,70%{transform:translateY(0)}82%,100%{transform:translateY(-2.6rem)}}
+@keyframes pop{0%,72%{transform:scale(1)}80%{transform:scale(1.07)}90%,100%{transform:scale(1)}}
+
+/* =======================================================================
+   D4 · PEACOCK & GOLD — Block Meter
+   ======================================================================= */
+.d4{--bg:#F7F2E7;--bar:#fff;--card:#fff;--ink:#10262A;--soft:#6C7F82;
+  --line:#E3DCCB;--brand:#0E4F52;--onBrand:#fff;--gold:#D7A64A;--peacock:#12857F;
+  --sans:system-ui,"Segoe UI",Roboto,sans-serif;--disp:Georgia,serif;
+  --dispW:400;--dispLS:0;--h4:1.02rem;--rCard:10px;--rPill:6px;--markR:7px;
+  --catS:58px;--catR:12px;--catB:0;--catBg:linear-gradient(160deg,#CFE3DE,#E6D8B8);
+  --photo:linear-gradient(150deg,#D3E1DC,#E7D9BC);--sh:0 2px 9px rgba(16,38,42,.07)}
+.bm{background:var(--brand);color:#EAF3F1;padding:14px 15px 13px}
+.bm .hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}
+.bm .hd b{font-family:Georgia,serif;font-size:.98rem;font-weight:400}
+.bm .hd span{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;opacity:.62}
+.bm .r{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.bm .r .dt{width:52px;font-size:.75rem;opacity:.8;flex:none}
+.bm .r .tr{flex:1;height:8px;background:rgba(255,255,255,.14);border-radius:999px;overflow:hidden}
+.bm .r .tr i{display:block;height:100%;border-radius:999px;background:rgba(255,255,255,.4)}
+.bm .r .n{font-size:.72rem;width:34px;text-align:right;flex:none;opacity:.82}
+.bm .r.win .dt,.bm .r.win .n{opacity:1;font-weight:700;color:var(--gold)}
+.bm .r.win .tr i{background:var(--gold);animation:fill 6.5s ease-in-out infinite}
+.bm .r1 .tr i{width:60%}.bm .r3 .tr i{width:40%}
+.bm .foot{margin-top:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,.15);
+  font-size:.74rem;opacity:.85}
+.bm .foot b{color:var(--gold)}
+@keyframes fill{0%,10%{width:60%}42%,88%{width:100%}100%{width:100%}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .inv .ln.done::after{transform:scaleX(1)}
+  .next .m1{opacity:0}.next .m2{opacity:1}
+  .bm .r.win .tr i{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>Four directions for the Vivah Spot home screen</h1>
+  <p>Same screen, same content, four different souls. Each is a complete personality — palette,
+     type, density, corner language and motion — not a colour swap. The strip at the top of each
+     is a different idea about what greets Rutuja when she opens the app.</p>
+  <p class="hint">The animations run on a loop so you can see them without tapping. Under each
+     phone is the same strip in its first-run state, before she has told us anything.
+     Hex values are in the stylesheet comments. Pick a direction, not a detail — everything
+     inside it is still adjustable.</p>
+</div>
+<div class="grid">
+
+<!-- ================= D1 ================= -->
+<section class="dir d1">
+  <div class="dhead">
+    <div class="num">Direction 01</div>
+    <h2>Marigold &amp; Ink</h2>
+    <p class="reg">Heirloom. Warm cream, letterpress serif, square corners, gold rule.
+       Feels printed rather than rendered.</p>
+    <div class="chips"><i style="background:#FDF8EF"></i><i style="background:#241C16"></i>
+      <i style="background:#B3242B"></i><i style="background:#E8871E"></i><i style="background:#C9962E"></i></div>
+  </div>
+
+  <div class="phone"><div class="scr">
+    <div class="appbar"><div class="mark">&#9829;</div><div class="bname">Vivah Spot</div>
+      <div class="bell">&#9737;</div></div>
+    <div class="body">
+      <div class="strip"><div class="inv">
+        <div class="foil"></div>
+        <div class="orn">&#10087;&#10087;&#10087;</div>
+        <div class="names">Omkar <span class="amp">&amp;</span> Snehal</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln done">27 November 2026</div>
+        <div class="ln done">Shubhmangal Lawns</div>
+        <div class="ln todo">&middot; &middot; &middot; &nbsp;caterer not chosen&nbsp; &middot; &middot; &middot;</div>
+        <div class="prog"><div class="bar"><i></i></div><span>3 OF 5</span></div>
+      </div></div>
+      <div class="pad">
+        <div class="search"><span>Search venues, caterers, decorators&hellip;</span><b>Search</b></div>
+        <div class="rowhead"><h4>Services</h4><a>See all</a></div>
+        <div class="cats">
+          <div class="cat"><i></i>Lawns &amp; Venues</div><div class="cat"><i></i>Catering</div>
+          <div class="cat"><i></i>Decoration</div><div class="cat"><i></i>Photography</div>
+          <div class="cat"><i></i>Makeup &amp; Mehndi</div><div class="cat"><i></i>Band Baaja Baraat</div>
+        </div>
+        <div class="rowhead"><h4>Near Shrirampur</h4><a>See all</a></div>
+        <div class="vcard"><div class="ph"><span class="rate">&#9733; 4.8</span></div>
+          <div class="tx"><h5>Shubhmangal Lawns</h5><div class="meta">Lawns &amp; Venues &middot; 800 capacity</div>
+          <div class="ft"><span class="pr">&#8377;1,80,000</span><span class="cta">Enquire</span></div></div></div>
+        <div class="vcard"><div class="ph"><span class="rate">&#9733; 4.6</span></div>
+          <div class="tx"><h5>Annapurna Caterers</h5><div class="meta">Catering &middot; veg &amp; jain</div>
+          <div class="ft"><span class="pr">&#8377;420 / plate</span><span class="cta">Enquire</span></div></div></div>
+      </div>
+    </div>
+    <div class="tabs"><div class="tab on"><i class="ic">&#9750;</i>Home</div>
+      <div class="tab"><i class="ic">&#9906;</i>Explore</div><div class="tab"><i class="ic">&#9829;</i>Shortlists</div>
+      <div class="tab"><i class="ic">&#9635;</i>Wedding</div><div class="tab"><i class="ic">&#9711;</i>You</div></div>
+  </div></div>
+
+  <div class="vhead">First run</div>
+  <div class="variant">
+    <div class="strip"><div class="inv">
+      <div class="orn">&#10087;&#10087;&#10087;</div>
+      <div class="names" style="color:#C8BCA9">&mdash; <span class="amp">&amp;</span> &mdash;</div>
+      <div class="sub">&middot; &middot; &middot; &middot; &middot;</div>
+      <div class="ln todo">&middot; &middot; &middot; &nbsp;date not set&nbsp; &middot; &middot; &middot;</div>
+      <div class="prog"><div class="bar"><i style="width:0"></i></div><span>0 OF 5</span></div>
+    </div></div>
+    <p class="cap">An empty card, waiting. She fills it by living in the app.</p>
+  </div>
+
+  <p class="why"><b>Why it works:</b> the completion metaphor is one she already owns — nobody needs
+     to be told an unfinished invitation means the wedding isn't sorted. Each new fact ink-writes onto
+     the card; the gold foil sweeps once when it completes. <b>What it costs:</b> a card holds four
+     facts, not fifteen, so everything else lives below the fold.</p>
+</section>
+
+<!-- ================= D2 ================= -->
+<section class="dir d2">
+  <div class="dhead">
+    <div class="num">Direction 02</div>
+    <h2>Rose &amp; Cream</h2>
+    <p class="reg">Refined and quiet. Soft rose on shell white, generous air, full-round corners,
+       one thing said at a time.</p>
+    <div class="chips"><i style="background:#FFFBF9"></i><i style="background:#33262C"></i>
+      <i style="background:#D6446E"></i><i style="background:#FCE7EE"></i><i style="background:#7A6B72"></i></div>
+  </div>
+
+  <div class="phone"><div class="scr">
+    <div class="appbar"><div class="mark">&#9829;</div><div class="bname">Vivah Spot</div>
+      <div class="bell">&#9737;</div></div>
+    <div class="body">
+      <div class="strip"><div class="next">
+        <div class="eyebrow">Next for you</div>
+        <div class="slot">
+          <div class="msg m1">Three caterers shortlisted.<br><span class="go">Compare them &rarr;</span></div>
+          <div class="msg m2">Ravi Studios sent a quote.<br><span class="go">Open the thread &rarr;</span></div>
+        </div>
+        <div class="dots"><i class="on"></i><i></i></div>
+      </div></div>
+      <div class="pad">
+        <div class="search"><span>Search venues, caterers, decorators&hellip;</span><b>Search</b></div>
+        <div class="rowhead"><h4>Services</h4><a>See all</a></div>
+        <div class="cats">
+          <div class="cat"><i></i>Lawns &amp; Venues</div><div class="cat"><i></i>Catering</div>
+          <div class="cat"><i></i>Decoration</div><div class="cat"><i></i>Photography</div>
+          <div class="cat"><i></i>Makeup &amp; Mehndi</div><div class="cat"><i></i>Band Baaja Baraat</div>
+        </div>
+        <div class="rowhead"><h4>Near Shrirampur</h4><a>See all</a></div>
+        <div class="vcard"><div class="ph"><span class="rate">&#9733; 4.8</span></div>
+          <div class="tx"><h5>Shubhmangal Lawns</h5><div class="meta">Lawns &amp; Venues &middot; 800 capacity</div>
+          <div class="ft"><span class="pr">&#8377;1,80,000</span><span class="cta">Enquire</span></div></div></div>
+        <div class="vcard"><div class="ph"><span class="rate">&#9733; 4.6</span></div>
+          <div class="tx"><h5>Annapurna Caterers</h5><div class="meta">Catering &middot; veg &amp; jain</div>
+          <div class="ft"><span class="pr">&#8377;420 / plate</span><span class="cta">Enquire</span></div></div></div>
+      </div>
+    </div>
+    <div class="tabs"><div class="tab on"><i class="ic">&#9750;</i>Home</div>
+      <div class="tab"><i class="ic">&#9906;</i>Explore</div><div class="tab"><i class="ic">&#9829;</i>Shortlists</div>
+      <div class="tab"><i class="ic">&#9635;</i>Wedding</div><div class="tab"><i class="ic">&#9711;</i>You</div></div>
+  </div></div>
+
+  <div class="vhead">First run</div>
+  <div class="variant">
+    <div class="strip"><div class="next" style="min-height:0">
+      <div class="eyebrow">Start here</div>
+      <div style="font-family:Georgia,serif;font-size:1.06rem;line-height:1.4;color:#33262C">
+        Tell us about the wedding.<br><span class="go">Two minutes &rarr;</span></div>
+    </div></div>
+    <p class="cap">One sentence, one action. Nothing to dismiss, nothing to feel behind on.</p>
+  </div>
+
+  <p class="why"><b>Why it works:</b> Rutuja is overwhelmed — that is the premise of UJ-1. This is the
+     only direction that reduces her load instead of reporting it. No percentage, no guilt.
+     <b>What it costs:</b> the least festive of the four, and it hides how much is left to do.</p>
+</section>
+
+<!-- ================= D3 ================= -->
+<section class="dir d3">
+  <div class="dhead">
+    <div class="num">Direction 03</div>
+    <h2>Haldi Bright</h2>
+    <p class="reg">Loud and young. Turmeric into magenta, heavy rounded sans, fat corners,
+       big thumbs-first targets.</p>
+    <div class="chips"><i style="background:#FFFDF5"></i><i style="background:#3A1B4A"></i>
+      <i style="background:#FFC42E"></i><i style="background:#E12E6B"></i><i style="background:#FF8FB1"></i></div>
+  </div>
+
+  <div class="phone"><div class="scr">
+    <div class="appbar"><div class="mark">&#9829;</div><div class="bname">Vivah Spot</div>
+      <div class="bell">&#9737;</div></div>
+    <div class="body">
+      <div class="strip"><div class="cd">
+        <div class="top">
+          <span class="num"><i><b>62</b><b>61</b></i></span>
+          <span class="lab">days to go</span>
+        </div>
+        <div class="wd">Omkar &amp; Snehal &middot; 27 November</div>
+        <div class="rib"><div>Haldi</div><div class="now">Wedding</div><div>Reception</div></div>
+      </div></div>
+      <div class="pad">
+        <div class="search"><span>Search venues, caterers, decorators&hellip;</span><b>Search</b></div>
+        <div class="rowhead"><h4>Services</h4><a>See all</a></div>
+        <div class="cats">
+          <div class="cat"><i></i>Lawns &amp; Venues</div><div class="cat"><i></i>Catering</div>
+          <div class="cat"><i></i>Decoration</div><div class="cat"><i></i>Photography</div>
+          <div class="cat"><i></i>Makeup &amp; Mehndi</div><div class="cat"><i></i>Band Baaja Baraat</div>
+        </div>
+        <div class="rowhead"><h4>Near Shrirampur</h4><a>See all</a></div>
+        <div class="vcard"><div class="ph"><span class="rate">&#9733; 4.8</span></div>
+          <div class="tx"><h5>Shubhmangal Lawns</h5><div class="meta">Lawns &amp; Venues &middot; 800 capacity</div>
+          <div class="ft"><span class="pr">&#8377;1,80,000</span><span class="cta">Enquire</span></div></div></div>
+        <div class="vcard"><div class="ph"><span class="rate">&#9733; 4.6</span></div>
+          <div class="tx"><h5>Annapurna Caterers</h5><div class="meta">Catering &middot; veg &amp; jain</div>
+          <div class="ft"><span class="pr">&#8377;420 / plate</span><span class="cta">Enquire</span></div></div></div>
+      </div>
+    </div>
+    <div class="tabs"><div class="tab on"><i class="ic">&#9750;</i>Home</div>
+      <div class="tab"><i class="ic">&#9906;</i>Explore</div><div class="tab"><i class="ic">&#9829;</i>Shortlists</div>
+      <div class="tab"><i class="ic">&#9635;</i>Wedding</div><div class="tab"><i class="ic">&#9711;</i>You</div></div>
+  </div></div>
+
+  <div class="vhead">First run</div>
+  <div class="variant">
+    <div class="strip"><div class="cd">
+      <div class="top"><span class="num" style="height:auto"><i style="animation:none">
+        <b style="height:auto">&mdash;&mdash;</b></i></span><span class="lab">days to go</span></div>
+      <div class="wd" style="margin-bottom:0">Set your dates and we'll start the countdown</div>
+    </div></div>
+    <p class="cap">No date yet, so the missing number becomes the invitation to set one.</p>
+  </div>
+
+  <p class="why"><b>Why it works:</b> a wedding genuinely is a deadline, and this is the most
+     energising way to say so. The number rolls over at midnight; the current function pops on the
+     ribbon. <b>What it costs:</b> every wedding app in India has a countdown, so familiarity shades
+     into generic — and it creates urgency without telling her what to do about it.</p>
+</section>
+
+<!-- ================= D4 ================= -->
+<section class="dir d4">
+  <div class="dhead">
+    <div class="num">Direction 04</div>
+    <h2>Peacock &amp; Gold</h2>
+    <p class="reg">Premium and information-dense. Deep teal, antique gold, sand ground,
+       tight corners, numbers treated as content.</p>
+    <div class="chips"><i style="background:#F7F2E7"></i><i style="background:#10262A"></i>
+      <i style="background:#0E4F52"></i><i style="background:#12857F"></i><i style="background:#D7A64A"></i></div>
+  </div>
+
+  <div class="phone"><div class="scr">
+    <div class="appbar"><div class="mark">&#9829;</div><div class="bname">Vivah Spot</div>
+      <div class="bell">&#9737;</div></div>
+    <div class="body">
+      <div class="strip"><div class="bm">
+        <div class="hd"><b>Your three dates</b><span>Services free</span></div>
+        <div class="r r1"><span class="dt">22 Nov</span><span class="tr"><i></i></span><span class="n">3/5</span></div>
+        <div class="r win"><span class="dt">27 Nov</span><span class="tr"><i></i></span><span class="n">5/5</span></div>
+        <div class="r r3"><span class="dt">4 Dec</span><span class="tr"><i></i></span><span class="n">2/5</span></div>
+        <div class="foot"><b>27 November</b> is the only date your venue, caterer and
+          photographer are all free.</div>
+      </div></div>
+      <div class="pad">
+        <div class="search"><span>Search venues, caterers, decorators&hellip;</span><b>Search</b></div>
+        <div class="rowhead"><h4>Services</h4><a>See all</a></div>
+        <div class="cats">
+          <div class="cat"><i></i>Lawns &amp; Venues</div><div class="cat"><i></i>Catering</div>
+          <div class="cat"><i></i>Decoration</div><div class="cat"><i></i>Photography</div>
+          <div class="cat"><i></i>Makeup &amp; Mehndi</div><div class="cat"><i></i>Band Baaja Baraat</div>
+        </div>
+        <div class="rowhead"><h4>Near Shrirampur</h4><a>See all</a></div>
+        <div class="vcard"><div class="ph"><span class="rate">&#9733; 4.8</span></div>
+          <div class="tx"><h5>Shubhmangal Lawns</h5><div class="meta">Lawns &amp; Venues &middot; 800 capacity</div>
+          <div class="ft"><span class="pr">&#8377;1,80,000</span><span class="cta">Enquire</span></div></div></div>
+        <div class="vcard"><div class="ph"><span class="rate">&#9733; 4.6</span></div>
+          <div class="tx"><h5>Annapurna Caterers</h5><div class="meta">Catering &middot; veg &amp; jain</div>
+          <div class="ft"><span class="pr">&#8377;420 / plate</span><span class="cta">Enquire</span></div></div></div>
+      </div>
+    </div>
+    <div class="tabs"><div class="tab on"><i class="ic">&#9750;</i>Home</div>
+      <div class="tab"><i class="ic">&#9906;</i>Explore</div><div class="tab"><i class="ic">&#9829;</i>Shortlists</div>
+      <div class="tab"><i class="ic">&#9635;</i>Wedding</div><div class="tab"><i class="ic">&#9711;</i>You</div></div>
+  </div></div>
+
+  <div class="vhead">First run</div>
+  <div class="variant">
+    <div class="strip"><div class="bm">
+      <div class="hd"><b>Your dates</b><span>Services free</span></div>
+      <div class="r"><span class="dt" style="width:auto;opacity:.72">Add the days your guruji gave you
+        and we'll show which one your whole wedding fits into.</span></div>
+      <div class="foot" style="border:0;padding-top:6px"><b>Add dates &rarr;</b></div>
+    </div></div>
+    <p class="cap">Means nothing until she has dates and shortlists, so it says what it will do.</p>
+  </div>
+
+  <p class="why"><b>Why it works:</b> it puts the one thing no competitor can do on the homepage
+     instead of burying it. The winning date's bar fills and warms to gold as she shortlists.
+     <b>What it costs:</b> the most expensive to build, and it stays empty longest &mdash; it needs
+     a borrowed early state.</p>
+</section>
+
+</div>
+
+<div class="lede" style="margin-top:36px">
+  <p class="hint">Working artifact &middot; <code>.working/directions-4.html</code> &middot; 2026-09-06.
+    Content from UJ-1 (Omkar &amp; Snehal, Shrirampur, ~600 guests, &#8377;8L). No banned vocabulary:
+    every call to action reads <em>Enquire</em>, never <em>Book</em>. Every animation is transform
+    and opacity only &mdash; cheap on a mid-range Android &mdash; and all of them stop under
+    <code>prefers-reduced-motion</code>.</p>
+</div>
+</div>
+</body>
+</html>

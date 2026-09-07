@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — which home screen?</title>
+<style>
+/*
+  GOVERNED BY:
+  Screen A  -> .working/extract-site-ia.md (index.html as published; structure verbatim)
+  Screen B  -> prd.md FR-10 (Workspace is home), FR-68 (Services chosen at the Wedding),
+               FR-8 (budget fills itself; "not yet estimated", never Rs 0), UJ-1 (Rutuja / Omkar & Snehal)
+  SKIN      -> PROVISIONAL AND IDENTICAL ACROSS BOTH. Visual identity is undecided
+               (.memlog.md: PRD NFR 5.10 marked stale). Judge structure only.
+*/
+:root{
+  --bg:#fff7fb; --surface:#fff; --text:#3a2f37; --soft:#736570;
+  --accent:#e23e7a; --accent-dark:#c62368; --accent-soft:#fde7f0;
+  --border:#f4e3ec; --shadow:0 4px 16px rgba(180,50,110,.08);
+  --grad:linear-gradient(135deg,#e23e7a 0%,#ff7a3d 100%);
+  --page:#eceaee; --ink:#2a242a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);
+  font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:32px 20px 64px}
+h1,h2,h3,.serif{font-family:Georgia,"Playfair Display",serif}
+.wrap{max-width:1080px;margin:0 auto}
+header.page{margin-bottom:28px}
+header.page h1{font-size:1.9rem;margin:0 0 8px;letter-spacing:-.01em}
+header.page p{margin:0 0 6px;max-width:64ch;color:#4a444a}
+.warn{display:inline-block;margin-top:10px;background:#fff3d6;border:1px solid #e8cf94;
+  border-radius:8px;padding:8px 12px;font-size:.85rem;color:#6b5310}
+.cols{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}
+.col{flex:1 1 340px;min-width:320px}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 9px;border-radius:999px;margin-bottom:8px}
+.tag.a{background:#e3e0e6;color:#4a444a}
+.tag.b{background:var(--accent-soft);color:var(--accent-dark)}
+.col > h2{font-size:1.15rem;margin:0 0 4px}
+.col > .sub{margin:0 0 14px;font-size:.88rem;color:#5a545a}
+
+/* phone */
+.phone{width:100%;max-width:390px;margin:0 auto;background:#1d181d;border-radius:34px;
+  padding:9px;box-shadow:0 14px 40px rgba(0,0,0,.22)}
+.scr{background:var(--bg);border-radius:26px;overflow:hidden;height:660px;
+  display:flex;flex-direction:column;color:var(--text)}
+.body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.appbar{background:var(--surface);padding:12px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;flex:none}
+.logo{width:26px;height:26px;border-radius:7px;background:var(--accent);flex:none;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+.brand{font-family:Georgia,serif;font-weight:700;font-size:1.02rem}
+.tabs{display:flex;background:var(--surface);border-top:1px solid var(--border);
+  padding:7px 4px 9px;flex:none}
+.tab{flex:1;text-align:center;font-size:.62rem;color:var(--soft);line-height:1.35}
+.tab .ic{display:block;font-size:15px;margin-bottom:2px}
+.tab.on{color:var(--accent);font-weight:600}
+.pad{padding:14px 16px}
+
+/* A */
+.search{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:999px;
+  padding:5px 5px 5px 15px;align-items:center;box-shadow:var(--shadow)}
+.search span{flex:1;color:#9a9099;font-size:.86rem}
+.search b{background:var(--accent);color:#fff;border-radius:999px;padding:8px 15px;
+  font-size:.8rem;font-weight:600}
+.hero{margin-top:14px;border-radius:18px;padding:22px 18px 20px;color:#fff;
+  background:var(--grad);position:relative;overflow:hidden}
+.hero::after{content:"photo";position:absolute;right:12px;top:10px;font-size:.62rem;
+  opacity:.5;letter-spacing:.08em;text-transform:uppercase}
+.hero h3{font-size:1.42rem;margin:0 0 7px;line-height:1.15}
+.hero p{margin:0 0 15px;font-size:.83rem;opacity:.94;line-height:1.45}
+.hero b{background:#fff;color:var(--accent-dark);border-radius:999px;padding:9px 17px;
+  font-size:.81rem;font-weight:700;display:inline-block}
+.rowhead{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 12px}
+.rowhead h4{margin:0;font-size:1.05rem;font-family:Georgia,serif}
+.rowhead a{color:var(--accent);font-size:.79rem;font-weight:600}
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 8px}
+.cat{text-align:center;font-size:.7rem;color:var(--text);line-height:1.3}
+.cat i{display:block;width:62px;height:62px;border-radius:50%;margin:0 auto 7px;
+  background:linear-gradient(160deg,#f7d9e6,#f6c9b4);border:2px solid #fff;
+  box-shadow:var(--shadow)}
+.vcard{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  overflow:hidden;box-shadow:var(--shadow);margin-bottom:12px}
+.vcard .ph{height:112px;background:linear-gradient(150deg,#e9d6e0,#f3ded0);position:relative}
+.vcard .rate{position:absolute;top:9px;right:9px;background:rgba(0,0,0,.62);color:#fff;
+  font-size:.7rem;padding:3px 8px;border-radius:999px}
+.vcard .txt{padding:11px 13px 13px}
+.vcard h5{margin:0 0 3px;font-size:.94rem}
+.vcard .meta{font-size:.76rem;color:var(--soft);margin-bottom:9px}
+.vcard .foot{display:flex;justify-content:space-between;align-items:center}
+.vcard .price{font-weight:700;font-size:.9rem}
+.vcard .cta{background:var(--accent);color:#fff;border-radius:999px;padding:7px 15px;
+  font-size:.76rem;font-weight:600}
+
+/* B */
+.wed{background:var(--surface);border-bottom:1px solid var(--border);padding:13px 16px 15px;flex:none}
+.wed h3{margin:0 0 2px;font-size:1.2rem;font-family:Georgia,serif}
+.wed .place{font-size:.78rem;color:var(--soft)}
+.lock{display:inline-flex;align-items:center;gap:5px;background:var(--accent-soft);
+  color:var(--accent-dark);border-radius:999px;padding:4px 11px;font-size:.73rem;
+  font-weight:600;margin-top:9px}
+.bud{margin-top:12px}
+.bud .line{display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:6px}
+.bud .line b{font-size:.9rem}
+.bar{height:7px;border-radius:999px;background:var(--accent-soft);overflow:hidden}
+.bar i{display:block;height:100%;width:52%;background:var(--grad)}
+.sec{margin:16px 0 9px;font-size:.68rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--soft)}
+.fn{display:flex;gap:11px;background:var(--surface);border:1px solid var(--border);
+  border-radius:13px;padding:10px 12px;margin-bottom:8px;align-items:center}
+.fn .d{text-align:center;flex:none;width:38px}
+.fn .d b{display:block;font-size:1.06rem;font-family:Georgia,serif;line-height:1}
+.fn .d span{font-size:.62rem;color:var(--soft);text-transform:uppercase}
+.fn .n{flex:1}
+.fn .n b{display:block;font-size:.9rem}
+.fn .n span{font-size:.73rem;color:var(--soft)}
+.svc{background:var(--surface);border:1px solid var(--border);border-radius:13px;
+  padding:11px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.svc .dot{width:8px;height:8px;border-radius:50%;flex:none}
+.svc .n{flex:1}
+.svc .n b{display:block;font-size:.89rem}
+.svc .n span{font-size:.73rem;color:var(--soft)}
+.svc .amt{text-align:right;font-size:.83rem;font-weight:700;white-space:nowrap}
+.svc .amt em{display:block;font-style:normal;font-weight:400;font-size:.68rem;color:var(--soft)}
+.d-done{background:#2bb673}.d-part{background:#f5b301}.d-none{background:#d9cdd5}
+
+/* notes */
+.notes{margin-top:16px;background:var(--surface);border:1px solid #e2dde2;border-radius:12px;
+  padding:14px 16px;font-size:.83rem;color:#4a444a}
+.notes b{color:var(--ink)}
+.notes ul{margin:7px 0 0;padding-left:18px}
+.notes li{margin-bottom:5px}
+.notes .k{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--soft);display:block;margin-bottom:5px}
+footer.page{margin-top:34px;font-size:.8rem;color:#5a545a;border-top:1px solid #dcd8dc;padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="page">
+  <h1>Which home screen is Vivah Spot?</h1>
+  <p>Rutuja opens the app. This is the first thing she sees. Everything else in the family app —
+     navigation, components, copy, and how long it takes to build — follows from this one decision.</p>
+  <div class="warn"><b>Skin is provisional and identical on both.</b> Colour and type are undecided
+     (PRD NFR 5.10 is marked stale). Judge the structure, not the pink.</div>
+</header>
+
+<div class="cols">
+
+  <!-- ============ A ============ -->
+  <div class="col">
+    <span class="tag a">Screen A</span>
+    <h2>The shop</h2>
+    <p class="sub">Your published site, as built. Search, categories, featured vendors.</p>
+
+    <div class="phone"><div class="scr">
+      <div class="appbar"><div class="logo">&#9829;</div><div class="brand">Vivah Spot</div></div>
+      <div class="body">
+        <div class="pad">
+          <div class="search"><span>Search venues, caterers, decor&hellip;</span><b>Search</b></div>
+
+          <div class="hero">
+            <h3>Plan your perfect wedding</h3>
+            <p>Trusted vendors for every part of your big day &mdash; all in one place.</p>
+            <b>Explore Services</b>
+          </div>
+
+          <div class="rowhead"><h4>Services</h4><a>See all</a></div>
+          <div class="cats">
+            <div class="cat"><i></i>Lawns &amp; Venues</div>
+            <div class="cat"><i></i>Catering</div>
+            <div class="cat"><i></i>Decoration</div>
+            <div class="cat"><i></i>Photography</div>
+            <div class="cat"><i></i>Makeup &amp; Mehndi</div>
+            <div class="cat"><i></i>DJ &amp; Music</div>
+          </div>
+
+          <div class="rowhead"><h4>Featured near you</h4><a>See all</a></div>
+          <div class="vcard">
+            <div class="ph"><span class="rate">&#9733; 4.8</span></div>
+            <div class="txt">
+              <h5>Shubhmangal Lawns</h5>
+              <div class="meta">Shrirampur &middot; Lawns &amp; Venues</div>
+              <div class="foot"><span class="price">&#8377;1,80,000</span><span class="cta">Enquire</span></div>
+            </div>
+          </div>
+          <div class="vcard">
+            <div class="ph"><span class="rate">&#9733; 4.6</span></div>
+            <div class="txt">
+              <h5>Annapurna Caterers</h5>
+              <div class="meta">Shrirampur &middot; Catering</div>
+              <div class="foot"><span class="price">&#8377;420 / plate</span><span class="cta">Enquire</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tabs">
+        <div class="tab on"><i class="ic">&#9750;</i>Home</div>
+        <div class="tab"><i class="ic">&#9906;</i>Explore</div>
+        <div class="tab"><i class="ic">&#9829;</i>Saved</div>
+        <div class="tab"><i class="ic">&#9635;</i>Planner</div>
+        <div class="tab"><i class="ic">&#9711;</i>Account</div>
+      </div>
+    </div></div>
+
+    <div class="notes">
+      <span class="k">What this assumes</span>
+      <ul>
+        <li>She arrives <b>not knowing what a wedding needs</b>, and the six tiles teach her.</li>
+        <li>She browses one category at a time and holds the wedding in her head.</li>
+        <li>The wedding itself &mdash; dates, functions, budget &mdash; lives somewhere behind &ldquo;Planner&rdquo;.</li>
+      </ul>
+      <span class="k" style="margin-top:12px">What it costs</span>
+      <ul>
+        <li>Contradicts <b>FR-68</b>: &ldquo;The Family never browses the catalog category by category.&rdquo;</li>
+        <li>Contradicts <b>FR-10</b>: the Workspace is meant to be home, not a tab.</li>
+        <li>Availability can only be a per-vendor calendar &mdash; and <b>UJ-1</b> says she never types a date into a filter.</li>
+        <li>The cross-service date matching &mdash; the thing no competitor does &mdash; has nowhere to live.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ B ============ -->
+  <div class="col">
+    <span class="tag b">Screen B</span>
+    <h2>Her wedding</h2>
+    <p class="sub">The Workspace, as the PRD specifies it. FR-10, FR-68, FR-8, UJ-1.</p>
+
+    <div class="phone"><div class="scr">
+      <div class="wed">
+        <h3>Omkar &amp; Snehal</h3>
+        <div class="place">Shrirampur &middot; ~600 guests</div>
+        <div class="lock">&#9679; 27 November block locked</div>
+        <div class="bud">
+          <div class="line"><span>Running total</span><b>&#8377;4,20,000 <span style="font-weight:400;color:var(--soft)">of &#8377;8,00,000</span></b></div>
+          <div class="bar"><i></i></div>
+        </div>
+      </div>
+      <div class="body"><div class="pad">
+        <div class="sec">Functions</div>
+        <div class="fn"><div class="d"><b>26</b><span>Nov</span></div>
+          <div class="n"><b>Haldi</b><span>Morning &middot; 150 guests</span></div></div>
+        <div class="fn"><div class="d"><b>27</b><span>Nov</span></div>
+          <div class="n"><b>Wedding</b><span>Evening &middot; 600 guests</span></div></div>
+        <div class="fn"><div class="d"><b>28</b><span>Nov</span></div>
+          <div class="n"><b>Reception</b><span>Evening &middot; 400 guests</span></div></div>
+
+        <div class="sec">Services &mdash; 5 chosen</div>
+        <div class="svc"><span class="dot d-done"></span>
+          <div class="n"><b>Venue</b><span>Shubhmangal Lawns selected</span></div>
+          <div class="amt">&#8377;1,80,000</div></div>
+        <div class="svc"><span class="dot d-done"></span>
+          <div class="n"><b>Catering</b><span>Annapurna Caterers selected</span></div>
+          <div class="amt">&#8377;2,40,000<em>&#8377;400 &times; 600</em></div></div>
+        <div class="svc"><span class="dot d-part"></span>
+          <div class="n"><b>Photography</b><span>3 shortlisted &middot; 1 enquiry awaiting quote</span></div>
+          <div class="amt" style="font-weight:400;font-size:.73rem;color:var(--soft)">not yet<br>estimated</div></div>
+        <div class="svc"><span class="dot d-none"></span>
+          <div class="n"><b>D&eacute;cor &amp; Mandap</b><span>Not started</span></div>
+          <div class="amt" style="font-weight:400;font-size:.73rem;color:var(--soft)">not yet<br>estimated</div></div>
+        <div class="svc"><span class="dot d-none"></span>
+          <div class="n"><b>Band Baaja Baraat</b><span>Not started</span></div>
+          <div class="amt" style="font-weight:400;font-size:.73rem;color:var(--soft)">not yet<br>estimated</div></div>
+      </div></div>
+      <div class="tabs">
+        <div class="tab on"><i class="ic">&#9635;</i>Wedding</div>
+        <div class="tab"><i class="ic">&#9906;</i>Services</div>
+        <div class="tab"><i class="ic">&#9993;</i>Enquiries</div>
+        <div class="tab"><i class="ic">&#9787;</i>Guests</div>
+        <div class="tab"><i class="ic">&#9711;</i>Account</div>
+      </div>
+    </div></div>
+
+    <div class="notes">
+      <span class="k">What this assumes</span>
+      <ul>
+        <li>She already knows what a wedding needs. She needs to <b>keep track of one</b>.</li>
+        <li>Services are chosen at the wedding first; browsing happens inside a chosen Service.</li>
+        <li>Every availability she sees is already filtered by the whole block. No date filter, ever.</li>
+      </ul>
+      <span class="k" style="margin-top:12px">What it costs</span>
+      <ul>
+        <li>Nothing to show until she creates a wedding. First run is a <b>setup flow</b>, not a shop.</li>
+        <li>Someone browsing out of curiosity has no obvious way in.</li>
+        <li>More to build: Wedding, Functions, Candidate Blocks and cross-service matching all come first.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer class="page">
+  Working artifact &middot; <code>.working/direction-home-screen.html</code> &middot; Vivah Spot UX, 2026-09-06.
+  Screen A reproduces <code>index.html</code> as published, with &ldquo;Book Now&rdquo; replaced by
+  &ldquo;Enquire&rdquo; so the comparison is about structure rather than a word PRD &sect;7.9 already bans.
+  Screen B is drawn from FR-10, FR-68, FR-8 and UJ-1. Both use the same provisional skin.
+</footer>
+</div>
+</body>
+</html>
