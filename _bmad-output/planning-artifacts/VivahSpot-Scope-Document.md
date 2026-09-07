@@ -240,7 +240,7 @@ In v1.0 the trust spine rested on money: Vivah Spot held the funds, so it could 
 | **Honest reviews** | Reviews are tied to real enquiries and moderated, not open to anonymous posting. |
 | **Venue-awareness** | Services auto-adapt to the chosen venue. Pure software; unaffected by the model change. |
 | **Delisting** | A vendor who repeatedly breaks commitments loses their listing, their visibility, and their subscription. This is the enforcement lever. |
-| **Free to couples** | No fee and no commission means search ranking is not for sale to the highest bidder on a per-deal basis. |
+| **Free to couples** | No fee and no commission means the platform has no stake in any particular deal. **Position inside the organic results cannot be bought — by any tier, add-on or arrangement (PRD FR-20).** Paid placement exists and is sold by Tier, but it sits in a separate band, outside the organic ordering and labelled as paid. *(Amended 2026-09-06. This row previously read "search ranking is not for sale to the highest bidder on a per-deal basis"; PRD FR-20 requires that claim be struck here and from all marketing copy, because ranking IS sold — visibly, separately, and never inside the organic results.)* |
 
 ### What Vivah Spot no longer claims — and must not market
 
