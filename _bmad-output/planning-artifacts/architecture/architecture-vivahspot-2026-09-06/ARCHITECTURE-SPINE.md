@@ -406,7 +406,7 @@ Each rule names **what actually enforces it, and whether that exists today**. Ti
 
 - **Binds:** FR-50, FR-52, FR-53, FR-54, PRD §7.1
 - **Prevents:** an invoice edited after issue; tax computed from the operator's State rather than the recipient's; and the platform drifting into the stored payment instructions FR-54 forbids outright
-- **Rule:** The platform collects **Subscriptions only**; no money moves between a Family and a Vendor, ever (PRD §7.1). A Subscription is a twelve-month prepaid term bought by a deliberate act. **There is no auto-renewal, standing mandate, e-mandate, UPI Autopay or stored instruction to collect** — the integration is one-time checkout per term, and adopting a recurring-mandate product would be a change to FR-54, not an implementation detail. An issued invoice is immutable and consecutively numbered; a correction is a credit note, never an edit (AD-27). Tax is determined by the **recipient's** State, never assumed from the operator's, and a prepaid term is an advance whose full liability falls in the period of collection. A price change never alters what a Vendor already bought.
+- **Rule:** The platform collects **Subscriptions only**; no money moves between a Family and a Vendor, ever (PRD §7.1). A Subscription is a twelve-month prepaid term bought by a deliberate act. **There is no auto-renewal, standing mandate, e-mandate, UPI Autopay or stored instruction to collect** — the integration takes a single payment per term *(wording amended 2026-09-06: this read "one-time checkout per term", and PRD §7.9 bans *checkout* across every downstream document)*, and adopting a recurring-mandate product would be a change to FR-54, not an implementation detail. An issued invoice is immutable and consecutively numbered; a correction is a credit note, never an edit (AD-27). Tax is determined by the **recipient's** State, never assumed from the operator's, and a prepaid term is an advance whose full liability falls in the period of collection. A price change never alters what a Vendor already bought.
 - **Enforced by:** invoice immutability — controller guard. **The no-mandate rule — review only, deliberately.** Razorpay ships every recurring method (Cards, UPI Autopay, Emandate, Paper NACH) enabled by default, so nothing in code or configuration prevents a mandate being created; Tech-Stack §4 even proposes one as a "later" step. A reviewer seeing any subscription, mandate, autopay or tokenisation call in the payment path should treat it as a breach of FR-54, not a feature.
 
 ### AD-35 — Discoverability is one function and one stored flag
@@ -489,7 +489,7 @@ Client versions read from `package.json` on disk, 2026-09-06. Frappe claims veri
 
 The bench's Python and Node requirements are **stricter than the monorepo's** and are a hosting constraint — see Deferred.
 
-Named but unpinned, and belonging to the business rather than the build: **Razorpay one-time checkout per term — explicitly not Razorpay Subscriptions, e-mandate or UPI Autopay, which FR-54 forbids**; WhatsApp Business Cloud API with SMS fallback; MSG91 for OTP; object storage with CDN (AD-29).
+Named but unpinned, and belonging to the business rather than the build: **Razorpay, taking a single payment per term — explicitly not Razorpay Subscriptions, e-mandate or UPI Autopay, which FR-54 forbids**; WhatsApp Business Cloud API with SMS fallback; MSG91 for OTP; object storage with CDN (AD-29).
 
 ## Structural Seed
 
