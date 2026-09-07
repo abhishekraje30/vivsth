@@ -1,4 +1,4 @@
-# VivahSathi — Project Scope Document
+# Vivah Spot — Project Scope Document
 
 > **Modular Wedding-Services Marketplace · India**
 
@@ -8,7 +8,7 @@
 
 | Field | Detail |
 |---|---|
-| **Project** | VivahSathi — Wedding Management & Services Marketplace |
+| **Project** | Vivah Spot — Wedding Management & Services Marketplace |
 | **Prepared by** | Abhishek Bankar — Anvayro Organisation |
 | **Prepared for (Client)** | Pravin Revale |
 | **Version** | 2.0 (Draft for review) |
@@ -19,21 +19,21 @@
 
 ### Revision note — what changed in v2.0
 
-Version 1.0 assumed a **commission + escrow** business model: couples would pay through the platform, funds would be held, and VivahSathi would take a cut and enforce delivery guarantees against the money it held.
+Version 1.0 assumed a **commission + escrow** business model: couples would pay through the platform, funds would be held, and Vivah Spot would take a cut and enforce delivery guarantees against the money it held.
 
-**Version 2.0 replaces this with a vendor subscription model.** Vendors pay a recurring listing fee; couples pay VivahSathi nothing; and no booking money passes through the platform at any point. Deals are settled directly between the couple and the vendor.
+**Version 2.0 replaces this with a vendor subscription model.** Vendors pay a recurring listing fee; couples pay Vivah Spot nothing; and no booking money passes through the platform at any point. Deals are settled directly between the couple and the vendor.
 
 Sections materially revised: **§2** (objectives), **§2A** (new — revenue model), **§4** (service engine blueprint), **§5** (all three applications), **§6** (frozen service specifications), **§7** (platform features), **§8** (trust spine — substantially rewritten), **§10** (phasing), **§11** (out of scope), **§12** (assumptions).
 
 > ⚠️ **Downstream artifact notice:** the brainstorm artifact `_bmad-output/brainstorming/brainstorming-session-2026-06-02-0603.md` predates this decision and still describes escrow-backed guarantees. It is retained as a historical record of the product exploration; where it conflicts with this document, **this document governs**.
 
-Technical decisions arising from this scope are recorded separately in `VivahSathi-Tech-Stack.md`.
+Technical decisions arising from this scope are recorded separately in `VivahSpot-Tech-Stack.md`.
 
 ---
 
 ## 1. Project Overview
 
-**VivahSathi** is a **modular wedding-services marketplace** for India. Instead of opaque, all-or-nothing wedding planners, VivahSathi lets a couple/family **assemble their entire wedding service-by-service, within their budget** — discovering, comparing and shortlisting verified vendors for each service in one place.
+**Vivah Spot** is a **modular wedding-services marketplace** for India. Instead of opaque, all-or-nothing wedding planners, Vivah Spot lets a couple/family **assemble their entire wedding service-by-service, within their budget** — discovering, comparing and shortlisting verified vendors for each service in one place.
 
 - **North star:** a **hassle-free wedding** — transparency, trust, and one place to plan everything.
 - **Launch market:** **Tier 4 / 3 / 2 cities**, beginning with **Shrirampur, Maharashtra**, built to scale city-by-city across India.
@@ -41,7 +41,7 @@ Technical decisions arising from this scope are recorded separately in `VivahSat
 - **Free for couples.** The platform is funded by vendor subscriptions, not by taking a cut of the wedding.
 
 ### Problem it solves
-Today, planning a wedding means juggling 15+ fragmented, informal, word-of-mouth vendors with opaque pricing, hidden charges, no accountability, and constant fear of being cheated or let down on the day. VivahSathi replaces that chaos with a single, transparent, vetted platform — plus a planning workspace that keeps the whole wedding in one view.
+Today, planning a wedding means juggling 15+ fragmented, informal, word-of-mouth vendors with opaque pricing, hidden charges, no accountability, and constant fear of being cheated or let down on the day. Vivah Spot replaces that chaos with a single, transparent, vetted platform — plus a planning workspace that keeps the whole wedding in one view.
 
 ---
 
@@ -57,7 +57,7 @@ Today, planning a wedding means juggling 15+ fragmented, informal, word-of-mouth
 
 ## 2A. Revenue Model *(new in v2.0)*
 
-**Vendors pay to be listed. Couples pay nothing. VivahSathi never handles booking money.**
+**Vendors pay to be listed. Couples pay nothing. Vivah Spot never handles booking money.**
 
 | Aspect | Detail |
 |---|---|
@@ -95,19 +95,19 @@ A vendor in Shrirampur will not pay a listing fee before seeing couples on the p
 |---|---|
 | **Couple / Family (Customer)** | Plans the wedding; the primary demand-side user. Often elder-led, low-to-medium digital literacy → must be simple. Uses the platform free of charge. |
 | **Vendor (Supply)** | Multi-type service providers (venue owners, caterers, photographers, decorators, band/baraat, etc.) who self-onboard, subscribe, list offerings, manage availability, and respond to enquiries. **The paying customer.** |
-| **Admin / Operations** | VivahSathi staff: vendor verification, subscription & billing management, catalog management, content moderation, complaint handling, analytics. |
-| **Wedding Manager** | A VivahSathi-side coordinator who can assist a customer's planning. _(Phase 2; commercial treatment to be decided — see §11.)_ |
+| **Admin / Operations** | Vivah Spot staff: vendor verification, subscription & billing management, catalog management, content moderation, complaint handling, analytics. |
+| **Wedding Manager** | A Vivah Spot-side coordinator who can assist a customer's planning. _(Phase 2; commercial treatment to be decided — see §11.)_ |
 
 ---
 
 ## 4. Solution Architecture
 
-VivahSathi is built as **three layers** over a single reusable "service engine":
+Vivah Spot is built as **three layers** over a single reusable "service engine":
 
 **① Wedding Workspace** — *the hassle-free layer (the moat)*
 The customer's command centre: Wedding → Functions → unified dashboard, budget tracker, guest management, checklist/timeline, shortlists, enquiry tracking, reminders.
 
-> **Elevated in v2.0.** With no escrow or transaction layer, the Workspace is the primary reason a couple uses VivahSathi rather than a search engine or a plain directory. It is a core deliverable, not a companion feature.
+> **Elevated in v2.0.** With no escrow or transaction layer, the Workspace is the primary reason a couple uses Vivah Spot rather than a search engine or a plain directory. It is a core deliverable, not a companion feature.
 
 **② Service Marketplace** — *the catalog*
 ~50+ service modules, each an instance of the same engine, attached **per function**, listing verified vendors.
@@ -129,7 +129,7 @@ Every service module follows the **same 10-part blueprint** — so new services 
 9. Revenue lever: **vendor subscription tier** (visibility and allowances scale with plan)
 10. City-scoped replication (scaling engine)
 
-> **Note on first-party offerings.** v1.0 envisaged VivahSathi supplying some services itself. Under a subscription model this puts the platform in direct competition with the vendors funding it, which undermines both the revenue base and the neutrality of search ranking. **First-party supply is deferred out of the current engagement** and should be reconsidered only alongside a deliberate change of commercial model.
+> **Note on first-party offerings.** v1.0 envisaged Vivah Spot supplying some services itself. Under a subscription model this puts the platform in direct competition with the vendors funding it, which undermines both the revenue base and the neutrality of search ranking. **First-party supply is deferred out of the current engagement** and should be reconsidered only alongside a deliberate change of commercial model.
 
 ---
 
@@ -203,7 +203,7 @@ Signature features are restated as **published vendor commitments**, verified wh
 | **Décor & Mandap** | **Verified real-event portfolios** (our strongest anti-fraud check) · all-in line-item pricing · auto venue-aware sizing · published setup-time commitment |
 | **Band Baaja Baraat** | Baraat builder · all-in pricing · **published "no on-the-spot demands" declaration** with complaint reporting that affects vendor standing · vetted crews |
 
-> **Changed from v1.0:** the escrow-backed *guarantees* (on-time delivery guarantee, freshness guarantee, no-shortage-no-waste guarantee, on-time setup guarantee, no-on-the-spot-demands guarantee) are restated as **vendor-declared, publicly published commitments**. VivahSathi verifies what it can verify, publishes the declaration, collects reviews against it, and removes vendors who repeatedly fail. It does **not** underwrite the outcome financially. Marketing copy must reflect this distinction. _(See §8.)_
+> **Changed from v1.0:** the escrow-backed *guarantees* (on-time delivery guarantee, freshness guarantee, no-shortage-no-waste guarantee, on-time setup guarantee, no-on-the-spot-demands guarantee) are restated as **vendor-declared, publicly published commitments**. Vivah Spot verifies what it can verify, publishes the declaration, collects reviews against it, and removes vendors who repeatedly fail. It does **not** underwrite the outcome financially. Marketing copy must reflect this distinction. _(See §8.)_
 
 ---
 
@@ -227,9 +227,9 @@ Signature features are restated as **published vendor commitments**, verified wh
 
 ## 8. Key Differentiators (Trust Spine — rewritten in v2.0)
 
-In v1.0 the trust spine rested on money: VivahSathi held the funds, so it could compel performance. Without escrow, trust must be built **before** the transaction rather than enforced during it. This is a weaker instrument, honestly stated — but it is the model every successful Indian listing platform operates on, and it is still far beyond what a plain directory or a word-of-mouth contractor offers.
+In v1.0 the trust spine rested on money: Vivah Spot held the funds, so it could compel performance. Without escrow, trust must be built **before** the transaction rather than enforced during it. This is a weaker instrument, honestly stated — but it is the model every successful Indian listing platform operates on, and it is still far beyond what a plain directory or a word-of-mouth contractor offers.
 
-### What VivahSathi still guarantees
+### What Vivah Spot still guarantees
 
 | Mechanism | How it works |
 |---|---|
@@ -242,7 +242,7 @@ In v1.0 the trust spine rested on money: VivahSathi held the funds, so it could 
 | **Delisting** | A vendor who repeatedly breaks commitments loses their listing, their visibility, and their subscription. This is the enforcement lever. |
 | **Free to couples** | No fee and no commission means search ranking is not for sale to the highest bidder on a per-deal basis. |
 
-### What VivahSathi no longer claims — and must not market
+### What Vivah Spot no longer claims — and must not market
 
 - ❌ Escrow or held payments of any kind
 - ❌ Financial guarantee of on-time delivery, setup, or freshness
@@ -250,7 +250,7 @@ In v1.0 the trust spine rested on money: VivahSathi held the funds, so it could 
 - ❌ Refund or compensation for vendor non-performance
 - ❌ Any liability for payments made directly between couple and vendor
 
-> **Action required:** all customer-facing copy, the app UI, and the five frozen service specifications must be reviewed against this list before launch. A guarantee the platform cannot honour is worse for trust than no guarantee at all — and, if it induces a payment, is a legal exposure. Terms & conditions must state plainly that VivahSathi is a listing and discovery platform and is not a party to any transaction between a couple and a vendor.
+> **Action required:** all customer-facing copy, the app UI, and the five frozen service specifications must be reviewed against this list before launch. A guarantee the platform cannot honour is worse for trust than no guarantee at all — and, if it induces a payment, is a legal exposure. Terms & conditions must state plainly that Vivah Spot is a listing and discovery platform and is not a party to any transaction between a couple and a vendor.
 
 ---
 
@@ -311,7 +311,7 @@ In v1.0 the trust spine rested on money: VivahSathi held the funds, so it could 
 ## 11. Out of Scope (Current Engagement)
 
 - **Any handling of booking payments between couples and vendors** — no escrow, no token payments, no commission, no split settlement, no payouts
-- **First-party service supply** by VivahSathi (deferred — see §4 note)
+- **First-party service supply** by Vivah Spot (deferred — see §4 note)
 - Metro-grade regulatory/compliance machinery (Phase 4)
 - iOS application (deferred)
 - Wedding Manager as a paid service — the commercial treatment is undecided; Phase 2 covers the coordination feature only
@@ -371,4 +371,4 @@ Any requirement outside this document will be handled as a **Change Request**: d
 
 ---
 
-_Derived from the VivahSathi product brainstorm. For the original service-level explorations and research-backed marketing pain-points see `_bmad-output/brainstorming/brainstorming-session-2026-06-02-0603.md` — noting the precedence caveat in §0. For technology decisions see `VivahSathi-Tech-Stack.md`._
+_Derived from the Vivah Spot product brainstorm. For the original service-level explorations and research-backed marketing pain-points see `_bmad-output/brainstorming/brainstorming-session-2026-06-02-0603.md` — noting the precedence caveat in §0. For technology decisions see `VivahSpot-Tech-Stack.md`._

@@ -1,7 +1,7 @@
 ---
 stepsCompleted: [1, 2]
 inputDocuments: []
-session_topic: 'VivahSathi — end-to-end Wedding Management Platform for India, launching first in Shrirampur, Maharashtra; a hassle-free, fully-managed wedding experience (venue, catering, entertainment, event management, end-to-end planning) sold as packages.'
+session_topic: 'Vivah Spot — end-to-end Wedding Management Platform for India, launching first in Shrirampur, Maharashtra; a hassle-free, fully-managed wedding experience (venue, catering, entertainment, event management, end-to-end planning) sold as packages.'
 session_goals: 'Research what Indian couples/families expect from weddings; map every component of an end-to-end solution; design hassle-free packages; identify multiple revenue streams; scope all services, vendors, and operations needed to build the business.'
 selected_approach: 'progressive-flow'
 techniques_used: ['Role Playing', 'Mind Mapping', 'Morphological Analysis', 'Resource Constraints']
@@ -16,7 +16,7 @@ context_file: ''
 
 ## Session Overview
 
-**Topic:** VivahSathi — an end-to-end Wedding Management Platform for India. First launch market: Shrirampur, Maharashtra (founder's native place). Vision: a hassle-free, fully-managed wedding experience covering venue, catering, entertainment (dance/sangeet), event management, and all planning needs — delivered as curated packages and built into a multi-stream revenue business.
+**Topic:** Vivah Spot — an end-to-end Wedding Management Platform for India. First launch market: Shrirampur, Maharashtra (founder's native place). Vision: a hassle-free, fully-managed wedding experience covering venue, catering, entertainment (dance/sangeet), event management, and all planning needs — delivered as curated packages and built into a multi-stream revenue business.
 
 **Goals:**
 - Research what Indian couples and families generally expect from weddings.
@@ -135,7 +135,7 @@ _Anti-bypass / revenue model: deferred (notes for later — mask owner contact, 
 
 _Real complaints couples have about venues. Each = a marketing message AND a feature we deliver. Sources: Quora, The Knot, WeddingWire + Indian venue/planner blogs._
 
-| # | Real pain | VivahSathi answer (marketing hook) |
+| # | Real pain | Vivah Spot answer (marketing hook) |
 |---|---|---|
 | 1 | Hidden charges — generator, GST, service charge, overtime (₹1–2L for 2 hrs), valet, cleanup | All-inclusive transparent pricing — _"The price you see is the price you pay"_ |
 | 2 | Forced in-house / "approved" vendors with markups | Vendor policy shown upfront + filter for open venues — _"Your wedding, your vendors"_ |
@@ -148,7 +148,7 @@ _Real complaints couples have about venues. Each = a marketing message AND a fea
 | 9 | Exhausting, non-comparable quotes | Side-by-side compare on standard fields — _"Compare in minutes, not weeks"_ |
 | 10 | Weak trust (photos & word-of-mouth) | Verified reviews from real bookings — _"Reviews you can trust"_ |
 
-**Marketing takeaway:** VivahSathi's core pitch = **transparency + trust + freedom** vs. the opaque, restrictive, surprise-fee status quo.
+**Marketing takeaway:** Vivah Spot's core pitch = **transparency + trust + freedom** vs. the opaque, restrictive, surprise-fee status quo.
 
 **Sources:** PS Decor (hidden charges; contract checklist) · BollyWeds · Platinum Crown · Aurum · The Knot · The Grange Hall.
 
@@ -193,7 +193,7 @@ Tasting logistics (who / when / how many) · menu-lock date · change/cancellati
 
 _Real complaints about wedding catering. Each = a marketing message AND a feature we deliver. Sources: Indian wedding catering & food-waste blogs, The Knot, per-plate cost guides._
 
-| # | Real pain | VivahSathi answer (marketing hook) |
+| # | Real pain | Vivah Spot answer (marketing hook) |
 |---|---|---|
 | 1 | Food runs out — a shameful shortage | Smart headcount + buffer — _"Never run short"_ |
 | 2 | Cold / reheated / off-site food | On-site freshness guarantee — _"Hot, fresh, on time"_ |
@@ -239,7 +239,7 @@ Delivery-date SLA in contract · final payment released on delivery (escrow) · 
 
 _Real complaints about wedding photography. Each = a marketing message AND a feature we deliver. Sources: WeddingWire, The Knot, Indian photo-cost & legal blogs._
 
-| # | Real pain | VivahSathi answer (marketing hook) |
+| # | Real pain | Vivah Spot answer (marketing hook) |
 |---|---|---|
 | 1 | Late / non-delivery (months, sometimes never) | Escrow-backed on-time guarantee + tracker — _"Your album, on time — guaranteed"_ |
 | 2 | Bait-and-switch (junior shoots your day) | Named-shooter lock — _"The photographer you pick is the one who shows up"_ |
@@ -277,7 +277,7 @@ Real-event portfolio · themes/styles · budget-tier packages · line-item prici
 
 _Real complaints about wedding décor. Each = a marketing message AND a feature we deliver. Sources: WeddingWire, EventBazaar, WedMeGood, DesiWeds, FiftyFlowers._
 
-| # | Real pain | VivahSathi answer (marketing hook) |
+| # | Real pain | Vivah Spot answer (marketing hook) |
 |---|---|---|
 | 1 | Pinterest vs reality (75% disappointed) | Verified real-event portfolios — _"Real weddings, not staged shoots"_ |
 | 2 | Dream vs budget sticker shock | Budget-tier packages with realistic looks — _"See what your budget really gets"_ |
@@ -316,7 +316,7 @@ Fireworks legality (green crackers / permitted window), noise-curfew automation,
 
 _Real complaints about wedding band/baraat. Each = a marketing message AND a feature we deliver. Sources: Madhyamam, TheShaadiCoordinators, BookDholWala, LegalKart, BWC India._
 
-| # | Real pain | VivahSathi answer (marketing hook) |
+| # | Real pain | Vivah Spot answer (marketing hook) |
 |---|---|---|
 | 1 | On-the-spot cash demands / baksheesh extortion | Fully prepaid + no-demands guarantee — _"One price, paid — no drama on the road"_ |
 | 2 | Drunk / unruly band members | Vetted, manager-led crews — _"Professional, every step"_ |

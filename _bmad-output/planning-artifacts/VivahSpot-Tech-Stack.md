@@ -1,7 +1,23 @@
-# VivahSathi — Technology Stack Decision
+# Vivah Spot — Technology Stack Decision
 
-> Companion to `VivahSathi-Scope-Document.md`. Decided August 2026.
+> Companion to `VivahSpot-Scope-Document.md`. Decided August 2026.
 > Context: solo developer, client delivery deadline, Phase 1 = Shrirampur single-city MVP.
+>
+> ---
+>
+> **[SUPERSEDED IN PART — 2026-09-06]** This is the August decision record and is kept as one. The
+> **stack choices in it stand**; five things in it do not, having been overtaken by `prds/prd-vivahspot-2026-09-03/prd.md`
+> and by `architecture/architecture-vivahspot-2026-09-06/ARCHITECTURE-SPINE.md`:
+>
+> | Here | Superseded by |
+> |---|---|
+> | §1 "Android-only at launch" | NFR 5.2 — iOS is **not** deferred |
+> | §3 data model (`Booking`, `Service Category`, `Package`, `Availability Block`) | PRD Glossary §3; `Booking` is banned outright by §7.9. Spine AD-6, AD-11, AD-24 |
+> | §4 "Later: Razorpay Subscriptions with UPI Autopay / e-mandate" | **Forbidden by FR-54.** No mandate, ever. Spine AD-34 |
+> | §5 "ruthless MVP cut" — flat guest list, no RSVP; delisting as enforcement | FR-11, FR-12 build both; §7.2 excludes delisting for service quality |
+> | §7 hand-maintained zod mirror of the API | Spine AD-4 — Python is the source, zod is generated |
+>
+> Do not treat any of those five as specification.
 
 ---
 
@@ -12,7 +28,7 @@
 | **Customer app** | React Native + Expo (managed, New Architecture), **Android-only at launch** | Existing React skill transfers; cloud builds (no Mac needed); OTA updates |
 | **Vendor portal** | Next.js responsive web app / PWA | No store review; one mobile app instead of two; plays to existing strength |
 | **Admin / Ops panel** | Frappe Desk (built-in) | ~40% of functional scope arrives free |
-| **Backend** | Frappe Framework v16 (custom app `vivahsathi`) | DocType model *is* the service engine; existing expertise |
+| **Backend** | Frappe Framework v16 (custom app `vivahspot_backend`) | DocType model *is* the service engine; existing expertise |
 | **Database** | MariaDB (Frappe default) | Don't fight the framework |
 | **Search** | MariaDB at MVP → Meilisearch/Typesense behind an interface | Deferred, but designed for |
 | **Media** | Cloudflare R2 (or S3) + CDN | Photo-heavy product; never use Frappe's file store for user media |
@@ -89,9 +105,9 @@ v2 differs from the legacy v1 (`/api/resource`, `/api/method`) in more than the 
 Both clients hit **whitelisted methods only**:
 
 ```
-POST /api/v2/method/vivahsathi.api.mobile.v1.search_listings
-GET  /api/v2/method/vivahsathi.api.mobile.v1.get_listing
-POST /api/v2/method/vivahsathi.api.mobile.v1.create_booking
+POST /api/v2/method/vivahspot_backend.api.mobile.v1.search_listings
+GET  /api/v2/method/vivahspot_backend.api.mobile.v1.get_listing
+POST /api/v2/method/vivahspot_backend.api.mobile.v1.create_booking
 ```
 
 *(App-level `v1` is versioned independently of Frappe's transport-level `v2` — they are different things and will drift apart.)*
@@ -256,14 +272,14 @@ All four are client-dependency items. Raise them at sign-off.
 ## 7. Repository layout
 
 ```
-vivahsathi/
+vivahspot_backend/
 ├─ apps/
 │  ├─ mobile/          # Expo app (customer, Android-first)
 │  └─ vendor-web/      # Next.js vendor portal (responsive/PWA)
 ├─ packages/
 │  └─ shared/          # zod schemas + TS types for the mobile.v1 API contract
 └─ backend/
-   └─ vivahsathi/      # Frappe custom app
+   └─ vivahspot_backend/      # Frappe custom app
       └─ api/mobile/v1/  # whitelisted methods — the only surface clients touch
 ```
 
