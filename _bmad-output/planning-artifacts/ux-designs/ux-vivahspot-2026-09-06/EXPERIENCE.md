@@ -1,7 +1,7 @@
 ---
 name: Vivah Spot
 description: Information architecture, behavior, states and journeys for the Vivah Spot family app, vendor portal and public guest pages.
-status: draft
+status: final
 updated: 2026-09-07
 design: ./DESIGN.md
 sources:
@@ -14,6 +14,12 @@ sources:
 
 > `DESIGN.md` owns how it looks. This owns how it works. Where a mock, a wireframe or the published
 > `vivahspot.com` disagrees with either spine, the spine wins.
+>
+> **That rule is what `mockups/` is for, and what it is not.** The artifacts both spines link to
+> **illustrate; they do not specify.** Each was drawn to settle one question and froze the moment
+> that question closed, so where a mockup and a spine disagree the spine is right and the mockup is
+> the thing that is behind. Open one to see a decision being made; never read a value off it. This
+> is stated once, here, and is not repeated at each link.
 >
 > **`.memlog.md` outranks this document, and outranks the PRD.** Two of its decisions override
 > shipped FRs; both overrides are recorded in full below, and **both have since been carried into the
@@ -109,9 +115,14 @@ exciting. The wedding lives one tap away, behind the card or the Wedding tab.
 
 **Composition reference.** `.working/directions-4.html` renders the four directions considered and
 **Direction 1, the Invitation, was chosen** (`.memlog.md:26`) — it is what `DESIGN.md` specifies.
-`.working/direction-home-screen.html` is the composed Home and `.working/direction-workspace-4.html`
-the composed Workspace; `.working/color-themes-1.html` is where the Kumkum palette was picked
-(theme T3, `.memlog.md:29`). All four are **structural** references — three of them carry a
+`.working/direction-home-screen.html` is the composed Home;
+`.working/direction-workspace-4.html` is the study the Workspace came out of — four structures for
+where the wedding lives, of which **C, By Function**, is the one built. It is deliberately **not**
+promoted: it predates the Span decision and draws the venue under each Function it serves, which is
+precisely the error *Across the wedding* exists to prevent. The Workspace is built from the tables,
+not from that file; and
+[`mockups/color-themes-1.html`](mockups/color-themes-1.html) is that same Home in the five bright
+palettes the chosen one came out of (theme T3, `.memlog.md:29`). All four are **structural** references — three of them carry a
 provisional placeholder skin rather than the chosen palette, and all of them hardcode six
 medallions, which the catalogue rule below forbids.
 
@@ -175,8 +186,10 @@ that date with a clearable chip saying so.
 **Composition reference.** The two-lens decision was made by looking at three studies:
 `.working/direction-vendor-4.html` (the phone portal), `.working/direction-vendor-desktop.html`
 (the same portal above 768px, where the rail replaces the tab bar) and
-`.working/direction-vendor-switch.html` — the only rendering of the lens switch itself, including
-the `Inbox · 3` count and the switch's container boundary (`.memlog.md:54`, `:56`, `:58`). They are
+[`mockups/direction-vendor-switch.html`](mockups/direction-vendor-switch.html) — the only rendering
+of the lens switch itself: both lenses over one set of Enquiries, the `Inbox · 3` count inside the
+label, 27 November selected and carried across the switch, the constant rail, and the same control
+at 360px (`.memlog.md:54`, `:56`, `:58`). They are
 structural references: their calendar marks predate the count-not-texture decision and are being
 brought into line separately.
 
@@ -216,10 +229,7 @@ Service, so adding a Service means deciding what it must carry. Five are named i
 | **Band Baaja Baraat** | **A published declaration that no additional payment will be sought during the event.** It is a Commitment like any other — published, quotable back to them, and reviewable | Vendor: part of the publish gate for this Service. Family: on the Listing beside the Rules |
 | **Venue** | **Seeing it before taking it** — a site visit or a virtual tour requestable **from the Listing itself**, not only from an Enquiry thread | Family: an action on the Listing detail surface |
 
-**Still undetermined:** the internal screen structure of Listings, Performance and You; whether the
-invitation-card motif has any vendor-side counterpart (it is a Family object, and nothing here has
-claimed one); and the density, column count and table treatment above 768px
-(`DESIGN.md` Open Question 2).
+**Still undetermined:** three things, enumerated once in Open Question 1.
 
 ### Guest pages
 
@@ -244,9 +254,9 @@ about fifteen seconds. The composition therefore has to earn that back:
 
 | Rule | Why |
 |---|---|
-| **At default text size the reply control is visible without scrolling on a 360×640 viewport** | The card leads, but "leads" cannot mean "buries". If the invitation cannot be both beautiful and compact at that size, the invitation shrinks — never the reply. **Measured, not asserted:** the card is 325px and the reply ends at 542 of 640 in `.working/guest-rsvp.html`. **The rule is scoped to default text size on purpose.** At 200% zoom — which SC 1.4.4 requires the page support — the card alone is 702px and the reply sits at 1099px. Scrolling there is correct, not a failure; what must hold at every zoom is that nothing overflows horizontally. **The measurement predates the count control** and still holds, because the control is revealed only after the answer and so cannot push the answer down; `.working/guest-rsvp.html` argues at its own `:150–154` that no such control exists, which was true when it was drawn and is not now. Re-measure once the control is drawn there |
+| **At default text size the reply control is visible without scrolling on a 360×640 viewport** | The card leads, but "leads" cannot mean "buries". If the invitation cannot be both beautiful and compact at that size, the invitation shrinks — never the reply. **Measured, not asserted:** the card is 325px and the reply ends at 542 of 640 in [`mockups/guest-rsvp.html`](mockups/guest-rsvp.html) — the invitation and the reply at 360×640, unanswered and answered, with the fold measured on the page. **The rule is scoped to default text size on purpose.** At 200% zoom — which SC 1.4.4 requires the page support — the card alone is 702px and the reply sits at 1099px. Scrolling there is correct, not a failure; what must hold at every zoom is that nothing overflows horizontally. **The measurement predates the count control** and still holds, because the control is revealed only after the answer and so cannot push the answer down; `mockups/guest-rsvp.html` argues at its own `:150–154` that no such control exists, which was true when it was drawn and is not now. Re-measure once the control is drawn there |
 | **The card is finished, not filling** | The Family app's invitation fills in as the wedding gets sorted. A Guest's copy is the completed one. No progress bar, no "3 of 5", nothing that implies the Guest has anything to complete |
-| **The count is asked only after Yes** | Tapping *Yes* reveals `{components.stepper-count}` beneath the answers, **pre-filled with the household figure the Creator already recorded** — Vasant kaka is one of four travelling, and Rutuja already wrote four. He adjusts it or leaves it. This costs one extra tap only when her number was already right, so UJ-5's fifteen-second reply survives; without it her confirmed count moves by one when four people are coming, and she cannot see that it is wrong. *No* and *Not sure* reveal nothing — nobody is asked how many of them are not coming. **The fold rule above is measured in the unanswered state**, and the count may sit below the fold: by the time it exists the Guest has already acted, and the reveal scrolls it into view and announces it |
+| **The count is asked only after Yes** | Tapping *Yes* reveals `{components.stepper-count}`, whose own rules are specified once in Component Patterns. What this page decides is that the cost is worth paying: Vasant kaka is one of four travelling and Rutuja already wrote four, so he changes nothing and UJ-5's fifteen-second reply survives — while without the control her confirmed count moves by one when four people are coming, and she cannot see that it is wrong. **The fold rule above is measured in the unanswered state**, and the count may sit below the fold: by the time it exists the Guest has already acted |
 | **Three answers, each a full-width target, each labelled in words** | Yes · No · Not sure, each one `{components.button-choice}` — equal peers at its 48px floor, none filled, none primary, none preselected, none distinguished from its siblings by anything but its label. Never colour-coded alone (`Accessibility Floor`), never a single toggle, never a dark-pattern default. **These three are the only equal peers in the product today**; every other button in the system is a primary action, so a second use of `button-choice` anywhere is a prompt to check whether the choices really are peers |
 | **The answer is changeable, and says so** | He replies in fifteen seconds; he may correct it later from the same link. The page states this plainly rather than warning him to be certain |
 | **Confirmation is on the same page, in place** | No redirect, no success screen, no account offer. The control becomes his recorded answer with the date it was recorded |
@@ -338,7 +348,7 @@ prompt a Vendor receives after a configuration change (AD-8), and the four-route
 
 Microcopy. Brand voice and aesthetic posture live in `DESIGN.md.Brand & Style`.
 
-The screen celebrates; the sentence stays calm. **Loud colour, quiet claims.** The tagline is
+The screen celebrates; the sentence stays calm. The tagline is
 *"Big day, sorted."* — a task-completed promise, deliberately chosen over a lifelong-companion one.
 The register the ideation corpus actually supports is **relief, not delight**: almost every promise
 in the source material is a negation — no surprise charges, no shortage, the photographer you picked
@@ -432,8 +442,9 @@ Required behaviour:
 > *Across the wedding* sits directly above and is always in view when a Function is. **Do not
 > "helpfully" echo a Span into its Functions.** The echo is the bug this shape exists to remove.
 
-**Where this was decided.** `.working/critical-four.html` §1 draws the three shapes considered for a
-Span. **Option B — one card with its days inside — won** (`.memlog.md:100`); option A, a joining
+**Where this was decided.** [`mockups/critical-four.html`](mockups/critical-four.html) §1 draws the
+three shapes considered for a Span — a bracket rail joining the Function cards, one card with its
+days inside, and words only. **Option B — one card with its days inside — won** (`.memlog.md:100`); option A, a joining
 rail between Function cards, and option C, an italic line, were both rejected. The rail is not a
 deferred idea, it is a discarded one.
 
@@ -461,13 +472,13 @@ No row repeats it.
 | **Search field** — `{components.search-field}` | Home, and inside Service results | **What it searches over is scoped by where it is.** On Home it searches Listings and Vendor names across the configured catalogue for the Place and offers the Service itself as a result, so *"caterer"* lands on Catering rather than on nothing. Inside Service results it is **scoped to that Service** and says so in its placeholder; leaving that scope is an explicit act, never a silent widening (FR-18). **States:** empty · typing · submitted · zero matches (see *State Patterns*) · cold load · offline, where the last result set stays on screen with the offline band above it. **Interaction:** submit runs the search; there is **no live search-as-you-type**, because a request per keystroke on a two-bar connection is worse than a deliberate submit. Location may be detected, and detection is offered rather than assumed (FR-18). **Never:** a date input of any kind (there is no date filter anywhere in this product), a search over the guest list, or a search that reaches another Family's Wedding |
 | **Filter chip** — `{components.chip}` | Service results, the compare surface, the Inbox's date filter | Filters cover **this Service's own configured attributes** — price within the Service, its Sizing Attribute, rating, verified status (FR-18, AD-8). **States:** unselected · selected (a leading glyph **and** the fill change, never the fill alone) · disabled with the reason stated · clearable, where the chip carries its own remove target at the tap-target floor. **Interaction:** selecting re-queries and **does not re-seed the result order** — the tie-break seed is fixed for the browsing session (AD-22). **Never:** a rating filter that silently drops unrated Listings (FR-18 — they are shown, marked as unrated, unless she asks to see only rated ones), a filter whose effect is invisible in the result count, or the per-Service price filter presented as the wedding budget |
 | **Compare tray** | Auto-present wherever Vendor cards show, once 2 are picked | 2–3 slots. **States:** absent (nothing picked) · one picked, disabled, stating what is still needed · 2–3 picked, active · full, where a fourth pick asks which to drop rather than dropping one. Compares on the **Service's own configured attributes** (AD-8) plus each Listing's availability against **each** Candidate Block, so the collision is visible here too. **Interaction:** it is **persistent, not modal**, and follows her across results, rails and Shortlists. **Never:** comparing a caterer to a photographer, and never a ranking or a winner — it lays two things side by side and stops. **[ASSUMPTION]** the tray shape is salvaged from `compare.html`, a **repo-root** file rather than a `.working/` one; FR-21 requires the capability, not this container |
-| **Skip link** | Every long surface, on all five | First focusable element, visible on focus, surface-specific wording — *"Skip to results"*, *"Skip to form"*. **Interaction:** moves focus, not just scroll position. **Never:** a skip link that is announced but never reachable, or a surface long enough to need one and lacking one. The published site does this well on nine pages; carry it, and add it to the four that lack one |
+| **Skip link** | Every long surface, on all five | First focusable element, visible on focus, surface-specific wording — *"Skip to results"*, *"Skip to form"*. **Interaction:** moves focus, not just scroll position. **Never:** a skip link that is announced but never reachable, or a surface long enough to need one and lacking one |
 
 #### Controls
 
 | Component | Use | Behavioural rules |
 |---|---|---|
-| **Primary button** — `{components.button-primary}` | The one consequential action in a view | Labels are fixed: **Enquire**, **Send**, **Shortlist**, **Compare**, and **Save**, which belongs **only to Boards** (FR-67). **States:** rest · pressed · disabled with the reason stated beside it, never a bare grey · pending, where the label becomes a progress state and the target stays put. **Interaction:** actions that cost money or commit — confirming an Agreement, obtaining a Contact Reveal, sending an Enquiry, paying for a term — **wait for the server and say so**; they are never optimistic. **Never:** two primary buttons competing in one view, a `{colors.danger}` fill beside a `{colors.vermillion}` fill as sibling actions, or any label from the retired transaction vocabulary |
+| **Primary button** — `{components.button-primary}` | The one consequential action in a view | Labels are fixed: **Enquire**, **Send**, **Shortlist**, **Compare**, and **Save**, which belongs **only to Boards** (FR-67). **States:** rest · pressed · disabled with the reason stated beside it, never a bare grey · pending, where the label becomes a progress state and the target stays put. **Interaction:** actions that cost money or commit are never optimistic — they **wait for the server and say so**. *Interaction Primitives* names which they are. **Never:** two primary buttons competing in one view, a `{colors.danger}` fill beside a `{colors.vermillion}` fill as sibling actions, or any label from the retired transaction vocabulary |
 | **Celebration button** — `{components.button-celebration}` | The one or two genuinely celebratory moments | Reserved, deliberately scarce: locking the Block, publishing a Real Wedding. **Interaction:** identical to the primary button in every behaviour; only its weight in the page differs. **Never:** used for a routine action, and never for a destructive or a failure path — turmeric is the colour of the thing being celebrated, never the colour of a warning |
 | **Equal-peer button** — `{components.button-choice}` | A set of choices with **no primary among them** — today, only the Guest RSVP's Yes · No · Not sure | **States:** rest · pressed · chosen, which becomes the recorded answer in place with the date it was recorded. **Interaction:** full-width targets at the component's 48px floor, labelled in words, in a fixed order; the answer is changeable from the same link and the page says so. **Never:** preselected, filled, colour-coded alone, ordered to lead the eye to one answer, or turned into a single toggle. A second use anywhere in the product is a prompt to check whether those choices really are peers |
 | **Count stepper** — `{components.stepper-count}` | The Guest's headcount, revealed after *Yes*. The only numeric control in the product | **States:** absent (before *Yes*, and after *No* or *Not sure*) · revealed and pre-filled with the household figure the Creator already recorded · edited · at its minimum of 1, where the decrement is disabled with the reason stated rather than silently inert · submission failure, which keeps the adjusted figure. **Interaction:** revealed on *Yes*, scrolled into view and announced; the centre value is keyboard-editable, not stepper-only; there is no platform maximum. **Never:** revealed before an answer, defaulted to zero or blank, cleared by a failed submission, or shown to someone who answered *No* — nobody is asked how many of them are not coming |
@@ -479,8 +490,8 @@ No row repeats it.
 | **Function card** — `{components.function-card}` | Workspace, below *Across the wedding* | Day, Slot, stated guest count, then one row per Service serving **this Function alone**. **Three row states, each carrying a glyph *and* a word:** settled (a Selection or an Agreement, with its figure) · in progress (*"3 shortlisted"*) · nothing yet (`{components.price-unestimated}`). **States of the card itself:** complete · partly filled · no Services yet (an empty state, not a blank card) · cold load. **Interaction:** tapping a Service row opens that Service's Shortlist, or its results if nothing is shortlisted. **Never — and this is the rule the whole Span shape exists to protect — a Span is not echoed into a Function card.** A Function card is deliberately incomplete on its own; the mitigation is that *Across the wedding* sits directly above it and is always in view |
 | **Span card** — `{components.span-card}` | The *Across the wedding* section, above the Functions | See *Spans* above for the full pattern. In summary: one card, one price, the days it covers listed **inside** it as chips. **States:** settled · agreed · being removed, which names what goes before it goes. **Interaction:** the card opens **the one Selection**; there is no per-Function copy to edit. **Never:** repeated under a Function, counted more than once in the running total, or joined to anything by a rail |
 | **Vendor card** — `{components.vendor-card}` | Results, Featured band, rails, Shortlist | Whole card opens the Listing; secondary actions (Shortlist, Compare) are their own controls inside it with their own targets. Footer: price left, **Enquire** right. A verified Vendor carries a glyph **and** the word. **States:** rest · pressed · shortlisted · in the compare tray · Featured, which additionally carries `{components.badge-paid}` · cold load as a `{components.skeleton}` of the same footprint. **Interaction:** the photo never blocks the content around it — the placeholder gradient holds the space and the text renders first (NFR 5.3). **Never:** a computed trust badge, a "most popular" mark, an urgency line, or a price the Family did not see attributed to the Vendor |
-| **Availability signal** — `{components.availability-ring}` | Vendor cards, list rows, Compare | **Three states, never two**, and the ring alone carries them: the treatment is specified once in `{components.availability-ring}` and is not restated here. The icon is the second signal and the word the third, and all three survive greyscale. **Copy on a card:** *Shows available* · *Shows unavailable* · *Not stated*. **On a list row it opens up:** *Shows available across all three days* · *Shows unavailable on 27 November* · *Hasn't set dates yet*. Never *available* unqualified — the platform does not assert on a Vendor's behalf (AD-10). **The third state is not a refusal** and is never styled as one: it fires when there are no Anchor Dates yet, the Service has no duration, or the Subscription has lapsed. **Where a Service has Spaces the signal is per Space**, and the UI must let her see **which** Space. **Never:** reduced to a boolean, greyed as though it were a disabled control, or shown at all before an Anchor Date exists. Drawn in `.working/availability-signal.html`; the icon set is `.working/availability-icons-b.html` — **Set B, cut twice** (`.memlog.md:101`, `:102`), and `.working/critical-four.html` §2 is the study the ring came out of |
-| **Featured band** — `{components.featured-band}` | Top of Service results | A **separate, marked band**, never interleaved with organic results. **Three signals, none of them colour:** the bounded container, the heading, and a per-card `{components.badge-paid}`. The identifying line beneath the heading is **not optional and not collapsible** — it is the part that satisfies FR-20. **States:** populated · empty, in which case the band does not render at all rather than showing an empty container. **Interaction:** the ordering disclosure is reachable from inside the band. **Never:** interleaved, collapsed behind a tooltip or an info icon, ordered by anything but Tier, or exempt from availability or from any condition of listing. Founding Vendors at ₹0 are an active Subscription and get **no second-class treatment** anywhere (AD-35) |
+| **Availability signal** — `{components.availability-ring}` | Vendor cards, list rows, Compare | **Three states, never two**, and the ring alone carries them: the treatment is specified once in `{components.availability-ring}` and is not restated here. The icon is the second signal and the word the third, and all three survive greyscale. **Copy on a card:** *Shows available* · *Shows unavailable* · *Not stated*. **On a list row it opens up:** *Shows available across all three days* · *Shows unavailable on 27 November* · *Hasn't set dates yet*. Never *available* unqualified — the platform does not assert on a Vendor's behalf (AD-10). **The third state is not a refusal** and is never styled as one: it fires when there are no Anchor Dates yet, the Service has no duration, or the Subscription has lapsed. **Where a Service has Spaces the signal is per Space**, and the UI must let her see **which** Space. **Never:** reduced to a boolean, greyed as though it were a disabled control, or shown at all before an Anchor Date exists. Drawn in [`mockups/availability-signal.html`](mockups/availability-signal.html) — the three rings where they actually live, on a Vendor card and a list row, beside the words-alone alternative; the icon set is [`mockups/availability-icons-b.html`](mockups/availability-icons-b.html) — **Set B, cut twice** (`.memlog.md:101`, `:102`), the large cut and the small one at real size; and [`mockups/critical-four.html`](mockups/critical-four.html) §2 is the study the ring came out of |
+| **Featured band** — `{components.featured-band}` | Top of Service results | A **separate, marked band**. Its three signals and its mandatory identifying line are decided once in *The Featured Band* and are not restated. **States:** populated · empty, in which case the band does not render at all rather than showing an empty container. **Interaction:** the ordering disclosure is reachable from inside the band. **Never:** interleaved, collapsed behind a tooltip or an info icon, ordered by anything but Tier, or exempt from availability or from any condition of listing. Founding Vendors at ₹0 are an active Subscription and get **no second-class treatment** anywhere (AD-35) |
 | **Paid-placement badge** — `{components.badge-paid}` | On every card in the Featured band | The literal word *Featured*, on the card itself, so a card lifted out of context — screenshotted, shared, deep-linked — still says what it is. **Never** built from `{components.chip}`: a Featured mark that looks like a filter chip reads as a selected filter, which is the opposite of a disclosure. **Never** carried by colour, and never omitted from a card because the band around it is already labelled |
 | **Ordering disclosure** | Reachable **from the results themselves** (FR-20, FR-64) | Plain language, no jargon: ordered by availability for your dates, then rating adjusted for how many reviews it rests on, then reply speed, then how recently the vendor was verified — and vendors of similar standing appear in a varying order, so nobody holds the top place permanently. States that vendors cannot pay for a position and that paid placements are separate and labelled. **Interaction:** it opens in place and returns her to the same scroll position and the same session seed. **Never:** behind a login, behind a settings screen, or worded as a legal notice. **[ASSUMPTION]** a link under the results list opening a plain sheet; the FR fixes the content and reachability, not the form |
 | **Rules panel** | Listing detail, on the Listing itself — never a sub-page | `restrict_service` rows and `informational` rows render as **one list** the Family reads once (AD-36). Rules attach to the **Space** where the Service has Spaces — a lawn and an AC hall can carry different Rules, and the panel says which Space it is showing. **States:** published · none published, in which case the Listing is not publishable at all, so the empty case cannot reach a Family. Devanagari and Latin appear in the same field at every text size. **Never:** truncated with a *read more* that hides a restriction, summarised by the platform, or reordered by anything but the Vendor's own order |
@@ -493,7 +504,7 @@ No row repeats it.
 | **Pasted list import** | Guest list | **One line, one household. Nothing is parsed.** The line becomes the household's name exactly as pasted — Devanagari included, set in `{typography.title-card-devanagari}` — and the count is left **unstated** for the Creator to fill. Blank lines are skipped; that is whitespace, not parsing. **States:** the paste box, which says what it will do **before** she pastes · the editable review table · confirmed. **Interaction:** nothing is written until she confirms the table, and cancelling leaves the Wedding untouched. A second paste **appends** and never reconciles. **Never:** de-duplication, merging, a count inferred from digits, brackets, words or Devanagari numerals, or a revision to a Function's stated guest count (FR-11) |
 | **Suggestion queue** | Guest list, and Listings suggested by Invited Members | Everything arrives as a **suggestion the Creator accepts or dismisses** — never written straight in. **States:** pending · accepted · dismissed, and a dismissed guest-form submission is **erased at once**. **Never:** a suggestion applied by default, a submitter shown the guest list or anything else, or a queue that pressures her with a count |
 | **Portfolio image** | Vendor portal | Four states, each labelled **in words**: published · held back (over allowance) · pending Verification · taken down. Vendor's own order, defaulting to upload order, explicitly reorderable. **Interaction:** a takedown **leaves its gap** rather than promoting an unchosen image; a pending image never consumes a paid slot; new images are held back while the rest of the Listing stays live and keeps receiving Enquiries. Signed URLs are short-lived and are re-fetched, never rendered broken. **Never:** a state carried by opacity alone, or a silent removal |
-| **Vendor calendar day** — `{components.calendar-day-bar}` | Vendor portal, both lenses | Three states told apart by a **count, not a texture** — Engaged, Enquiries pending, and marked unavailable. **The mark itself is specified once in `{components.calendar-day-bar}` and is not drawn here**; what this row fixes is that the count is what carries the state, that a dashed bar was rejected because at this size a dash averages into a solid line, and that the unavailable state is carried by the struck-through date number rather than by the bar. **The legend states all three in words** and renders the actual marks, not stand-in glyphs. **Interaction:** selecting a day filters the Inbox lens to it, and the selection survives the lens switch. **Never:** a Unicode glyph in place of the mark, a state told by colour alone, or a hit area that overlaps its neighbour — a tap landing on the wrong date is worse than a small target. Drawn in `.working/vendor-calendar-bar.html`; `.working/critical-four.html` §4 is the study, and **the underbar won** (`.memlog.md:106`) |
+| **Vendor calendar day** — `{components.calendar-day-bar}` | Vendor portal, both lenses | Three states told apart by a **count, not a texture** — Engaged, Enquiries pending, and marked unavailable. **The mark itself is specified once in `{components.calendar-day-bar}` and is not drawn here**; what this row fixes is that the count is what carries the state, that a dashed bar was rejected because at this size a dash averages into a solid line, and that the unavailable state is carried by the struck-through date number rather than by the bar. **The legend states all three in words** and renders the actual marks, not stand-in glyphs. **Interaction:** selecting a day filters the Inbox lens to it, and the selection survives the lens switch. **Never:** a Unicode glyph in place of the mark, a state told by colour alone, or a hit area that overlaps its neighbour — a tap landing on the wrong date is worse than a small target. Drawn in [`mockups/vendor-calendar-bar.html`](mockups/vendor-calendar-bar.html) — the bar as first drawn against the strengthened one-bar-against-two-segments count, rendered at the tight 284px column; [`mockups/critical-four.html`](mockups/critical-four.html) §4 is the study, and **the underbar won** (`.memlog.md:106`) |
 | **Vendor calendar Slot** | Vendor portal | Four Slots per day — morning, afternoon, evening, night — the same four for every Service. A morning Haldi does not consume an evening Reception. **States:** free · blocked whole-Slot · blocked partially (one crew stopped, the other still selling) · blocked automatically by a confirmed Agreement, which the Vendor does nothing to cause. **Interaction:** he may block **without stating a reason**, and the platform never changes his availability for him. **Never:** a clock time anywhere in it (AD-9), an auto-expiry of availability, or silence read as unavailability |
 | **"Not yet estimated"** — `{components.price-unestimated}` | Anywhere a price would go and there is none | The literal words, in the exact slot the price would occupy. Never `₹0`, never blank, never a dash — **zero reads as free** (FR-8). Used identically on the Family side and in the Vendor's own editor |
 | **Grievance entry point** | Every surface, without a login (AD-33, FR-63) | Names the grievance officer and returns a **reference the complainant can quote**. Acknowledged on receipt. **States:** the form · submitted with its reference · offline, where the entry point stays visible and says the submission will go when the connection returns. **Never:** behind a login, behind a support article, or reachable only from one surface. On the Guest pages it sits in the page frame with the see-and-correct link, and both are block-level targets |
@@ -502,7 +513,7 @@ No row repeats it.
 
 | Component | Use | Behavioural rules |
 |---|---|---|
-| **Skeleton** — `{components.skeleton}` | Every surface, on cold load | Occupies the **exact footprint** of the content it replaces, so nothing moves when the content lands. **States:** loading · resolved · unresolved after ~5s, which gains **one** line naming what is being waited on `[ASSUMPTION]` · `prefers-reduced-motion`, where the sheen goes and the blocks stay. **Never:** a spinner, a percentage, a skeleton whose shape differs from the content that replaces it, or a skeleton left on screen after a failure — a failure replaces it with `{components.banner-failure}`. `.working/critical-four.html` §3 is the study and **skeletons won over both a spinner and a narrated progress bar** (`.memlog.md:104`) |
+| **Skeleton** — `{components.skeleton}` | Every surface, on cold load | Occupies the **exact footprint** of the content it replaces, so nothing moves when the content lands. **States:** loading · resolved · unresolved after ~5s, which gains **one** line naming what is being waited on `[ASSUMPTION]` · `prefers-reduced-motion`, where the sheen goes and the blocks stay. **Never:** a spinner, a percentage, a skeleton whose shape differs from the content that replaces it, or a skeleton left on screen after a failure — a failure replaces it with `{components.banner-failure}`. [`mockups/critical-four.html`](mockups/critical-four.html) §3 is the study — the skeleton, a spinner and a narrated progress bar drawn on the same waiting screen — and **skeletons won over both** (`.memlog.md:104`) |
 | **Failure banner** — `{components.banner-failure}` | Everywhere something went wrong | A glyph, a sentence naming what happened, a sentence naming what happens next, and a retry. **Never colour alone** — the palette holds two warm reds and an eye that cannot separate them must still read the difference. **States:** failed with a retry · retrying · retry failed again, which says what is preserved rather than repeating itself · resolved, which removes the banner without a success toast. **Interaction:** it is **inline and persistent**, never a toast that fades and leaves someone acting on stale data. Copy is product language: *"Your quote didn't send. It's saved — we'll send it the moment you're back."* **Never:** the word *error*, blame, a traceback, a technical detail, or leaving someone unsure whether their work survived (NFR 5.5, `ARCHITECTURE-SPINE.md` **Consistency Conventions** §Errors) |
 | **Empty state** — `{components.empty-state}` | Every surface that can be empty | One anatomy everywhere, salvaged from the published site: **circular icon → heading → one sentence → one button, capped and centred**. The button is the route out and it is always the same route the surface would offer when full. **States:** empty-because-new (first run) · empty-because-filtered (zero matches, which offers the filters back) · empty-because-nothing-exists-yet on the Vendor side. **Never:** a count of what is missing, an urgency line, an illustration that carries the only meaning, or a dead end with no button. Per-surface strings stay open (Open Questions); the anatomy does not |
 | **Offline band** | Family app and Vendor portal, and now the Guest pages | A persistent inline band, not a toast. States what is still usable: *"No connection. Showing what was loaded."* **Interaction:** work in progress survives (FR-7, NFR 5.3); every state-changing action is safely retryable and an interrupted confirmation retried is a no-op, never a double-confirm (AD-31). **Never:** a blocking modal, a fading toast, or a claim that something was recorded when it was not |
@@ -553,7 +564,7 @@ it is not a column: every surface carries the same treatment.
 
 | State | Surface | Treatment |
 |---|---|---|
-| **The shared anatomy** | Every empty surface | **Circular icon → heading → one sentence → one button, capped and centred**, as specified for `{components.empty-state}`. The button is the route out and it is the same route the surface offers when full. Per-surface copy stays open (Open Questions); the anatomy is closed |
+| **The shared anatomy** | Every empty surface | `{components.empty-state}`, specified once in Component Patterns and not restated. Every row below gives only what that surface's empty state *is*. Per-surface copy stays open (Open Questions); the anatomy is closed |
 | **First run, no Wedding** | Home | The invitation card, empty: `— & —`, `0 OF 5`, one open line reading *"date not set"*. The shop below it works fully — she can browse before creating anything. No modal, no tour, no "complete your profile" |
 | **A Wedding with no Services** | Workspace | *Across the wedding* is **absent**, not empty — a section with no Spans does not render. The Functions render with no Service rows, each one an empty Function card routing to the Service picker. The running total reads `{components.price-unestimated}`, never `₹0` |
 | **A Function with no Services yet** | Function detail | The day, Slot and stated guest count still render — they are hers and they are facts. Below them, the empty anatomy routing to the Service picker for this Function |
@@ -575,7 +586,7 @@ it is not a column: every surface carries the same treatment.
 
 | State | Surface | Treatment |
 |---|---|---|
-| **Cold load — the treatment** | Every surface | **Skeletons, never a spinner.** `{components.skeleton}` and its rules are specified in Component Patterns; what belongs here is when it fires. `.working/critical-four.html` §3 is the options study, and **the skeleton won** over both a spinner and a narrated progress bar (`.memlog.md:104`) |
+| **Cold load — the treatment** | Every surface | **Skeletons, never a spinner.** `{components.skeleton}` and its rules are specified in Component Patterns; what belongs here is when it fires |
 | **Cold load — what is cached, per surface class** | Three classes, and the difference matters | **Cache-then-refresh:** Home, the Enquiries list, Enquiry threads, Shortlists, Boards, Guest list, You, Real Weddings. Cached content renders **immediately**, the refresh is silent, and nothing jumps when it lands. **Skeleton from cold, never cached:** Service results — the tie-break seed is fixed per browsing session (AD-22) and a cached order would be a stale seed. **Never cached, never rendered stale:** anything carrying money (the Workspace total, Function figures, Agreements — AD-19) and anything carrying availability (the collision view, the Vendor's calendar and waiting count). A stale figure that looks live is worse than a wait |
 | **A skeleton that does not resolve** | Every surface | `[ASSUMPTION]` after roughly five seconds it gains **one** line naming what is being waited on, because a skeleton with nothing changing reads as frozen. The Block match across three dates and five Services is the one wait long enough to reach it |
 
@@ -589,7 +600,7 @@ it is not a column: every surface carries the same treatment.
 
 | State | Surface | Treatment |
 |---|---|---|
-| **Failure** | Everywhere | `{colors.danger}` `#8C2F1A` carries it — the one token in the system that means *something went wrong*, kept separate from vermillion because a red that means **action** cannot also mean danger. Rendered as `{components.banner-failure}`, whose behaviour is specified in Component Patterns. Copy is product language, never the word **error**, never blame, never leaving someone unsure whether their work survived (NFR 5.5). Drawn in `.working/direction-failure-3.html`, which is where the sixth colour token was chosen (`.memlog.md:65`) |
+| **Failure** | Everywhere | `{colors.danger}` `#8C2F1A` carries it — the one token in the system that means *something went wrong*, kept separate from vermillion because a red that means **action** cannot also mean danger. Rendered as `{components.banner-failure}`, whose behaviour is specified in Component Patterns. Copy is product language, never the word **error**, never blame, never leaving someone unsure whether their work survived (NFR 5.5). Drawn in [`mockups/direction-failure-3.html`](mockups/direction-failure-3.html) — three treatments over three real failures, a quote that didn't send, offline while browsing and a photo that didn't load, with the copy held identical so only the treatment varies; it is where the sixth colour token was chosen (`.memlog.md:65`) |
 | **Destructive confirmation** | Everywhere | The only other use of `{colors.danger}`. Removing a Service that carries an Agreement, discarding a Candidate Block, taking a Listing down. Names the consequence and what is lost; the confirming action is the one that costs something, never the default |
 | **Offline / lost signal** | Family app, Vendor portal **and the Guest pages** | Work in progress survives (FR-7, NFR 5.3). **No explicit save action exists anywhere in the Workspace** — every entry is preserved as it is made. Every state-changing action is safely retryable: an interrupted Agreement confirmation retried is a no-op, never a double-confirm (AD-31). Shown as the offline band specified in Component Patterns. **The Guest pages are included**, which they were not before: a Guest has no account, no app and no route to ask, so a reply that fails must say so on the page and keep the answer and the count |
 | **A reply that did not send** | Guest invitation / RSVP | The answer **and any adjusted count stay on screen and stay editable**. One sentence saying it did not send and that nothing was lost, and one retry. The confirmation state is never shown until the platform has actually recorded it — a Guest who believes he has replied and has not is the one failure this page cannot afford |
@@ -635,7 +646,7 @@ it is not a column: every surface carries the same treatment.
 | State | Surface | Treatment |
 |---|---|---|
 | **Verification pending / failed** | Vendor portal | Always visible: what is missing, that it is pending, that it succeeded, or **that it failed and why**. Failure is actionable — correct and resubmit. A new photo is held back while the rest of the Listing stays live and keeps receiving Enquiries |
-| **Vendor's stale calendar** | Vendor portal + WhatsApp | Fires on **three or more** Enquiries touching the same period, at most one per Vendor per seven days; the nudge's own behaviour is specified in Component Patterns. **A question, never a block**, and silence is not treated as unavailability |
+| **Vendor's stale calendar** | Vendor portal + WhatsApp | Its trigger, its cap and its behaviour are specified once in Component Patterns and are not restated. **A question, never a block**, and silence is never treated as unavailability |
 | **In the Grace Period** | Vendor portal, every destination | The term has ended and the thirty-day Grace has started. **The Listing stays discoverable throughout Grace** and keeps receiving Enquiries. A persistent, non-modal line in the left rail or under the tab bar states the days remaining and carries one action: *Pay for the term*. Reminders go at **30 / 14 / 7 / 1 days** on WhatsApp with SMS fallback — with no auto-renewal, **the reminder is the renewal mechanism**, so it is the one recurring message the product sends on purpose. **Never:** a countdown timer, an escalating tone, a feature withdrawn early to force the payment, or a saved instrument offered as a way to stop the reminders (FR-54 forbids the instrument, AD-34 forbids the mandate) |
 | **Past Grace — the Subscription has lapsed** | Vendor portal, and the Family side | **The Listing leaves discovery** and its availability signal falls to the third state, *not stated* — not to *taken*, because nothing about his calendar changed. In the portal every destination stays readable: his Enquiry history, his Agreements, his figures and his portfolio are all still there, because they are his. What stops is discoverability. One action, *Pay for the term*, restores it, and **re-entry notifies nobody** — no announcement, no "he's back" placement, no penalty in the ordering. **Never:** data withheld as leverage, an export blocked, or a Listing deleted |
 | **Listing leaves discovery** | Family, all four routes | Lapse past Grace, Vendor withdrawal, Admin removal, a condition ceasing to hold — **one notification design covers all four** and they behave identically. The Family is told; where it was her **Selection, the Selection is cleared and its contribution withdrawn from the running budget**. Nothing is removed silently. Re-entry restores discoverability and notifies nobody |
@@ -654,7 +665,6 @@ it is not a column: every surface carries the same treatment.
   the tie-break order is seeded once when she opens a Service and held for that browsing session
   (AD-22). Re-seeding is a **re-shuffle** and must be a deliberate new search, not an accidental
   gesture. Pagination reuses the session's seed.
-- **The compare tray is persistent, not modal** — it follows her across results, rails and Shortlists.
 - **No date input in a filter, anywhere, on any surface.** She never types a date into a filter.
   Availability is a pre-applied property of the whole Block. The only date entry in the product is
   supplying Anchor Dates and stating a Function's day; both are Wedding-shaping acts, not filters.
@@ -857,7 +867,8 @@ Neither changes anything below.
 | **A Service name is never invented in the UI** | It comes from configuration and must match the Glossary's usage. A Function and a Service never share a word — *Mehndi* is a Function, *Mehndi Artist* is a Service |
 
 > **Correction to this run's own artifacts.** `.working/directions-4.html`,
-> `.working/color-themes-1.html`, `.working/direction-workspace-4.html` and
+> [`mockups/color-themes-1.html`](mockups/color-themes-1.html),
+> `.working/direction-workspace-4.html` and
 > `.working/direction-home-screen.html` all render six hardcoded medallions, copying the published
 > site. They illustrate the *component*, never the catalogue. A builder must read the list from
 > configuration.
@@ -878,11 +889,15 @@ placement"* — "Featured" signals *special*, not *paid*. So the heading never a
 > Vendors pay for placement here. It does not affect the results below.
 > *How results are ordered →*
 
+Drawn in [`mockups/featured-band.html`](mockups/featured-band.html) — the bounded band with its
+heading, its identifying line and a `Featured` badge on every card inside, set beside the one thing
+that badge must never be mistaken for, a filter chip in its selected state.
+
 | Rule | Why |
 |---|---|
 | **The identifying line is not optional and not collapsible** | It is the part that satisfies FR-20. A band headed "Featured" with the line hidden behind a tooltip, an info icon or a scroll is an undisclosed paid ranking |
-| **Three signals, none of them colour** | The bounded container, the heading, and a per-card `Featured` chip. NFR 5.8 — nothing essential by colour alone, and this is the most essential thing on the screen to get right |
-| **Every card carries the chip, not just the band** | A card lifted out of context — screenshotted, shared, or reached by a deep link — still says what it is |
+| **Three signals, none of them colour** | The bounded container, the heading, and a per-card `{components.badge-paid}`. NFR 5.8 — nothing essential by colour alone, and this is the most essential thing on the screen to get right |
+| **Every card carries the badge, not just the band** | A card lifted out of context — screenshotted, shared, or reached by a deep link — still says what it is |
 | **The disclosure is reachable from the results themselves** | FR-20 requires the organic parameters be published in plain language *"reachable from the results"*. The link sits in the band, where the question naturally arises |
 | **Within the band, order is by Tier and nothing else** | Tiers differ in *"placement in the Featured band and portfolio allowance, and in nothing else"* (PRD §Tier). No secondary auction, no per-deal bidding |
 | **A Featured Listing meets every condition of listing** | FR-20 — paying buys visibility, never an exemption. It is verified, priced, ruled and committed exactly like any other |
@@ -924,8 +939,10 @@ side never wrote one.
 
 **She is told when it publishes, and it lives under You permanently.** Both, not either.
 
-`.working/direction-family-record-3.html` is the only rendering of this — the three moments at which
-the Family learns what a Vendor recorded — and the moment chosen was **the notification plus the
+[`mockups/direction-family-record-3.html`](mockups/direction-family-record-3.html) is the only
+rendering of this — the three moments at which the Family learns what a Vendor recorded, drawn as
+the push at the window's close, the permanent entry under **You**, and the composer disclosure — and
+the moment chosen was **the notification plus the
 permanent home**, with disclosure inside the Enquiry composer rejected (`.memlog.md:78`).
 
 | | |
@@ -958,8 +975,8 @@ acting as**, not from which client it signed in from — so the role context mus
 UI on both surfaces.
 
 **Sign-in is a mobile number and a code.** There is **no password field on any surface**, no forgot-
-password, no magic email link. The OTP is six digits, valid ten minutes, five attempts, three resends
-per hour — the screen must express those limits. Passkey, Google and Apple **link to an existing
+password, no magic email link. The OTP's limits are specified once in *State Patterns → Sign-in
+and its limits*, and the screen must express them. Passkey, Google and Apple **link to an existing
 account on a verified matching number**; they are never a standalone signup path, and Apple is offered
 wherever Google is on iOS. Losing the number is recovered **through Admin** — deliberately manual,
 attributed, and the single most sensitive thing Admin does.
@@ -1012,7 +1029,10 @@ it were forwarded the link and **none of them chose to be there at all**.
   > **The month view is what makes a stale calendar visible at a glance**, and a stale calendar
   > silently corrupts every Family's cross-Service matching (UJ-1 cross-journey dependency) — so the
   > month is worth 4px. Above 768px the columns fit and the floor is met with no exception.
-  > **This exception is bounded to that one grid.** It licenses nothing else.
+  > **This exception is bounded to that one grid.** It licenses nothing else. Drawn in
+  > [`mockups/vendor-calendar-360.html`](mockups/vendor-calendar-360.html) — the month at a real
+  > 360px, 40×40 cells at a 42px pitch, against the two shapes rejected for it: a list of dates, and
+  > one week at a time.
 
   > **The one standing exemption, which is not an exception:** a link **inside a run of text** is
   > exempt, mirroring WCAG 2.2 SC 2.5.8's inline exception — its target is the text, and enlarging it
@@ -1021,8 +1041,7 @@ it were forwarded the link and **none of them chose to be there at all**.
   > standalone obligations and **must reach 48px**, and the growth line at the foot is a call to
   > action, not prose, so **it is a block-level target** rather than a 74×15px inline link.
 - **Focus** is never removed and never signalled by a tint alone. Traversal follows reading order on
-  every surface. Skip links on every long surface (the published site already does this well; carry
-  it, and fix the four pages that lack one).
+  every surface. Skip links on every long surface.
 - **The guest pages carry the highest floor and the least chrome.** No account, no install, no
   sign-in, one decision, keyboard-operable, readable at 200% zoom, and reachable in about fifteen
   seconds from opening the message.
@@ -1046,8 +1065,8 @@ it were forwarded the link and **none of them chose to be there at all**.
 | **Guest pages** | Fluid, single column, no app shell, no tab bar, no chrome that implies an account exists |
 | **Admin** | Frappe Desk's own responsive behaviour. Not designed here |
 
-There is **no dark mode** on any surface. The system is white-card-on-cream by construction and
-cannot be inverted by swapping tokens.
+There is **no dark mode** on any surface. Why, and whether one ever ships, is `DESIGN.md`
+Open Question 3.
 
 ---
 
@@ -1336,8 +1355,8 @@ committed. None of these is open.
 
 1. **Inside the vendor portal's other three destinations.** The landing surface, its two lenses, the
    four-destination bar, Performance's home for FR-31, and the in-Grace and post-Grace states are all
-   decided. What is not: the **screen count and editing model** inside Listings and Performance. The
-   density, column count and table treatment above 768px are a **visual** question and live in
+   decided. What is not: the **screen count and editing model** inside Listings, Performance and You.
+   The density, column count and table treatment above 768px are a **visual** question and live in
    `DESIGN.md`'s Open Questions, not here. Also open: whether the invitation-card motif has any
    vendor-side counterpart — it is a Family object and nothing has claimed one.
 2. **The strings inside the empty states.** The anatomy is closed and every surface that can be empty

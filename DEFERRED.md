@@ -112,3 +112,43 @@ AD-8 reads Service declarations live, so changing an Engagement Model reinterpre
 already written — treat such a change as a data migration, not a config edit. AD-34's no-mandate rule
 is review-enforced only; Razorpay ships every recurring method enabled by default, so any
 subscription, mandate, autopay or tokenisation call in the payment path is an FR-54 breach.
+
+## From the UX design run
+
+The spine pair at `_bmad-output/planning-artifacts/ux-designs/ux-vivahspot-2026-09-06/` carries its
+own Open Questions — five in `DESIGN.md`, thirteen in `EXPERIENCE.md` — each stating what is decided
+and what precisely is not. **Those lists are authoritative and are not restated here.** What follows
+is only what blocks work, and where to look.
+
+### D-17 · Inknut Antiqua is specified and not installed
+`DESIGN.md` sets Devanagari user content in Inknut Antiqua at five weights. There is no font file in
+this repo, no `expo-font` load in `apps/mobile`, and `apps/mobile/tailwind.config.js` separately
+declares Playfair Display with nothing behind it — so neither face renders on the phone today.
+`apps/vendor-web` is the cheap case: it already loads Playfair through `next/font/google`, so Inknut
+is a one-line `subsets: ["devanagari", "latin"]` change there. Mobile needs a real file and a load.
+**Adding either is a dependency decision and needs an explicit yes.** A five-weight Devanagari family
+is not small; a subset may be required for NFR 5.3's target device.
+
+### D-18 · `tokens.js` is the old palette while the PRD points at the new one
+NFR 5.10 was amended (`76399ff`) to name `DESIGN.md` the single source of truth for colour and type,
+with `packages/shared/src/tokens.js` as its projection. **The projection has never been generated.**
+`tokens.js` still carries the placeholder rose-pink palette, so the PRD points at one answer and the
+code at another, and `apps/vendor-web/src/app/globals.css` paints from those stale variables today.
+Regenerating it is a code change and was not authorised in the UX run.
+
+### D-19 · `apps/mobile/src/constants/theme.ts` is still the Expo starter
+Unmodified template palette — `#000000`, `#ffffff`, `#F0F0F3`, `#60646C` — imported by eight live
+modules, so `explore.tsx` and both tab bars render off-brand regardless of what any document says. It
+also ships a full dark palette the design system does not have, reachable in code and suppressed only
+by `app.json`'s `userInterfaceStyle: "light"`.
+
+### D-20 · The amendments did not reach two documents
+The UX run amended the PRD and the scope document. Not revisited: the **architecture spine** still
+assumes Workspace-first throughout, which the home-is-the-shop decision overrode; and the **scope
+document's §11** still excludes anything unlisted, which now includes the video added to FR-65.
+
+### D-21 · The brand mark is a Unicode heart
+Every state and navigation glyph in the prototypes is inline SVG, because `♥` and `✓` render with
+emoji presentation on several Android builds — unchosen colour in a system where colour carries
+meaning. The app-bar brand mark is still `♥`, eleven times. `favicon.svg` already draws that heart as
+a path; the app bar does not use it. Converting it is a brand decision, not a remediation.

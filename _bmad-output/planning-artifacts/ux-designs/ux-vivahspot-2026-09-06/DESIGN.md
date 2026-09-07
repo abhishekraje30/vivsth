@@ -1,7 +1,7 @@
 ---
 name: Vivah Spot
 description: Visual identity for the Vivah Spot family app and vendor portal. The Invitation — a wedding card that fills in as the wedding gets sorted. Kumkum red for the actions, turmeric for the celebration.
-status: draft
+status: final
 updated: 2026-09-07
 sources:
   - styles.css
@@ -493,6 +493,9 @@ script, so a card set in Marathi does not fall back mid-rule into a system face.
 The palette is **Kumkum & Turmeric** — vermillion and haldi, the two substances physically present
 at every ceremony. Ritual colour rather than decorative colour. It is deliberately not the pink
 that is live on vivahspot.com today; that skin was a placeholder so the domain would not be empty.
+It was picked by looking, in [`mockups/color-themes-1.html`](mockups/color-themes-1.html) — the same
+invitation-card home set in five bright palettes, every brand fill carrying a label that clears
+4.5:1. **T3, Kumkum & Turmeric**, is this one.
 
 - **Ground `#FFFCF2`** is the app canvas — a warm, barely-there cream that reads as paper stock
   rather than as white. Everything scrolls on it. It is never used as a card fill; the difference
@@ -537,7 +540,6 @@ that is live on vivahspot.com today; that skin was a placeholder so the domain w
 - **Medallion `#FFE49C → #FFB3AE`** and **placeholder `#FFE7A8 → #FFBDB6`** are the two warm
   gradients: the first fills a category medallion, the second stands in for a Listing photo that
   has not loaded. They are decorative surfaces only and never sit behind text.
-
 - **Danger `#8C2F1A`** is the only colour in the system that means *something went wrong*. It exists
   because {colors.vermillion} already means **action** — it sits on every primary button — so red
   cannot also mean danger. It is a dark, earthy oxblood, deliberately unlike vermillion: white on it is
@@ -551,15 +553,18 @@ that is live on vivahspot.com today; that skin was a placeholder so the domain w
 - **Danger-tint `#F7E4DE`** is its banner ground and appears nowhere else.
 
 **A failure is never carried by `{colors.danger}` alone.** Every failure state renders a glyph, a sentence naming
-what happened, and what happens next. The colour makes it faster to find; it never makes it legible. This
+what happened, and a sentence naming what happens next. The colour makes it faster to find; it never makes it legible. This
 matters more here than elsewhere: the palette now holds two warm reds, and an eye that cannot
 separate them must still be able to read the difference.
 
-**Four tokens are reached only obliquely, and that is correct.** `{colors.on-turmeric}` is named by
-no component entry — the components that need it say `{colors.ink}`, which is the same value and the
-rule the Do's table states. `{colors.foil}`, `{colors.shadow-tint}` and the two gradients reach
-components inside literal gradient and shadow strings rather than as token references. A tool
-diffing tokens against component usage will report five orphans; they are not orphans.
+**Six tokens are reached only obliquely, and that is correct.** `{colors.foil}` and the four
+gradient stops — `{colors.medallion-start}`/`-end` and `{colors.placeholder-start}`/`-end` — reach
+components inside gradient strings rather than as a field's own value, and `{colors.shadow-tint}`
+reaches them only as the literal `rgba(190, 30, 50, 0.15)` inside `{elevation.1}` and
+`{elevation.2}`. A tool diffing tokens against component usage will report six orphans; they are not
+orphans. `{colors.on-turmeric}` is **not** one of them — `{components.button-celebration}` names it
+— and every other component that needs that value says `{colors.ink}`, the same value and the rule
+the Do's table states.
 
 **Nothing essential is carried by colour alone** (NFR 5.8). Verified status, availability, paid
 placement and the active tab each carry a glyph, a weight change or a word in addition to their
@@ -582,7 +587,7 @@ on the stress test rather than on the card: Rozha One ships a single weight, so 
 a list row could never be heavier than the review text beneath it and the whole hierarchy would
 fall onto size and colour; Amita's connected strokes make a wall of Rules — load-bearing text a
 family must read correctly before enquiring — real work at 0.84rem on a mid-range screen. Inknut
-holds in all six places Devanagari actually lands: names at 700, vendor row at 500, Rules and
+holds in all five places Devanagari actually lands: names at 700, vendor row at 500, Rules and
 reviews at 400, chips at 400.
 
 **The Devanagari optical correction, stated once.** Devanagari carries meaning above and below the
@@ -604,6 +609,11 @@ whether the rule is general, and nothing else in the sources settles it. Applied
   is theirs, and it is where the rule comes from.
 - `{typography.chip-devanagari}` — **0.7rem → 0.8rem** at 400. This was the worst case in the
   system: 11.2px, the smallest Devanagari shipped, with the least room of anything for its matras.
+
+The corrected ramp is drawn in
+[`mockups/type-devanagari-ramp-current.html`](mockups/type-devanagari-ramp-current.html) — every
+Devanagari role at its current size, with the superseded 0.84rem/300 setting of a Vendor's Rules
+beside the 0.94rem/400 that replaced it, so the correction is visible rather than argued.
 
 Two costs, accepted here rather than discovered on a screen later. A Devanagari chip is taller than
 its Latin neighbour, so **the chip takes a fixed height sized to the Devanagari one** and a mixed
@@ -627,13 +637,11 @@ Arial, sans-serif`. Zero network cost, which matters on the target connection. A
 resolve through `{fonts.*}` for the same reason: a family name written into twenty roles is twenty
 places to edit when one of them changes.
 
-The ramp is dense on purpose; this is a browse product on a phone. The **Latin** sizes are lifted
-from `.working/directions-4.html` (which renders the chrome at device width) and
-`.working/type-finalists-stress.html`: names 1.35rem, section heads 1.06rem, card titles 0.95rem,
-mixed-script body 0.86rem, Vendor Rules 0.84rem at 1.85 line-height, reviews 0.82rem at 1.8, chips
-0.7rem, tabs 0.61rem. The **Devanagari** sizes are no longer those figures — the optical correction
-above supersedes them, and `type-finalists-stress.html` is frozen as the comparison evidence the
-finding rested on rather than as a current specimen. **[ASSUMPTION]**
+The ramp is dense on purpose; this is a browse product on a phone. The **Latin** sizes in the
+frontmatter are lifted from `.working/directions-4.html` (which renders the chrome at device width)
+and `.working/type-finalists-stress.html`. The **Devanagari** sizes are no longer those files'
+figures — the optical correction above supersedes them, and `type-finalists-stress.html` is frozen
+as the comparison evidence the finding rested on rather than as a current specimen. **[ASSUMPTION]**
 `{typography.display-screen}` at 1.5rem is proposed, not lifted — no mock renders a screen title,
 and 1.5rem is the next step above the card names and matches `.vendor-intro h1` in the published
 site.
@@ -670,7 +678,8 @@ these are the values that do not land on the scale, in one list:
   calendar day bar at 4px tall offset 3px from the cell foot, the chip's fixed 26px box, the
   medallion at 60px, the vendor card's photo band at 104px.
 - Grid gaps — the medallion grid's 13px row gap and 6px column gap, the 11px vendor-card stack, and
-  20px above / 11px below a section head.
+  20px above / 11px below a section head. The tight column gap is deliberate, since a circle already
+  carries its own optical margin.
 
 Nothing else may be off the scale without joining this list.
 
@@ -678,9 +687,7 @@ Single column, always, on the family app. `{spacing.phone-column}` (430px) is th
 width; on a wider viewport the column centres rather than stretching. The invitation card is the
 only full-bleed-to-gutter element at the top of home; everything below it sits inside the gutter.
 
-Category medallions run a 3-column grid with a 13px row gap and a 6px column gap — the tight column
-gap is deliberate, since a circle already carries its own optical margin. Vendor cards stack with
-an 11px gap. Section heads take 20px above and 11px below.
+Category medallions run a 3-column grid.
 
 Safe area is explicit, not inherited: the tab bar pads
 `calc(9px + env(safe-area-inset-bottom))`, matching the pattern already used three times in
@@ -714,17 +721,14 @@ Three levels, and only three:
 Hierarchy comes from tone and from the gold rule, not from stacking shadows. There is no
 `{elevation.4}`. Hover lift is `translateY(-3px)`; press is `scale(0.98)` — both transform-only.
 
-There is **no dark mode**. The system is single-mode by construction: {colors.surface} is literally
-white and the whole design depends on white-card-on-cream-ground. Inverting it is a new design, not
-a token swap.
-
 ## Shapes
 
 **Square is the brand.** The invitation card, the primary button, the Search action and the search
 field are all `{rounded.none}` — a printed card has corners, and the moment they round the whole
 letterpress reading collapses into a generic marketplace.
 
-**[ASSUMPTION]** the radius reconciliation below is mine: `.working/color-themes-1.html` renders
+**[ASSUMPTION]** the radius reconciliation below is mine:
+[`mockups/color-themes-1.html`](mockups/color-themes-1.html) renders
 every surface square, while the later `.working/type-finalists-stress.html` puts 6px on list rows
 and 4px on thumbnails. The rule that satisfies both:
 
@@ -823,7 +827,10 @@ before any gap, and 284px exists. So below 768px the cell is **40×40 with a 2px
 no overlay at all** — clearing WCAG 2.2 SC 2.5.8's 24px and knowingly missing the product's own 44px
 floor by 4px, under the bounded exception in `EXPERIENCE.md`'s Accessibility Floor. Above 768px the
 columns fit, the cell reaches the floor on its own, and the overlay is a convenience for the gap
-rather than the mechanism that reaches it.
+rather than the mechanism that reaches it. Drawn in
+[`mockups/vendor-calendar-360.html`](mockups/vendor-calendar-360.html) — the month at a real 360px,
+40×40 cells at a 42px pitch, against the two shapes rejected for it: a list of dates, and one week
+at a time.
 
 **`::after` is reserved for the hit area and is never shared with a state mark.** A cell needs three
 drawn things — two bar segments and a hit area — and has two pseudo-elements, so one mark takes its
@@ -837,11 +844,14 @@ the cell, 3px from its foot. **One** solid bar for engaged, **two** countable se
 with a 12% gap — for Enquiries pending, and **no bar** for unavailable, whose struck-through number
 already separates it, so only two of the three states depend on the bar at all. Both bars are
 {colors.vermillion}: 4.80:1 on {colors.surface}, 4.68:1 on {colors.ground}. **A count carries the
-state — never a colour and never a texture.** Turmeric was 1.61:1 here, and turmeric is the colour
-of the thing being celebrated, never the colour of a thing to tap; drawing both bars in one ink also
-removes the temptation to see the hue and drop the count. A dashed bar was rejected earlier for the
+state — never a colour and never a texture.** Turmeric was 1.61:1 here, and is barred from this role
+by the rule in *Colors*; drawing both bars in one ink also removes the temptation to see the hue and
+drop the count. A dashed bar was rejected earlier for the
 same family of reason: at 3–4px a dash averages into a solid line. The cell *fills* do not change —
-they are what makes a month scannable at a glance.
+they are what makes a month scannable at a glance. Drawn in
+[`mockups/vendor-calendar-bar.html`](mockups/vendor-calendar-bar.html) — the 3px dashed bar as first
+drawn beside the strengthened one-bar-against-two-segments count, both rendered at the tight 284px
+column where the distinction has to survive.
 
 **Tab bar** — white, 1px {colors.hairline} top rule, five tabs (Home · Wedding · Shortlists ·
 Enquiries · You) at `{typography.tab}`. Resting labels {colors.muted}. The active tab is
@@ -860,7 +870,10 @@ mark is **always present**, never optional: the title sits in `{typography.title
 {colors.danger}, the sentence in `{typography.body}` {colors.ink}, and any retry is a primary button
 recoloured to {colors.danger}. The glyph and the sentence carry the failure; the colour only makes
 it faster to find. Note that `{typography.meta}` defaults to {colors.muted}, which is **3.99:1** on
-this tint — a timestamp in a banner has to be set in {colors.ink}.
+this tint — a timestamp in a banner has to be set in {colors.ink}. Drawn in
+[`mockups/direction-failure-3.html`](mockups/direction-failure-3.html) — this banner against the two
+treatments rejected for it, over three real failures, with the copy held identical so only the
+treatment varies.
 
 **Availability ring** — one ring, three states, and the geometry alone tells them apart: 2px solid
 for *shows available*, 1px solid for *shows unavailable*, 1px dashed for *not stated*. **All three strokes are
@@ -875,7 +888,11 @@ at ≥24px the body, two binding tabs, header bar, inner grid line and mark at s
 the inner grid is removed and the stroke thickens to 2.4. The small cut is drawn at **10×10 inside
 the 16px ring's 12px inner box**, leaving 1px of optical padding on each side so no corner lands on
 the ring stroke, and its distinguishing mark **breaks the body silhouette** rather than sitting
-inside it — two icons that differ only by an interior detail stop differing at 16px.
+inside it — two icons that differ only by an interior detail stop differing at 16px. Drawn in
+[`mockups/availability-signal.html`](mockups/availability-signal.html) — the three rings where they
+actually live, on a Vendor card and a list row, beside the words-alone alternative; the icon itself
+is in [`mockups/availability-icons-b.html`](mockups/availability-icons-b.html), which sets the two
+cuts side by side at real size.
 
 **Skeleton** — {colors.hairline} blocks at `{rounded.sm}`, occupying the exact footprint of the
 content they replace so nothing moves on arrival. The sheen is a `translateX` sweep over 1.5s,
@@ -889,6 +906,9 @@ label, square, full width, minimum height 48px. Every other button in this syste
 action; these are peers, so **none may be filled, pre-selected, or distinguished from its siblings
 by anything but its label**. Focus is the standard 2px {colors.vermillion} ring at 2px offset, and
 this is the surface where that matters most — three identical targets on the one page strangers see.
+Drawn, with `{components.stepper-count}` beside it, in
+[`mockups/guest-rsvp.html`](mockups/guest-rsvp.html) — the invitation and the reply at 360×640,
+unanswered and answered, with the measured fold and the WhatsApp link preview.
 
 **Count stepper** — `{components.stepper-count}`, the Guest's headcount. White fill, 1px
 {colors.muted} (4.89:1), square, minimum height 48px. A visible `<label>` sits above it in
@@ -922,7 +942,9 @@ it are what complete the answer.
 it is the line that says *paid*. Every card inside also carries a `badge-paid`: white fill, 1px
 {colors.muted}, {colors.ink} at `{typography.meta}`, the literal word *Featured*, and **square**.
 Square is the point — `{components.chip}` is the one pill in the system, so a Featured chip built
-from `chip` reads as a selected filter.
+from `chip` reads as a selected filter. Both are drawn in
+[`mockups/featured-band.html`](mockups/featured-band.html), which sets the band and its badge
+directly beside the thing they must never be mistaken for: a chip in its selected state.
 
 **Empty state** — `{components.empty-state}`, one anatomy everywhere: a 48px circle filled
 {colors.gold-tint} with an inline SVG mark in {colors.muted}, a heading in `{typography.title-card}`,
@@ -939,13 +961,15 @@ draws), square, each segment at least 44px tall, the selected segment {colors.on
 768px `{components.nav-rail}` replaces the tab bar: a 224px white column, 1px {colors.hairline} on
 its trailing edge, four destinations at `{typography.body}` with the Subscription's standing at the
 foot, and the active item marked by a 3px {colors.vermillion} rule on its leading edge plus weight
-600. Same three-signal rule as the tab bar; only the axis turns.
+600. Same three-signal rule as the tab bar; only the axis turns. The switch is drawn in
+[`mockups/direction-vendor-switch.html`](mockups/direction-vendor-switch.html) — both lenses over one
+set of Enquiries, `Inbox · 3` inside the label, the rail constant across the switch, and the same
+control at 360px.
 
 **`price-unestimated`** — the money display for a Listing with no price set. **One name**: the
 component is `price-unestimated` in both spines and in code, and the words it renders are the
-literal lowercase *not yet estimated*. Neither is a synonym for the other. Renders the literal
-words *"not yet estimated"* in `{typography.meta}` {colors.muted}, in the exact slot the price
-would occupy. **Never `₹0`, never a blank, never a dash** — FR-8 gives the reason in three words:
+literal lowercase *not yet estimated*. Neither is a synonym for the other. They render in
+`{typography.meta}` {colors.muted}, in the exact slot the price would occupy. **Never `₹0`, never a blank, never a dash** — FR-8 gives the reason in three words:
 *zero reads as free*. Real prices render as the server sent them (`₹1,80,000`, `₹420 / plate`) in
 `{typography.price}`; clients never compute money.
 
