@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — Devanagari, wider search</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&family=Rozha+One&family=Inknut+Antiqua:wght@400;700;900&family=Tillana:wght@400;700&family=Ranga:wght@400;700&family=Amita:wght@400;700&family=Yatra+One&family=Vesper+Libre:wght@400;700;900&family=Anek+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   DEVANAGARI PAIRING — ROUND 2, WIDER SEARCH
+   Palette: Kumkum & Turmeric. bg #FFFCF2 card #fff ink #2B0A0E muted #8C6A50
+   vermillion #E01B33 turmeric #FFC300 rule2 #FFEBB0 line #F6E2C2
+   REQUIRES NETWORK. Nothing installed into either app.
+
+   Coverage and weights probed live against fonts.googleapis.com, 2026-09-06.
+   Every family below carries BOTH devanagari and latin.
+     Rozha One        400
+     Inknut Antiqua   400 500 700 900   (also 300)
+     Tillana          400 500 700
+     Ranga            400 700
+     Amita            400 700
+     Yatra One        400
+     Vesper Libre     400 500 700 900
+     Anek Devanagari  300 400 500 700
+   Rejected before rendering, wrong register for an invitation: Modak, Baloo 2,
+   Khand, Kurale, Asar, Gotu, Jaini, Palanquin, Kadwa, Sumana, Sahitya, Halant,
+   Laila, Noto Serif Devanagari (correct but characterless).
+   ========================================================================== */
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
+  font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1560px;margin:0 auto}
+.lede{max-width:72ch;margin:0 auto 28px}
+.lede h1{font-family:'Playfair Display',Georgia,serif;font-size:1.8rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.grid{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.sp{flex:1 1 236px;max-width:250px}
+.sp h2{font-size:.98rem;margin:0 0 2px;font-family:'Playfair Display',serif}
+.sp .fx{font-size:.68rem;color:#8d868b;margin:0 0 9px;font-family:ui-monospace,monospace}
+.sp.cur{outline:2px solid #FFC300;outline-offset:9px;border-radius:4px}
+.sp.cur h2::after{content:" · your pick";color:#FFC300;font-size:.68rem;font-family:ui-monospace,monospace}
+.sp.solo h2::after{content:" · one family";color:#7fd6c8;font-size:.68rem;font-family:ui-monospace,monospace}
+.verdict{font-size:.76rem;color:#a9a3a8;margin:9px 0 0;line-height:1.5}
+.verdict b{color:#ddd8dc}
+
+.card{background:#FFFCF2;padding:12px;border-radius:9px}
+.inv{background:#fff;border:1px solid #FFC300;padding:13px 11px 11px;position:relative;
+  box-shadow:0 3px 12px rgba(190,30,50,.15);color:#2B0A0E}
+.inv::before{content:"";position:absolute;inset:4px;border:1px solid #FFEBB0;pointer-events:none}
+.orn{text-align:center;color:#FFC300;font-size:.66rem;letter-spacing:.4em;margin-bottom:6px}
+.nm{text-align:center;font-size:1.24rem;line-height:1.35;margin-bottom:1px}
+.nm .amp{color:#E01B33}
+.sub{text-align:center;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;
+  color:#8C6A50;margin-bottom:8px;font-family:'Playfair Display',serif}
+.ln{text-align:center;font-size:.8rem;padding:1px 0}
+.ln.en{font-family:'Playfair Display',serif}
+.ln.todo{color:#8C6A50;opacity:.8;font-size:.7rem;font-family:'Playfair Display',serif}
+.pg{margin-top:8px;display:flex;align-items:center;gap:6px}
+.pg .b{flex:1;height:3px;background:#FFEBB0}
+.pg .b i{display:block;height:100%;width:60%;background:#FFC300}
+.pg span{font-size:.57rem;color:#8C6A50;letter-spacing:.06em;font-family:'Playfair Display',serif}
+.rules{background:#fff;border:1px solid #F6E2C2;padding:10px 11px;margin-top:10px;
+  border-radius:5px;color:#2B0A0E}
+.rules .h{font-family:'Playfair Display',serif;font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:#8C6A50;margin-bottom:5px}
+.rules p{margin:0;font-size:.79rem;line-height:1.8}
+
+.f-rozha  .nm,.f-rozha  .dev,.f-rozha  .rules p{font-family:'Rozha One',serif}
+.f-inknut .nm,.f-inknut .dev,.f-inknut .rules p{font-family:'Inknut Antiqua',serif}
+.f-inknut .nm{font-weight:700}
+.f-tillana .nm,.f-tillana .dev,.f-tillana .rules p{font-family:'Tillana',serif}
+.f-tillana .nm{font-weight:700}
+.f-ranga  .nm,.f-ranga  .dev,.f-ranga  .rules p{font-family:'Ranga',serif}
+.f-ranga  .nm{font-weight:700}
+.f-amita  .nm,.f-amita  .dev,.f-amita  .rules p{font-family:'Amita',serif}
+.f-amita  .nm{font-weight:700}
+.f-yatra  .nm,.f-yatra  .dev,.f-yatra  .rules p{font-family:'Yatra One',serif}
+.f-vesper .nm,.f-vesper .dev,.f-vesper .rules p{font-family:'Vesper Libre',serif}
+.f-vesper .nm{font-weight:700}
+.f-anek   .nm,.f-anek   .dev,.f-anek   .rules p{font-family:'Anek Devanagari',sans-serif}
+.f-anek   .nm{font-weight:700}
+/* single-family option: Inknut carries the English too */
+.f-solo .nm,.f-solo .dev,.f-solo .rules p,.f-solo .ln.en,.f-solo .sub,
+.f-solo .rules .h,.f-solo .pg span,.f-solo .ln.todo{font-family:'Inknut Antiqua',serif}
+.f-solo .nm{font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>Devanagari, wider search</h1>
+  <p>Eight faces this time, all verified to carry both scripts. Same card, same kumkum palette,
+     same test: <b>ओंकार आणि स्नेहल</b> on the card, and a vendor's Rules underneath at the size
+     someone actually reads them.</p>
+  <p class="hint">Rozha is ringed in gold so you can hold the others against it. The last card is a
+     different proposition — <b>Inknut Antiqua setting everything</b>, English included, which would
+     retire Playfair and leave you one family instead of a pair to maintain.
+     I dropped fourteen other Devanagari families before rendering: Modak, Baloo 2, Khand, Kurale,
+     Asar, Gotu, Jaini, Palanquin, Kadwa, Sumana, Sahitya, Halant, Laila and Noto Serif Devanagari —
+     wrong register for an invitation, or correct but characterless.</p>
+</div>
+<div class="grid">
+
+  <section class="sp f-rozha cur">
+    <h2>Rozha One</h2>
+    <p class="fx">400 only</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>Your current pick.</b> High-contrast display, closest tonal match to Playfair. One weight, and it stiffens at paragraph size.</p>
+  </section>
+
+  <section class="sp f-inknut ">
+    <h2>Inknut Antiqua</h2>
+    <p class="fx">400 · 700 · 900</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>The printed book.</b> Ornate old-style with heavy serifs and real weight range. Feels letterpressed rather than rendered — the closest thing here to an actual wedding card.</p>
+  </section>
+
+  <section class="sp f-tillana ">
+    <h2>Tillana</h2>
+    <p class="fx">400 · 500 · 700</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>The brush.</b> Calligraphic, with the stroke modulation of hand lettering. Festive without being cartoonish, and it has the weights to stay legible small.</p>
+  </section>
+
+  <section class="sp f-amita ">
+    <h2>Amita</h2>
+    <p class="fx">400 · 700</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>The invitation script.</b> Semi-connected, decorative, unmistakably a wedding card. Beautiful for three names, hard work for a paragraph.</p>
+  </section>
+
+  <section class="sp f-ranga ">
+    <h2>Ranga</h2>
+    <p class="fx">400 · 700</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>The signboard.</b> Traditional display with strong flat strokes — the lettering on an old sweet shop. Loud and warm, low subtlety.</p>
+  </section>
+
+  <section class="sp f-yatra ">
+    <h2>Yatra One</h2>
+    <p class="fx">400 only</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>The quirky one.</b> Idiosyncratic display with a hand-cut feel. Full of personality and completely inflexible — one weight, and it never whispers.</p>
+  </section>
+
+  <section class="sp f-vesper ">
+    <h2>Vesper Libre</h2>
+    <p class="fx">400 · 500 · 700 · 900</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>The sturdy serif.</b> Squarer and heavier than Rozha, four weights, built for screens. Least romantic, most reliable across the whole app.</p>
+  </section>
+
+  <section class="sp f-anek ">
+    <h2>Anek Devanagari</h2>
+    <p class="fx">300 · 400 · 500 · 700</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>The modern one.</b> Clean, contemporary, no ornament at all. If the celebration is going to come from colour and motion rather than type, this gets out of the way.</p>
+  </section>
+
+  <section class="sp f-solo solo">
+    <h2>Inknut Antiqua — for everything</h2>
+    <p class="fx">replaces Playfair</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>One family, both scripts.</b> Every string on the card set in Inknut, English included. No pairing to maintain, no seam where the scripts meet, and a single decision in DESIGN.md instead of a rule about when to switch.</p>
+  </section>
+</div>
+<div class="lede" style="margin-top:32px">
+  <p class="hint">Working artifact · <code>.working/type-devanagari-pairing-2.html</code> · 2026-09-06.
+    Requires network. Coverage and weights probed live, not recalled. Nothing installed into
+    <code>apps/mobile</code> or <code>apps/vendor-web</code> — adding a font file is a separate step
+    and needs your explicit yes.</p>
+</div>
+</div>
+</body>
+</html>

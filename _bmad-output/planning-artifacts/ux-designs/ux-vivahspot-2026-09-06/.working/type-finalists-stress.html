@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — Rozha vs Amita vs Inknut</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&family=Rozha+One&family=Amita:wght@400;700&family=Inknut+Antiqua:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   THE THREE FINALISTS, IN EVERY PLACE DEVANAGARI ACTUALLY LANDS
+   All three look good on three names at 1.3rem. They come apart at small
+   sizes, in long paragraphs, and on lines where both scripts share a row.
+   Palette: Kumkum & Turmeric. REQUIRES NETWORK. Nothing installed.
+     Rozha One       400
+     Amita           400 700
+     Inknut Antiqua  300 400 500 700 900
+   ========================================================================== */
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;
+  font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1300px;margin:0 auto}
+.lede{max-width:72ch;margin:0 auto 26px}
+.lede h1{font-family:'Playfair Display',serif;font-size:1.8rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.grid{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.col{flex:1 1 330px;max-width:390px}
+.col > h2{font-family:'Playfair Display',serif;font-size:1.14rem;margin:0 0 2px}
+.col > .fx{font-size:.7rem;color:#8d868b;margin:0 0 12px;font-family:ui-monospace,monospace}
+.pane{background:#FFFCF2;border-radius:10px;padding:14px;color:#2B0A0E}
+.lab{font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:#8C6A50;
+  font-family:'Playfair Display',serif;margin:16px 0 6px}
+.lab:first-child{margin-top:0}
+
+/* A · card names */
+.inv{background:#fff;border:1px solid #FFC300;padding:13px 11px;position:relative;
+  box-shadow:0 3px 12px rgba(190,30,50,.15)}
+.inv::before{content:"";position:absolute;inset:4px;border:1px solid #FFEBB0}
+.orn{text-align:center;color:#FFC300;font-size:.64rem;letter-spacing:.4em;margin-bottom:6px}
+.nm{text-align:center;font-size:1.35rem;line-height:1.35}
+.nm .amp{color:#E01B33}
+.sub{text-align:center;font-size:.57rem;letter-spacing:.18em;text-transform:uppercase;
+  color:#8C6A50;font-family:'Playfair Display',serif;margin-top:2px}
+
+/* B · vendor row */
+.vr{background:#fff;border:1px solid #F6E2C2;border-radius:6px;padding:10px 11px;
+  display:flex;gap:10px;align-items:center}
+.vr .th{width:44px;height:44px;border-radius:4px;flex:none;
+  background:linear-gradient(150deg,#FFE7A8,#FFBDB6)}
+.vr .t{flex:1;min-width:0}
+.vr .t b{display:block;font-size:.95rem;font-weight:400;line-height:1.35}
+.vr .t span{font-size:.72rem;color:#8C6A50;font-family:'Playfair Display',serif}
+.vr .p{text-align:right;flex:none}
+.vr .p b{display:block;font-size:.82rem;font-family:'Playfair Display',serif}
+.vr .p i{display:block;font-style:normal;background:#E01B33;color:#fff;font-size:.64rem;
+  padding:4px 9px;margin-top:4px;font-family:'Playfair Display',serif;font-weight:700}
+
+/* C · mixed line */
+.mix{background:#fff;border:1px solid #F6E2C2;border-radius:6px;padding:9px 11px;font-size:.86rem}
+.mix .l{font-family:'Playfair Display',serif;color:#8C6A50}
+
+/* D · rules */
+.rules{background:#fff;border:1px solid #F6E2C2;border-radius:6px;padding:11px}
+.rules p{margin:0;font-size:.84rem;line-height:1.85}
+
+/* E · review */
+.rev{background:#fff;border:1px solid #F6E2C2;border-radius:6px;padding:11px}
+.rev .who{font-family:'Playfair Display',serif;font-size:.72rem;color:#8C6A50;margin-bottom:5px}
+.rev p{margin:0;font-size:.82rem;line-height:1.8}
+
+/* F · chips */
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips i{font-style:normal;background:#FFEBB0;border:1px solid #FFC300;color:#2B0A0E;
+  font-size:.7rem;padding:4px 10px;border-radius:999px}
+
+/* faces */
+.f-rozha  .nm,.f-rozha  .vr .t b,.f-rozha  .dv,.f-rozha  .rules p,.f-rozha  .rev p,.f-rozha  .chips i{font-family:'Rozha One',serif}
+.f-amita  .nm,.f-amita  .vr .t b,.f-amita  .dv,.f-amita  .rules p,.f-amita  .rev p,.f-amita  .chips i{font-family:'Amita',serif}
+.f-amita  .nm,.f-amita .vr .t b{font-weight:700}
+.f-inknut .nm,.f-inknut .vr .t b,.f-inknut .dv,.f-inknut .rules p,.f-inknut .rev p,.f-inknut .chips i{font-family:'Inknut Antiqua',serif}
+.f-inknut .nm{font-weight:700}
+.f-inknut .vr .t b{font-weight:500}
+.f-inknut .rules p,.f-inknut .rev p{font-weight:300}
+
+.solo{margin-top:18px;background:#1f2a28;border:1px solid #2f4340;border-radius:9px;padding:13px}
+.solo .h{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:#7fd6c8;margin-bottom:9px}
+.solo .inv2{background:#fff;border:1px solid #FFC300;padding:13px 11px;color:#2B0A0E;position:relative}
+.solo .inv2::before{content:"";position:absolute;inset:4px;border:1px solid #FFEBB0}
+.solo .inv2 *{font-family:'Inknut Antiqua',serif!important}
+.solo .inv2 .nm{font-size:1.2rem;font-weight:700;text-align:center;line-height:1.4}
+.solo .inv2 .orn{text-align:center;color:#FFC300;letter-spacing:.4em;font-size:.62rem;margin-bottom:6px}
+.solo .inv2 .en{text-align:center;font-size:.8rem;margin-top:3px}
+.solo .inv2 .sb{text-align:center;font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:#8C6A50;margin-top:2px}
+.solo p{font-size:.76rem;color:#a9c9c3;margin:9px 0 0;line-height:1.5}
+.verdict{font-size:.78rem;color:#a9a3a8;margin:12px 0 0;line-height:1.55}
+.verdict b{color:#ddd8dc}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>Rozha One vs Amita vs Inknut Antiqua</h1>
+  <p>All three are beautiful on three names at 1.35rem. That is not where the decision lives.
+     Below is every place Devanagari will actually appear in the product — a vendor's name in a
+     list row, a line where both scripts share a row, a wall of Rules, a family's review, a filter
+     chip — at the real sizes.</p>
+  <p class="hint">Read the <b>Rules</b> and <b>Review</b> blocks first, then the <b>list row</b>.
+     If a face is hard work there, it is hard work in the parts of the app people spend their time in.
+     The card is the smallest part of the job.</p>
+</div>
+<div class="grid">
+
+  <section class="col f-rozha">
+    <h2>Rozha One</h2>
+    <p class="fx">400 only · one weight for every job</p>
+    <div class="pane">
+      <div class="lab">On the card — 1.35rem</div>
+      <div class="inv"><div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div></div>
+
+      <div class="lab">Vendor row in a list — 0.95rem</div>
+      <div class="vr"><div class="th"></div>
+        <div class="t"><b>शुभमंगल लॉन्स</b><span>Lawns &amp; Venues · 800 capacity</span></div>
+        <div class="p"><b>₹1,80,000</b><i>Enquire</i></div></div>
+
+      <div class="lab">Both scripts on one line — 0.86rem</div>
+      <div class="mix"><span class="dv">अन्नपूर्णा केटरर्स</span>
+        <span class="l"> · veg &amp; jain · ₹420 / plate</span></div>
+
+      <div class="lab">A vendor's Rules — 0.84rem</div>
+      <div class="rules"><p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.
+        फटाके पूर्णपणे बंद. पार्किंग २०० गाड्यांसाठी उपलब्ध.</p></div>
+
+      <div class="lab">A family's review — 0.82rem</div>
+      <div class="rev"><div class="who">Rutuja B. · November 2026</div>
+        <p>लॉन खूप छान आहे. स्वच्छता उत्तम होती आणि व्यवस्थापन वेळेवर हजर होते.
+        जेवणाची जागा मोठी आहे.</p></div>
+
+      <div class="lab">Filter chips — 0.7rem</div>
+      <div class="chips"><i>शाकाहारी</i><i>पार्किंग</i><i>AC हॉल</i></div>
+    </div>
+    <p class="verdict"><b>Strongest on the card, weakest everywhere else.</b> The high contrast that makes the names sing turns the Rules into thin, spiky lines at 0.84rem. And with one weight, the vendor name in a list row cannot be any bolder than the review text beneath it — the hierarchy has to come entirely from size and colour.</p>
+  </section>
+
+  <section class="col f-amita">
+    <h2>Amita</h2>
+    <p class="fx">400 · 700 · semi-script</p>
+    <div class="pane">
+      <div class="lab">On the card — 1.35rem</div>
+      <div class="inv"><div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div></div>
+
+      <div class="lab">Vendor row in a list — 0.95rem</div>
+      <div class="vr"><div class="th"></div>
+        <div class="t"><b>शुभमंगल लॉन्स</b><span>Lawns &amp; Venues · 800 capacity</span></div>
+        <div class="p"><b>₹1,80,000</b><i>Enquire</i></div></div>
+
+      <div class="lab">Both scripts on one line — 0.86rem</div>
+      <div class="mix"><span class="dv">अन्नपूर्णा केटरर्स</span>
+        <span class="l"> · veg &amp; jain · ₹420 / plate</span></div>
+
+      <div class="lab">A vendor's Rules — 0.84rem</div>
+      <div class="rules"><p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.
+        फटाके पूर्णपणे बंद. पार्किंग २०० गाड्यांसाठी उपलब्ध.</p></div>
+
+      <div class="lab">A family's review — 0.82rem</div>
+      <div class="rev"><div class="who">Rutuja B. · November 2026</div>
+        <p>लॉन खूप छान आहे. स्वच्छता उत्तम होती आणि व्यवस्थापन वेळेवर हजर होते.
+        जेवणाची जागा मोठी आहे.</p></div>
+
+      <div class="lab">Filter chips — 0.7rem</div>
+      <div class="chips"><i>शाकाहारी</i><i>पार्किंग</i><i>AC हॉल</i></div>
+    </div>
+    <p class="verdict"><b>The most wedding-like, and the most demanding.</b> On the card it is genuinely lovely. In the Rules block the connected strokes and tight counters make a paragraph real work on a mid-range screen — and Dattatray's Rules are load-bearing text a family must read correctly before they enquire.</p>
+  </section>
+
+  <section class="col f-inknut">
+    <h2>Inknut Antiqua</h2>
+    <p class="fx">300 · 400 · 500 · 700 · 900</p>
+    <div class="pane">
+      <div class="lab">On the card — 1.35rem</div>
+      <div class="inv"><div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div></div>
+
+      <div class="lab">Vendor row in a list — 0.95rem</div>
+      <div class="vr"><div class="th"></div>
+        <div class="t"><b>शुभमंगल लॉन्स</b><span>Lawns &amp; Venues · 800 capacity</span></div>
+        <div class="p"><b>₹1,80,000</b><i>Enquire</i></div></div>
+
+      <div class="lab">Both scripts on one line — 0.86rem</div>
+      <div class="mix"><span class="dv">अन्नपूर्णा केटरर्स</span>
+        <span class="l"> · veg &amp; jain · ₹420 / plate</span></div>
+
+      <div class="lab">A vendor's Rules — 0.84rem</div>
+      <div class="rules"><p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल.
+        फटाके पूर्णपणे बंद. पार्किंग २०० गाड्यांसाठी उपलब्ध.</p></div>
+
+      <div class="lab">A family's review — 0.82rem</div>
+      <div class="rev"><div class="who">Rutuja B. · November 2026</div>
+        <p>लॉन खूप छान आहे. स्वच्छता उत्तम होती आणि व्यवस्थापन वेळेवर हजर होते.
+        जेवणाची जागा मोठी आहे.</p></div>
+
+      <div class="lab">Filter chips — 0.7rem</div>
+      <div class="chips"><i>शाकाहारी</i><i>पार्किंग</i><i>AC हॉल</i></div>
+    </div>
+    <p class="verdict"><b>The one that holds up in all six places.</b> Names at 700, vendor row at 500, Rules and reviews dropped to 300 so the paragraphs breathe. That weight range is doing real work here — it is the only finalist that can build hierarchy without changing size or colour.</p>
+  </section>
+</div>
+
+<div class="grid" style="margin-top:26px">
+  <div class="col" style="max-width:800px;flex:1 1 100%">
+    <div class="solo">
+      <div class="h">The other option — Inknut for English too, retiring Playfair</div>
+      <div class="inv2">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार आणि स्नेहल</div>
+        <div class="sb">Shrirampur</div>
+        <div class="en">27 November 2026</div>
+        <div class="en">Shubhmangal Lawns</div>
+      </div>
+      <p>One family, both scripts, no seam and no rule about when to switch. Playfair is a
+         high-contrast modern face and Inknut is a heavy old-style one — they are not close
+         cousins, so a card carrying both will always read as two decisions. This reads as one.
+         The cost is that you lose Playfair's elegance in the English, which is the face
+         currently sitting on your live site.</p>
+    </div>
+  </div>
+</div>
+
+<div class="lede" style="margin-top:30px">
+  <p class="hint">Working artifact · <code>.working/type-finalists-stress.html</code> · 2026-09-06.
+    Requires network. Nothing installed into either app.</p>
+</div>
+</div>
+</body>
+</html>

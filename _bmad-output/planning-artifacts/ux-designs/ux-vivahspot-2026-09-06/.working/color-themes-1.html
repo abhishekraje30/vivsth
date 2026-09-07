@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — Direction 1, bright</title>
+<style>
+/* ==========================================================================
+   DIRECTION 1 (THE INVITATION) — FIVE BRIGHT, CELEBRATORY PALETTES
+   Structure, type and shape are IDENTICAL to directions-4.html D1.
+   Only colour changes. Feedback being answered: "current one looks very dull."
+
+   T1 RANI PINK & GOLD   bg #FFF9F5  ink #2A0F1C  brand #E0115F  gold #FFB300  soft #8A6472
+   T2 MARIGOLD FESTIVAL  bg #FFFDF7  ink #2E1606  brand #FF8A00  pink #FF2E74  soft #8A6A4A
+   T3 KUMKUM & TURMERIC  bg #FFFCF2  ink #2B0A0E  brand #E01B33  turmeric #FFC300  soft #8C6A50
+   T4 GULAL              bg #FFFFFF  ink #21103A  brand #D6146F  saffron #FF8A00  violet #6D3BEF
+   T5 PEACOCK BRIGHT     bg #F4FFFD  ink #06282A  brand #00857D  magenta #F0117A  gold #FFC845
+
+   CONTRAST — every brand fill below carries text that clears WCAG AA 4.5:1.
+   Where the accent is too light for white text (marigold #FF8A00, turmeric #FFC300),
+   the label is dark ink instead. This is the rule from prd.md:1353 applied forward:
+   an accessibility decision outranks an aesthetic one.
+   ========================================================================== */
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
+  font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1600px;margin:0 auto}
+.lede{max-width:70ch;margin:0 auto 30px}
+.lede h1{font-family:Georgia,serif;font-size:1.8rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.grid{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.th{flex:1 1 290px;max-width:310px}
+.thead{margin-bottom:11px}
+.thead .n{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#8d868b}
+.thead h2{font-family:Georgia,serif;font-size:1.16rem;margin:3px 0 4px}
+.thead p{font-size:.82rem;color:#b3adb1;margin:0 0 9px;min-height:3.6em}
+.sw{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px}
+.sw i{flex:1;min-width:44px;height:38px;border-radius:4px;border:1px solid rgba(255,255,255,.14);
+  display:flex;align-items:flex-end;justify-content:center;font-size:.55rem;
+  font-family:ui-monospace,monospace;padding-bottom:2px;color:rgba(255,255,255,.85);
+  text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.note{font-size:.76rem;color:#a09aa0;margin:11px 0 0;line-height:1.45}
+.note b{color:#ddd8dc}
+
+/* ---------- shared snippet shell (identical across themes) ---------- */
+.snip{background:var(--bg);border-radius:14px;overflow:hidden;color:var(--ink);
+  box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.bar{background:var(--card);padding:11px 13px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:8px}
+.mk{width:24px;height:24px;border-radius:6px;background:var(--brand);color:var(--onBrand);
+  display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}
+.bn{font-family:Georgia,serif;font-size:.98rem}
+.in{padding:12px 13px 15px}
+
+/* the invitation card — square corners, gold rule, letterpress serif */
+.inv{background:var(--card);border:1px solid var(--rule);padding:14px 13px 13px;
+  position:relative;box-shadow:0 3px 12px var(--shadow)}
+.inv::before{content:"";position:absolute;inset:4px;border:1px solid var(--rule2);pointer-events:none}
+.inv .orn{text-align:center;color:var(--rule);font-size:.72rem;letter-spacing:.45em;margin-bottom:7px}
+.inv .nm{font-family:Georgia,serif;font-size:1.32rem;text-align:center;line-height:1.2}
+.inv .amp{color:var(--accent);font-style:italic}
+.inv .sub{text-align:center;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--soft);margin:2px 0 9px}
+.inv .ln{text-align:center;font-size:.8rem;padding:2px 0;position:relative}
+.inv .ln.done::after{content:"";position:absolute;left:24%;right:24%;bottom:0;height:1px;
+  background:var(--rule);transform-origin:left;animation:ink 7s ease-in-out infinite}
+.inv .ln.todo{color:var(--soft);opacity:.75}
+.inv .foil{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 38%,var(--foil) 50%,transparent 62%);
+  background-size:260% 100%;animation:foil 5.5s ease-in-out infinite}
+.inv .pg{margin-top:9px;display:flex;align-items:center;gap:7px}
+.inv .pg .b{flex:1;height:3px;background:var(--rule2)}
+.inv .pg .b i{display:block;height:100%;width:60%;background:var(--rule)}
+.inv .pg span{font-size:.62rem;color:var(--soft);letter-spacing:.06em}
+@keyframes ink{0%,12%{transform:scaleX(0)}38%,100%{transform:scaleX(1)}}
+@keyframes foil{0%,55%{background-position:170% 0}92%,100%{background-position:-70% 0}}
+
+.srch{display:flex;align-items:center;background:var(--card);border:1px solid var(--line);
+  padding:4px 4px 4px 12px;margin-top:12px}
+.srch span{flex:1;color:var(--soft);font-size:.76rem}
+.srch b{background:var(--brand);color:var(--onBrand);padding:7px 12px;font-size:.72rem;font-weight:700}
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px 4px;margin-top:14px}
+.cat{text-align:center;font-size:.62rem;line-height:1.25}
+.cat i{display:block;width:50px;height:50px;border-radius:50%;margin:0 auto 5px;
+  background:var(--catBg);border:2px solid var(--card);box-shadow:0 2px 8px var(--shadow)}
+.vc{background:var(--card);border:1px solid var(--line);margin-top:14px;
+  box-shadow:0 2px 9px var(--shadow)}
+.vc .ph{height:70px;background:var(--photo)}
+.vc .tx{padding:9px 10px 10px}
+.vc h5{margin:0 0 2px;font-size:.85rem;font-family:Georgia,serif;font-weight:400}
+.vc .mt{font-size:.68rem;color:var(--soft);margin-bottom:7px}
+.vc .ft{display:flex;justify-content:space-between;align-items:center}
+.vc .pr{font-weight:700;font-size:.82rem}
+.vc .cta{background:var(--brand);color:var(--onBrand);padding:5px 12px;font-size:.7rem;font-weight:700}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important}
+  .inv .ln.done::after{transform:scaleX(1)}
+}
+
+/* ============ T1 RANI PINK & GOLD ============ */
+.t1{--bg:#FFF9F5;--card:#fff;--ink:#2A0F1C;--soft:#8A6472;--line:#F7DFE7;
+  --brand:#E0115F;--onBrand:#fff;--accent:#FFB300;--rule:#FFB300;--rule2:#FFE6AD;
+  --foil:rgba(255,238,180,.9);--shadow:rgba(200,20,90,.13);
+  --catBg:linear-gradient(160deg,#FFD1E0,#FFC98A);--photo:linear-gradient(150deg,#FFD9E6,#FFCFA0)}
+/* ============ T2 MARIGOLD FESTIVAL ============ */
+.t2{--bg:#FFFDF7;--card:#fff;--ink:#2E1606;--soft:#8A6A4A;--line:#FBE6C8;
+  --brand:#FF8A00;--onBrand:#2E1606;--accent:#FF2E74;--rule:#FF2E74;--rule2:#FFD2E1;
+  --foil:rgba(255,215,120,.85);--shadow:rgba(220,120,0,.16);
+  --catBg:linear-gradient(160deg,#FFDE9E,#FFB0C6);--photo:linear-gradient(150deg,#FFE0A6,#FFB8CC)}
+/* ============ T3 KUMKUM & TURMERIC ============ */
+.t3{--bg:#FFFCF2;--card:#fff;--ink:#2B0A0E;--soft:#8C6A50;--line:#F6E2C2;
+  --brand:#E01B33;--onBrand:#fff;--accent:#FFC300;--rule:#FFC300;--rule2:#FFEBB0;
+  --foil:rgba(255,235,150,.9);--shadow:rgba(190,30,50,.15);
+  --catBg:linear-gradient(160deg,#FFE49C,#FFB3AE);--photo:linear-gradient(150deg,#FFE7A8,#FFBDB6)}
+/* ============ T4 GULAL ============ */
+.t4{--bg:#FFFFFF;--card:#fff;--ink:#21103A;--soft:#7A6A93;--line:#EDE6F8;
+  --brand:#D6146F;--onBrand:#fff;--accent:#6D3BEF;--rule:#FF8A00;--rule2:#FFE0BE;
+  --foil:rgba(255,200,140,.85);--shadow:rgba(110,60,240,.14);
+  --catBg:linear-gradient(160deg,#FFC98A,#C9A6FF);--photo:linear-gradient(150deg,#FFD0A0,#D2B4FF)}
+/* ============ T5 PEACOCK BRIGHT ============ */
+.t5{--bg:#F4FFFD;--card:#fff;--ink:#06282A;--soft:#5E7E7E;--line:#D5F0EA;
+  --brand:#00857D;--onBrand:#fff;--accent:#F0117A;--rule:#FFC845;--rule2:#FFEBBE;
+  --foil:rgba(255,235,170,.9);--shadow:rgba(0,110,105,.15);
+  --catBg:linear-gradient(160deg,#A9EDE2,#FFD79E);--photo:linear-gradient(150deg,#B4EFE5,#FFDCA8)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>Direction 1, with the volume up</h1>
+  <p>Same invitation card, same serif, same square corners, same gold rule — the structure you
+     liked is untouched. Only the colour changes, and it changes hard.</p>
+  <p class="hint">Every accent below carries a label that clears WCAG AA against it. On Marigold
+     and Turmeric the accent is too light for white text, so the button label is dark ink instead —
+     that isn't a style choice, it's <code>prd.md:1353</code> applied forward.</p>
+</div>
+<div class="grid">
+
+<section class="th t1">
+  <div class="thead">
+    <div class="n">Theme 01</div>
+    <h2>Rani Pink &amp; Gold</h2>
+    <p>Bridal pink at full volume with real gold. The most obviously <em>Indian wedding</em> of the five, and the closest relative of what is already live.</p>
+  </div>
+  <div class="sw"><i style="background:#FFF9F5;color:#2A0F1C;text-shadow:none">FFF9F5</i><i style="background:#2A0F1C">2A0F1C</i><i style="background:#E0115F">E0115F</i><i style="background:#FFB300;color:#2A0F1C;text-shadow:none">FFB300</i><i style="background:#8A6472">8A6472</i></div>
+
+  <div class="snip">
+    <div class="bar"><div class="mk">&#9829;</div><div class="bn">Vivah Spot</div></div>
+    <div class="in">
+      <div class="inv">
+        <div class="foil"></div>
+        <div class="orn">&#10087;&#10087;&#10087;</div>
+        <div class="nm">Omkar <span class="amp">&amp;</span> Snehal</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln done">27 November 2026</div>
+        <div class="ln done">Shubhmangal Lawns</div>
+        <div class="ln todo">&middot; &middot; &middot; caterer not chosen &middot; &middot; &middot;</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="srch"><span>Search venues, caterers&hellip;</span><b>Search</b></div>
+      <div class="cats">
+        <div class="cat"><i></i>Lawns &amp; Venues</div>
+        <div class="cat"><i></i>Catering</div>
+        <div class="cat"><i></i>Decoration</div>
+      </div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <h5>Shubhmangal Lawns</h5><div class="mt">Lawns &amp; Venues &middot; 800 capacity</div>
+        <div class="ft"><span class="pr">&#8377;1,80,000</span><span class="cta">Enquire</span></div>
+      </div></div>
+    </div>
+  </div>
+  <p class="note"><b>Safest bright.</b> Keeps the pink lineage your domain already trades on, but saturated and paired with a real gold instead of a beige one. White text clears 4.8:1 on the pink.</p>
+</section>
+
+<section class="th t2">
+  <div class="thead">
+    <div class="n">Theme 02</div>
+    <h2>Marigold Festival</h2>
+    <p>Genda phool. Saturated orange as the primary, hot pink as the counterpunch. The colour of every mandap in the country.</p>
+  </div>
+  <div class="sw"><i style="background:#FFFDF7;color:#2E1606;text-shadow:none">FFFDF7</i><i style="background:#2E1606">2E1606</i><i style="background:#FF8A00;color:#2E1606;text-shadow:none">FF8A00</i><i style="background:#FF2E74">FF2E74</i><i style="background:#8A6A4A">8A6A4A</i></div>
+
+  <div class="snip">
+    <div class="bar"><div class="mk">&#9829;</div><div class="bn">Vivah Spot</div></div>
+    <div class="in">
+      <div class="inv">
+        <div class="foil"></div>
+        <div class="orn">&#10087;&#10087;&#10087;</div>
+        <div class="nm">Omkar <span class="amp">&amp;</span> Snehal</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln done">27 November 2026</div>
+        <div class="ln done">Shubhmangal Lawns</div>
+        <div class="ln todo">&middot; &middot; &middot; caterer not chosen &middot; &middot; &middot;</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="srch"><span>Search venues, caterers&hellip;</span><b>Search</b></div>
+      <div class="cats">
+        <div class="cat"><i></i>Lawns &amp; Venues</div>
+        <div class="cat"><i></i>Catering</div>
+        <div class="cat"><i></i>Decoration</div>
+      </div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <h5>Shubhmangal Lawns</h5><div class="mt">Lawns &amp; Venues &middot; 800 capacity</div>
+        <div class="ft"><span class="pr">&#8377;1,80,000</span><span class="cta">Enquire</span></div>
+      </div></div>
+    </div>
+  </div>
+  <p class="note"><b>Warmest and loudest.</b> Note the buttons: marigold is far too light to carry white text, so the label is dark ink. That reads as deliberate rather than as a compromise, and it clears 7.7:1.</p>
+</section>
+
+<section class="th t3">
+  <div class="thead">
+    <div class="n">Theme 03</div>
+    <h2>Kumkum &amp; Turmeric</h2>
+    <p>Vermillion and haldi &mdash; the two substances physically present at every ceremony. Ritual colour rather than decorative colour.</p>
+  </div>
+  <div class="sw"><i style="background:#FFFCF2;color:#2B0A0E;text-shadow:none">FFFCF2</i><i style="background:#2B0A0E">2B0A0E</i><i style="background:#E01B33">E01B33</i><i style="background:#FFC300;color:#2B0A0E;text-shadow:none">FFC300</i><i style="background:#8C6A50">8C6A50</i></div>
+
+  <div class="snip">
+    <div class="bar"><div class="mk">&#9829;</div><div class="bn">Vivah Spot</div></div>
+    <div class="in">
+      <div class="inv">
+        <div class="foil"></div>
+        <div class="orn">&#10087;&#10087;&#10087;</div>
+        <div class="nm">Omkar <span class="amp">&amp;</span> Snehal</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln done">27 November 2026</div>
+        <div class="ln done">Shubhmangal Lawns</div>
+        <div class="ln todo">&middot; &middot; &middot; caterer not chosen &middot; &middot; &middot;</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="srch"><span>Search venues, caterers&hellip;</span><b>Search</b></div>
+      <div class="cats">
+        <div class="cat"><i></i>Lawns &amp; Venues</div>
+        <div class="cat"><i></i>Catering</div>
+        <div class="cat"><i></i>Decoration</div>
+      </div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <h5>Shubhmangal Lawns</h5><div class="mt">Lawns &amp; Venues &middot; 800 capacity</div>
+        <div class="ft"><span class="pr">&#8377;1,80,000</span><span class="cta">Enquire</span></div>
+      </div></div>
+    </div>
+  </div>
+  <p class="note"><b>Most rooted.</b> Red carries the actions, turmeric carries the celebration. Deeply legible to the audience and unlike anything a generic marketplace would pick.</p>
+</section>
+
+<section class="th t4">
+  <div class="thead">
+    <div class="n">Theme 04</div>
+    <h2>Gulal</h2>
+    <p>Holi in the palette: magenta, saffron and violet on pure white. Multi-accent rather than one brand colour &mdash; confetti, not a logo.</p>
+  </div>
+  <div class="sw"><i style="background:#FFFFFF;color:#21103A;text-shadow:none">FFFFFF</i><i style="background:#21103A">21103A</i><i style="background:#D6146F">D6146F</i><i style="background:#FF8A00;color:#21103A;text-shadow:none">FF8A00</i><i style="background:#6D3BEF">6D3BEF</i></div>
+
+  <div class="snip">
+    <div class="bar"><div class="mk">&#9829;</div><div class="bn">Vivah Spot</div></div>
+    <div class="in">
+      <div class="inv">
+        <div class="foil"></div>
+        <div class="orn">&#10087;&#10087;&#10087;</div>
+        <div class="nm">Omkar <span class="amp">&amp;</span> Snehal</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln done">27 November 2026</div>
+        <div class="ln done">Shubhmangal Lawns</div>
+        <div class="ln todo">&middot; &middot; &middot; caterer not chosen &middot; &middot; &middot;</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="srch"><span>Search venues, caterers&hellip;</span><b>Search</b></div>
+      <div class="cats">
+        <div class="cat"><i></i>Lawns &amp; Venues</div>
+        <div class="cat"><i></i>Catering</div>
+        <div class="cat"><i></i>Decoration</div>
+      </div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <h5>Shubhmangal Lawns</h5><div class="mt">Lawns &amp; Venues &middot; 800 capacity</div>
+        <div class="ft"><span class="pr">&#8377;1,80,000</span><span class="cta">Enquire</span></div>
+      </div></div>
+    </div>
+  </div>
+  <p class="note"><b>Most modern, most risky.</b> Three accents means three chances to look chaotic &mdash; it needs strict rules about which colour means what. Highest ceiling, hardest to keep tidy.</p>
+</section>
+
+<section class="th t5">
+  <div class="thead">
+    <div class="n">Theme 05</div>
+    <h2>Peacock Bright</h2>
+    <p>Vivid teal and magenta over gold. The only one here that does not lead with pink or orange, so it will never be mistaken for a competitor.</p>
+  </div>
+  <div class="sw"><i style="background:#F4FFFD;color:#06282A;text-shadow:none">F4FFFD</i><i style="background:#06282A">06282A</i><i style="background:#00857D">00857D</i><i style="background:#F0117A">F0117A</i><i style="background:#FFC845;color:#06282A;text-shadow:none">FFC845</i></div>
+
+  <div class="snip">
+    <div class="bar"><div class="mk">&#9829;</div><div class="bn">Vivah Spot</div></div>
+    <div class="in">
+      <div class="inv">
+        <div class="foil"></div>
+        <div class="orn">&#10087;&#10087;&#10087;</div>
+        <div class="nm">Omkar <span class="amp">&amp;</span> Snehal</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln done">27 November 2026</div>
+        <div class="ln done">Shubhmangal Lawns</div>
+        <div class="ln todo">&middot; &middot; &middot; caterer not chosen &middot; &middot; &middot;</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="srch"><span>Search venues, caterers&hellip;</span><b>Search</b></div>
+      <div class="cats">
+        <div class="cat"><i></i>Lawns &amp; Venues</div>
+        <div class="cat"><i></i>Catering</div>
+        <div class="cat"><i></i>Decoration</div>
+      </div>
+      <div class="vc"><div class="ph"></div><div class="tx">
+        <h5>Shubhmangal Lawns</h5><div class="mt">Lawns &amp; Venues &middot; 800 capacity</div>
+        <div class="ft"><span class="pr">&#8377;1,80,000</span><span class="cta">Enquire</span></div>
+      </div></div>
+    </div>
+  </div>
+  <p class="note"><b>Most distinctive.</b> Bright without being hot. Teal is cool, so it reads calmer than the others while still being saturated &mdash; the closest thing here to the PRD's &ldquo;calm, capable&rdquo; and your &ldquo;celebratory&rdquo; at the same time.</p>
+</section>
+</div>
+<div class="lede" style="margin-top:34px">
+  <p class="hint">Working artifact &middot; <code>.working/color-themes-1.html</code> &middot; 2026-09-06.
+    Structure identical to Direction 1 in <code>directions-4.html</code>; colour is the only variable.
+    Hex values are in the stylesheet comments, ready to lift into <code>DESIGN.md</code>.</p>
+</div>
+</div>
+</body>
+</html>

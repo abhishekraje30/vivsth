@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — what failure looks like</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   WHAT FAILURE LOOKS LIKE — THREE TREATMENTS, THREE REAL CASES
+   The problem: vermillion #E01B33 means ACTION and sits on every primary
+   button. Red cannot also mean danger. DESIGN.md has no error colour.
+   NFR 5.3: mid-range Android on patchy mobile data, often at a venue or in a
+   market. Failure is the normal case, not the edge.
+
+   T1  Words and shape, no new colour   ink + icon + retry, hue carries nothing
+   T2  One new token, clay #8C2F1A      white text 8.3:1; used ONLY for failure
+   T3  Turmeric carries trouble         reuses the nudge's existing attention colour
+
+   All three state the failure in WORDS -- "nothing essential by colour alone"
+   is a floor, not a treatment. What varies is whether colour helps at all.
+   ========================================================================== */
+:root{
+  --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
+  --vermillion:#E01B33;--turmeric:#FFC300;--gold-tint:#FFEBB0;--hairline:#F6E2C2;
+  --clay:#8C2F1A;--clay-tint:#F7E4DE;
+  --e1:0 2px 9px rgba(190,30,50,.10);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --disp:'Playfair Display',Georgia,serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/1.55 var(--sans)}
+.wrap{max-width:1300px;margin:0 auto}
+.lede{max-width:76ch;margin:0 auto 30px}
+.lede h1{font-family:var(--disp);font-size:1.82rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.grid{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.col{flex:1 1 350px;max-width:390px}
+.col > .n{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#8d868b}
+.col > h2{font-family:var(--disp);font-size:1.2rem;margin:3px 0 5px}
+.col > .idea{font-size:.84rem;color:#b3adb1;margin:0 0 12px;min-height:4.6em}
+.sw{display:flex;gap:5px;margin-bottom:12px}
+.sw i{height:22px;flex:1;border-radius:3px;font-style:normal;font-size:.55rem;
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;
+  font-family:ui-monospace,monospace;border:1px solid rgba(255,255,255,.15)}
+.pane{background:var(--ground);border-radius:10px;padding:15px;color:var(--ink)}
+.lab{font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  font-family:var(--disp);margin:16px 0 7px}
+.lab:first-child{margin-top:0}
+.verdict{font-size:.79rem;color:#a9a3a8;margin:12px 0 0;line-height:1.55}
+.verdict b{color:#ddd8dc}
+
+/* shared bits */
+.card{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;
+  padding:12px 13px;box-shadow:var(--e1)}
+.qt{font-family:var(--disp);font-size:.95rem;margin-bottom:3px}
+.mt{font-size:.75rem;color:var(--muted)}
+.btn{background:var(--vermillion);color:#fff;padding:8px 15px;font-size:.78rem;font-weight:700;
+  display:inline-block;border:0}
+.btn.ghost{background:transparent;color:var(--vermillion);border:1px solid var(--vermillion)}
+.ph{height:78px;background:linear-gradient(150deg,#FFE7A8,#FFBDB6);border-radius:4px}
+
+/* --- T1 · words and shape --- */
+.t1 .fail{border:2px solid var(--ink);background:var(--surface);padding:12px 13px}
+.t1 .fail .hd{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px}
+.t1 .fail .gl{font-family:var(--disp);font-size:1.05rem;line-height:1;flex:none;
+  border:1.5px solid var(--ink);width:22px;height:22px;display:flex;align-items:center;
+  justify-content:center}
+.t1 .fail b{font-family:var(--disp);font-size:.95rem;display:block}
+.t1 .fail p{margin:2px 0 0;font-size:.79rem;color:var(--muted)}
+.t1 .off{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+  background:var(--surface);padding:9px 12px;font-size:.79rem;display:flex;
+  justify-content:space-between;align-items:center}
+.t1 .brk{height:78px;border:2px dashed var(--ink);display:flex;align-items:center;
+  justify-content:center;font-size:.75rem;color:var(--muted);background:var(--surface);
+  border-radius:4px;flex-direction:column;gap:4px}
+
+/* --- T2 · clay --- */
+.t2 .fail{border:1px solid var(--clay);border-left:4px solid var(--clay);
+  background:var(--clay-tint);padding:12px 13px}
+.t2 .fail .hd{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px}
+.t2 .fail .gl{background:var(--clay);color:#fff;width:22px;height:22px;flex:none;
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700}
+.t2 .fail b{font-family:var(--disp);font-size:.95rem;display:block;color:var(--clay)}
+.t2 .fail p{margin:2px 0 0;font-size:.79rem;color:var(--ink)}
+.t2 .btn2{background:var(--clay);color:#fff;padding:8px 15px;font-size:.78rem;font-weight:700;
+  display:inline-block}
+.t2 .off{background:var(--clay);color:#fff;padding:9px 12px;font-size:.79rem;display:flex;
+  justify-content:space-between;align-items:center}
+.t2 .brk{height:78px;border:1px solid var(--clay);background:var(--clay-tint);
+  display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--clay);
+  border-radius:4px;flex-direction:column;gap:4px}
+
+/* --- T3 · turmeric --- */
+.t3 .fail{border:1px solid var(--turmeric);border-left:4px solid var(--turmeric);
+  background:var(--gold-tint);padding:12px 13px}
+.t3 .fail .hd{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px}
+.t3 .fail .gl{background:var(--turmeric);color:var(--ink);width:22px;height:22px;flex:none;
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700}
+.t3 .fail b{font-family:var(--disp);font-size:.95rem;display:block}
+.t3 .fail p{margin:2px 0 0;font-size:.79rem;color:var(--ink)}
+.t3 .btn3{background:var(--turmeric);color:var(--ink);padding:8px 15px;font-size:.78rem;
+  font-weight:700;display:inline-block}
+.t3 .off{background:var(--turmeric);color:var(--ink);padding:9px 12px;font-size:.79rem;
+  display:flex;justify-content:space-between;align-items:center}
+.t3 .brk{height:78px;border:1px solid var(--turmeric);background:var(--gold-tint);
+  display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--muted);
+  border-radius:4px;flex-direction:column;gap:4px}
+.acts{display:flex;gap:8px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>What does "something went wrong" look like?</h1>
+  <p>Vermillion <code>#E01B33</code> means <em>action</em> — it is on every primary button in the
+     product. So red cannot also mean danger, and <code>DESIGN.md</code> has no error colour at all.
+     Three ways out, against the three failures that will actually happen.</p>
+  <p class="hint">All three state the failure <b>in words</b> — "nothing essential by colour alone"
+     is the floor, not a treatment. What varies is whether colour helps at all. The cases are real:
+     NFR 5.3 targets mid-range Androids on patchy mobile data, often at a venue or in a market, so
+     Dattatray losing signal mid-quote is the normal case, not the edge.</p>
+</div>
+<div class="grid">
+
+<!-- ============ T1 ============ -->
+<section class="col t1">
+  <div class="n">Treatment 1</div>
+  <h2>Words and shape</h2>
+  <p class="idea">No new colour at all. Failure is carried by a heavy ink rule, a glyph and plain
+     language. Hue does nothing, so nothing can be missed by not seeing hue.</p>
+  <div class="sw"><i style="background:#FFFCF2;color:#2B0A0E">FFFCF2</i>
+    <i style="background:#2B0A0E;color:#fff">2B0A0E</i>
+    <i style="background:#E01B33;color:#fff">E01B33</i>
+    <i style="background:#FFC300;color:#2B0A0E">FFC300</i></div>
+  <div class="pane">
+    <div class="lab">Quote didn't send</div>
+    <div class="fail">
+      <div class="hd"><span class="gl">!</span><div><b>Your quote didn't send</b>
+        <p>You're offline. It's saved — we'll send it the moment you're back.</p></div></div>
+      <div class="acts"><span class="btn">Try again</span><span class="btn ghost">Edit the quote</span></div>
+    </div>
+
+    <div class="lab">Offline while browsing</div>
+    <div class="off"><span><b>No connection.</b> Showing what was loaded.</span><span>Retry</span></div>
+
+    <div class="lab">A photo didn't load</div>
+    <div class="card" style="margin-top:0">
+      <div class="brk"><span>▢</span>Photo didn't load — tap to retry</div>
+      <div class="qt" style="margin-top:9px">Shubhmangal Lawns</div>
+      <div class="mt">Lawns &amp; Venues · 800 capacity</div>
+    </div>
+  </div>
+  <p class="verdict"><b>The purist option, and the cheapest.</b> Four colours stay four colours, and
+    the accessibility floor is met by construction rather than by audit. The risk is real though: a
+    heavy ink rule reads as <em>emphasis</em>, not <em>alarm</em>, and a vendor scanning fast on a
+    cracked screen may simply not register that the quote failed.</p>
+</section>
+
+<!-- ============ T2 ============ -->
+<section class="col t2">
+  <div class="n">Treatment 2</div>
+  <h2>One new token — clay</h2>
+  <p class="idea">A sixth colour, <code>#8C2F1A</code>, reserved for failure and destructive
+     confirmation and used nowhere else. Dark, earthy, and unmistakably not vermillion.</p>
+  <div class="sw"><i style="background:#FFFCF2;color:#2B0A0E">FFFCF2</i>
+    <i style="background:#2B0A0E;color:#fff">2B0A0E</i>
+    <i style="background:#E01B33;color:#fff">E01B33</i>
+    <i style="background:#FFC300;color:#2B0A0E">FFC300</i>
+    <i style="background:#8C2F1A;color:#fff">8C2F1A</i></div>
+  <div class="pane">
+    <div class="lab">Quote didn't send</div>
+    <div class="fail">
+      <div class="hd"><span class="gl">!</span><div><b>Your quote didn't send</b>
+        <p>You're offline. It's saved — we'll send it the moment you're back.</p></div></div>
+      <div class="acts"><span class="btn2">Try again</span>
+        <span class="btn ghost" style="color:#8C2F1A;border-color:#8C2F1A">Edit the quote</span></div>
+    </div>
+
+    <div class="lab">Offline while browsing</div>
+    <div class="off"><span><b>No connection.</b> Showing what was loaded.</span><span>Retry</span></div>
+
+    <div class="lab">A photo didn't load</div>
+    <div class="card" style="margin-top:0">
+      <div class="brk"><span>▢</span>Photo didn't load — tap to retry</div>
+      <div class="qt" style="margin-top:9px">Shubhmangal Lawns</div>
+      <div class="mt">Lawns &amp; Venues · 800 capacity</div>
+    </div>
+  </div>
+  <p class="verdict"><b>The legible option.</b> White on clay is 8.3:1 and it reads as trouble
+    instantly, without argument. Two costs: it is a second red in a palette that already has one, so
+    a red-blind eye sees two dark warm blocks — and the moment a sixth token exists, someone will use
+    it for a "danger" that is really just emphasis. It needs a written rule, not just a value.</p>
+</section>
+
+<!-- ============ T3 ============ -->
+<section class="col t3">
+  <div class="n">Treatment 3</div>
+  <h2>Turmeric carries trouble</h2>
+  <p class="idea">No new token. The celebration colour doubles as the attention colour — it already
+     marks the stale-date nudge, which is the product's existing "this needs you" signal.</p>
+  <div class="sw"><i style="background:#FFFCF2;color:#2B0A0E">FFFCF2</i>
+    <i style="background:#2B0A0E;color:#fff">2B0A0E</i>
+    <i style="background:#E01B33;color:#fff">E01B33</i>
+    <i style="background:#FFC300;color:#2B0A0E">FFC300</i></div>
+  <div class="pane">
+    <div class="lab">Quote didn't send</div>
+    <div class="fail">
+      <div class="hd"><span class="gl">!</span><div><b>Your quote didn't send</b>
+        <p>You're offline. It's saved — we'll send it the moment you're back.</p></div></div>
+      <div class="acts"><span class="btn3">Try again</span><span class="btn ghost">Edit the quote</span></div>
+    </div>
+
+    <div class="lab">Offline while browsing</div>
+    <div class="off"><span><b>No connection.</b> Showing what was loaded.</span><span>Retry</span></div>
+
+    <div class="lab">A photo didn't load</div>
+    <div class="card" style="margin-top:0">
+      <div class="brk"><span>▢</span>Photo didn't load — tap to retry</div>
+      <div class="qt" style="margin-top:9px">Shubhmangal Lawns</div>
+      <div class="mt">Lawns &amp; Venues · 800 capacity</div>
+    </div>
+  </div>
+  <p class="verdict"><b>The one I'd argue against, and it is worth seeing why.</b> Turmeric already
+    means two things — celebration on the invitation card, and "we need something from you" on the
+    nudge. Making it mean failure as well is a third job for one colour, and the failed quote ends up
+    wearing the same gold as the finished wedding card. Scan the three panes quickly: this is the
+    column where the failure reads least like a failure.</p>
+</section>
+
+</div>
+<div class="lede" style="margin-top:32px">
+  <p class="hint">Working artifact · <code>.working/direction-failure-3.html</code> · 2026-09-06.
+    Requires network for Playfair. Copy is identical across all three so only the treatment varies —
+    and note it never blames the user, never says "error", and always says what happens next
+    ("it's saved — we'll send it the moment you're back"), per NFR 5.5's no-dark-patterns floor and
+    the PRD's calm, capable, unfussy voice.</p>
+</div>
+</div>
+</body>
+</html>

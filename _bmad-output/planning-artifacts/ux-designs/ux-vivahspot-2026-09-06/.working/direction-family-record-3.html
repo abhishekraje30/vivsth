@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — what vendors record about her</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   FR-47 — THE STRUCTURED RECORD A VENDOR KEEPS ABOUT A FAMILY
+   Three fixed questions, no free text, no money question, never public,
+   visible to Vendors receiving her Enquiry AND to her. NO DISPUTE PROCESS
+   (PRD 7.2 / FR-41) -- her only recourse is her own account beside it.
+   Written blind and published with her review in FR-48's 14-day window.
+
+   DESIGN RULE ESTABLISHED HERE: an unfavourable answer is NEVER rendered in
+   {colors.danger}. The platform does not judge these answers and cannot change
+   them; colouring "No" as a failure would be Vivah Spot taking a side, which
+   PRD 7.2 excludes. The answer is a word in {colors.ink}. Nothing else.
+   ========================================================================== */
+:root{
+  --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
+  --vermillion:#E01B33;--turmeric:#FFC300;--gold-tint:#FFEBB0;--hairline:#F6E2C2;
+  --danger:#8C2F1A;--e1:0 2px 9px rgba(190,30,50,.10);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --disp:'Playfair Display',Georgia,serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/1.55 var(--sans)}
+.wrap{max-width:1300px;margin:0 auto}
+.lede{max-width:76ch;margin:0 auto 28px}
+.lede h1{font-family:var(--disp);font-size:1.8rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.grid{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.col{flex:1 1 340px;max-width:372px}
+.col > .n{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#8d868b}
+.col > h2{font-family:var(--disp);font-size:1.22rem;margin:3px 0 5px}
+.col > .idea{font-size:.85rem;color:#b3adb1;margin:0 0 12px;min-height:4.4em}
+.verdict{font-size:.79rem;color:#a9a3a8;margin:12px 0 0;line-height:1.55}
+.verdict b{color:#ddd8dc}
+
+.phone{background:#0c0b0d;border-radius:34px;padding:9px;box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.scr{border-radius:26px;overflow:hidden;height:690px;display:flex;flex-direction:column;
+  background:var(--ground);color:var(--ink)}
+.lock{flex:1;background:linear-gradient(165deg,#3a2b28,#1d1512);display:flex;flex-direction:column;
+  align-items:center;padding:34px 14px 0;color:#fff}
+.lock .clock{font-family:var(--disp);font-size:3rem;line-height:1}
+.lock .date{font-size:.8rem;opacity:.7;margin-bottom:26px}
+.push{width:100%;background:rgba(255,255,255,.93);color:var(--ink);border-radius:14px;
+  padding:11px 12px;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.push .hd{display:flex;align-items:center;gap:7px;font-size:.66rem;color:var(--muted);margin-bottom:5px}
+.push .hd i{width:15px;height:15px;background:var(--vermillion);font-style:normal;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:.6rem}
+.push b{font-family:var(--disp);font-size:.9rem;display:block;margin-bottom:2px}
+.push p{margin:0;font-size:.79rem;line-height:1.45}
+.appbar{flex:none;display:flex;align-items:center;gap:9px;padding:11px 15px;background:var(--surface);
+  border-bottom:1px solid var(--hairline)}
+.appbar b{font-family:var(--disp);font-size:.98rem;flex:1}
+.body{flex:1;overflow-y:auto;padding:13px 15px 18px}
+.tabs{flex:none;display:flex;background:var(--surface);border-top:1px solid var(--hairline);padding:7px 3px 9px}
+.tab{flex:1;text-align:center;font-size:.59rem;color:var(--muted);line-height:1.35}
+.tab .ic{display:block;font-size:14px;margin-bottom:2px}
+.tab.on{color:var(--vermillion);font-weight:600}
+.eyebrow{font-family:var(--disp);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);margin:16px 0 8px}
+.eyebrow:first-child{margin-top:0}
+.menu{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;box-shadow:var(--e1)}
+.menu a{display:flex;align-items:center;gap:10px;padding:11px 12px;border-bottom:1px solid var(--hairline);
+  font-size:.86rem}
+.menu a:last-child{border-bottom:0}
+.menu a .ar{margin-left:auto;color:var(--muted)}
+.menu a.hi{background:var(--gold-tint)}
+
+.rec{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:13px;
+  box-shadow:var(--e1)}
+.rec h3{font-family:var(--disp);font-size:1.06rem;margin:0 0 6px}
+.rec .exp{font-size:.79rem;color:var(--muted);line-height:1.55;margin:0 0 12px}
+.q{border-top:1px solid var(--hairline);padding:9px 0}
+.q .t{font-size:.8rem;line-height:1.4}
+.q .a{display:flex;justify-content:space-between;align-items:baseline;margin-top:4px}
+.q .a b{font-family:var(--disp);font-size:.95rem}
+.q .a span{font-size:.68rem;color:var(--muted)}
+.who{font-size:.72rem;color:var(--muted);margin-top:11px;padding-top:9px;border-top:1px solid var(--hairline)}
+.own{background:var(--gold-tint);border:1px solid var(--turmeric);padding:10px 11px;margin-top:11px}
+.own b{font-family:var(--disp);font-size:.88rem;display:block;margin-bottom:3px}
+.own p{margin:0 0 9px;font-size:.77rem}
+.btn{background:var(--vermillion);color:#fff;padding:8px 14px;font-size:.77rem;font-weight:700;
+  display:inline-block}
+.btn.ghost{background:transparent;color:var(--vermillion);border:1px solid var(--vermillion)}
+.enqbox{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:12px;
+  box-shadow:var(--e1)}
+.enqbox h3{font-family:var(--disp);font-size:1rem;margin:0 0 4px}
+.enqbox .m{font-size:.76rem;color:var(--muted);margin:0 0 11px}
+.discl{border:1px solid var(--turmeric);background:var(--gold-tint);padding:11px;margin-top:11px}
+.discl b{font-family:var(--disp);font-size:.88rem;display:block;margin-bottom:4px}
+.discl p{margin:0 0 8px;font-size:.77rem;line-height:1.5}
+.discl ul{margin:0 0 9px;padding-left:16px;font-size:.77rem}
+.discl li{margin-bottom:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>What vendors record about her</h1>
+  <p>Three weeks after Omkar's wedding, Dattatray answers his three fixed questions. On
+     <em>"were the premises left as agreed"</em> he says no. That answer now travels with Rutuja to
+     every Vendor she enquires with. <b>She cannot dispute it</b> — §7.2 excludes Vivah Spot from
+     adjudicating between them. She can only write her own account beside it.</p>
+  <p class="hint"><b>One design rule established across all three:</b> the unfavourable answer is
+     never rendered in <code>{colors.danger}</code>. The platform does not judge these answers and
+     cannot change them, so colouring "No" as a failure would be Vivah Spot taking a side — which is
+     precisely what §7.2 excludes. It is a word in ink. Nothing else.</p>
+</div>
+<div class="grid">
+
+<!-- ============ A ============ -->
+<section class="col">
+  <div class="n">Moment A</div>
+  <h2>Told when it publishes</h2>
+  <p class="idea">The same moment the reviews go live under FR-48's fourteen-day window, her phone
+     tells her. She learns it from you, not from vendors treating her oddly.</p>
+  <div class="phone"><div class="scr">
+    <div class="lock">
+      <div class="clock">9:41</div>
+      <div class="date">Thursday, 18 December</div>
+      <div class="push">
+        <div class="hd"><i>♥</i>Vivah Spot · now</div>
+        <b>Your reviews are published</b>
+        <p>Your review of Shubhmangal Lawns is live, and they have recorded their answers about
+           the wedding. You can see what they said.</p>
+      </div>
+    </div>
+    <div class="tabs"><div class="tab"><i class="ic">◳</i>Home</div><div class="tab"><i class="ic">◆</i>Wedding</div>
+      <div class="tab"><i class="ic">♡</i>Shortlists</div><div class="tab"><i class="ic">✉</i>Enquiries</div>
+      <div class="tab on"><i class="ic">◯</i>You</div></div>
+  </div></div>
+  <p class="verdict"><b>Honest, and hard.</b> It is symmetrical — his answers become visible at the
+    same instant hers do, so neither side learns first. The copy deliberately does not say
+    <em>"a vendor rated you poorly"</em>; it says the window closed and both are now visible. But
+    there is no avoiding it: this is a notification about something painful she cannot appeal, and it
+    arrives unbidden at 9:41 on a Thursday.</p>
+</section>
+
+<!-- ============ B ============ -->
+<section class="col">
+  <div class="n">Moment B</div>
+  <h2>There when she looks</h2>
+  <p class="idea">No notification, ever. It sits under You, always available, never pushed. FR-47's
+     promise that she can see everything is kept without putting bad news in her hand.</p>
+  <div class="phone"><div class="scr">
+    <div class="appbar"><b>You</b></div>
+    <div class="body">
+      <div class="eyebrow">Your account</div>
+      <div class="menu">
+        <a>Rutuja Bankar<span class="ar">›</span></a>
+        <a>Omkar &amp; Snehal · concluded<span class="ar">›</span></a>
+        <a>Invited members<span class="ar">›</span></a>
+        <a class="hi">What vendors record about you<span class="ar">›</span></a>
+        <a>Your data<span class="ar">›</span></a>
+        <a>Raise a grievance<span class="ar">›</span></a>
+        <a>How results are ordered<span class="ar">›</span></a>
+      </div>
+
+      <div class="eyebrow">Opened</div>
+      <div class="rec">
+        <h3>What vendors record about you</h3>
+        <p class="exp">After a wedding, each Vendor you engaged answers the same three questions.
+          Their answers are visible to Vendors you enquire with, and to you. They are never public.
+          Vivah Spot does not judge them and cannot change them.</p>
+        <div class="q"><div class="t">Was the Family responsive?</div>
+          <div class="a"><b>Yes</b><span>Shubhmangal Lawns</span></div></div>
+        <div class="q"><div class="t">Did the agreed headcount hold?</div>
+          <div class="a"><b>Yes</b><span>Shubhmangal Lawns</span></div></div>
+        <div class="q"><div class="t">Were the premises left as agreed?</div>
+          <div class="a"><b>No</b><span>Shubhmangal Lawns</span></div></div>
+        <div class="who">Recorded 18 December, after Omkar &amp; Snehal's wedding.</div>
+        <div class="own"><b>Add your account</b>
+          <p>There is no dispute process — we do not decide between you. You can record what
+             happened in your own words, and Vendors see it beside their answers.</p>
+          <span class="btn">Write your account</span></div>
+      </div>
+    </div>
+    <div class="tabs"><div class="tab"><i class="ic">◳</i>Home</div><div class="tab"><i class="ic">◆</i>Wedding</div>
+      <div class="tab"><i class="ic">♡</i>Shortlists</div><div class="tab"><i class="ic">✉</i>Enquiries</div>
+      <div class="tab on"><i class="ic">◯</i>You</div></div>
+  </div></div>
+  <p class="verdict"><b>The gentlest, and the one that risks a nasty surprise.</b> Nothing intrudes on
+    her month. But a family who never opens that menu is being assessed silently for as long as she
+    keeps enquiring — and the first she may know of it is a vendor who does not reply.</p>
+</section>
+
+<!-- ============ C ============ -->
+<section class="col">
+  <div class="n">Moment C</div>
+  <h2>Shown before her next enquiry</h2>
+  <p class="idea">Surfaced where it actually bites — as she sends her next Enquiry, she is shown
+     exactly what that Vendor will see about her, and can add her account before it goes.</p>
+  <div class="phone"><div class="scr">
+    <div class="appbar"><b>Send an Enquiry</b></div>
+    <div class="body">
+      <div class="enqbox">
+        <h3>Sant Sakhu Mangal Karyalay</h3>
+        <p class="m">Lawns &amp; Venues · Shrirampur · 400 capacity</p>
+        <div class="q" style="border-top:0;padding-top:0"><div class="t">This Enquiry carries</div>
+          <div class="a"><b>27 Nov · 600 guests</b><span>Haldi, Wedding, Reception</span></div></div>
+      </div>
+
+      <div class="discl">
+        <b>What they will see about you</b>
+        <p>Vendors receiving an Enquiry see the answers your previous Vendors recorded. You are
+          seeing exactly what they will.</p>
+        <ul>
+          <li>Responsive — <b>Yes</b></li>
+          <li>Headcount held — <b>Yes</b></li>
+          <li>Premises left as agreed — <b>No</b></li>
+        </ul>
+        <p style="color:#8C6A50">There is no dispute process. You can add your own account and it
+          travels beside their answers.</p>
+        <div style="display:flex;gap:7px">
+          <span class="btn">Send the Enquiry</span>
+          <span class="btn ghost">Add my account first</span></div>
+      </div>
+    </div>
+    <div class="tabs"><div class="tab"><i class="ic">◳</i>Home</div><div class="tab"><i class="ic">◆</i>Wedding</div>
+      <div class="tab"><i class="ic">♡</i>Shortlists</div><div class="tab on"><i class="ic">✉</i>Enquiries</div>
+      <div class="tab"><i class="ic">◯</i>You</div></div>
+  </div></div>
+  <p class="verdict"><b>The most useful, and the most likely to feel like a gate.</b> It arrives when
+    she can still do something — add her account before the Vendor reads it — which is the only
+    agency FR-47 gives her. The danger is that a disclosure standing between her and sending an
+    Enquiry reads as a warning about herself, every single time. It would need to appear once per
+    Vendor, not once per tap, and never block the send.</p>
+</section>
+
+</div>
+<div class="lede" style="margin-top:32px">
+  <p class="hint">Working artifact · <code>.working/direction-family-record-3.html</code> · 2026-09-06.
+    Requires network. The three questions are quoted from FR-47 and are the only three that exist —
+    no money question, no free text from the Vendor, ever. These are not mutually exclusive: B is the
+    permanent home and is required by FR-47 regardless; A and C are about whether anything reaches
+    her before she goes looking.</p>
+</div>
+</div>
+</body>
+</html>

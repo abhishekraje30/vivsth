@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — the vendor portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&family=Inknut+Antiqua:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   THE VENDOR PORTAL — FOUR LANDING SURFACES FOR DATTATRAY
+   Built from DESIGN.md tokens. Phone-first per NFR 5.2: "designed for that
+   case rather than tolerating it." Requires network. Content from UJ-2.
+
+   Dattatray Shinde, Shubhmangal Lawns, Shrirampur. An 800-capacity lawn and a
+   300-capacity AC hall. Working from a phone between jobs. The only paying
+   customer. Season ends at 34 Enquiries, 6 site visits, 2 weddings won, Rs 0 paid.
+
+   VOCABULARY: Enquiry, Quote, Site Visit, Agreement, Commitment, Rules, Space,
+   Contact Reveal, Lead Dashboard, Subscription, Tier. Never book/booking/checkout.
+   CONTRAST: muted never faded; turmeric never carries white; vermillion never on
+   turmeric or gold-tint; every bar carries a text label.
+   ========================================================================== */
+:root{
+  --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
+  --vermillion:#E01B33;--turmeric:#FFC300;--gold-tint:#FFEBB0;--hairline:#F6E2C2;
+  --e1:0 2px 9px rgba(190,30,50,.10);--e2:0 3px 12px rgba(190,30,50,.15);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --disp:'Playfair Display',Georgia,serif;--dev:'Inknut Antiqua',serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/1.55 var(--sans)}
+.wrap{max-width:1620px;margin:0 auto}
+.lede{max-width:74ch;margin:0 auto 28px}
+.lede h1{font-family:var(--disp);font-size:1.8rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.grid{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.col{flex:1 1 340px;max-width:376px}
+.col > .n{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#8d868b}
+.col > h2{font-family:var(--disp);font-size:1.24rem;margin:3px 0 5px}
+.col > .idea{font-size:.85rem;color:#b3adb1;margin:0 0 12px;min-height:5.4em}
+.verdict{font-size:.79rem;color:#a9a3a8;margin:12px 0 0;line-height:1.55}
+.verdict b{color:#ddd8dc}
+
+.phone{background:#0c0b0d;border-radius:36px;padding:9px;box-shadow:0 18px 44px rgba(0,0,0,.5)}
+.scr{border-radius:28px;overflow:hidden;height:724px;display:flex;flex-direction:column;
+  background:var(--ground);color:var(--ink)}
+.body{flex:1;overflow-y:auto}
+.appbar{flex:none;display:flex;align-items:center;gap:9px;padding:11px 15px;
+  background:var(--surface);border-bottom:1px solid var(--hairline)}
+.appbar .biz{flex:1;min-width:0}
+.appbar .biz b{display:block;font-family:var(--disp);font-size:.98rem;line-height:1.25}
+.appbar .biz span{font-size:.68rem;color:var(--muted)}
+.appbar .av{width:30px;height:30px;background:var(--gold-tint);border:1px solid var(--turmeric);
+  display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:.82rem;flex:none}
+.tabs{flex:none;display:flex;background:var(--surface);border-top:1px solid var(--hairline);padding:7px 4px 9px}
+.tab{flex:1;text-align:center;font-size:.6rem;color:var(--muted);line-height:1.35}
+.tab .ic{display:block;font-size:15px;margin-bottom:2px}
+.tab.on{color:var(--vermillion);font-weight:600}
+.pad{padding:13px 15px 20px}
+.eyebrow{font-family:var(--disp);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);margin:17px 0 8px;display:flex;justify-content:space-between;align-items:baseline}
+.eyebrow:first-child{margin-top:0}
+.eyebrow em{font-style:normal;font-family:var(--sans);letter-spacing:0;text-transform:none;font-size:.72rem}
+
+/* nudge — the stale calendar safeguard */
+.nudge{background:var(--gold-tint);border:1px solid var(--turmeric);padding:11px 12px;margin-bottom:12px}
+.nudge b{display:block;font-family:var(--disp);font-size:.92rem;margin-bottom:3px}
+.nudge p{margin:0 0 9px;font-size:.78rem;color:var(--ink)}
+.nudge .acts{display:flex;gap:7px}
+.btn{background:var(--vermillion);color:#fff;padding:8px 14px;font-size:.78rem;font-weight:700;
+  border:0;display:inline-block}
+.btn.ghost{background:transparent;color:var(--vermillion);border:1px solid var(--vermillion)}
+
+/* enquiry card */
+.enq{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;
+  padding:11px 12px;margin-bottom:9px;box-shadow:var(--e1)}
+.enq.unread{border-left:3px solid var(--vermillion)}
+.enq .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.enq .top b{font-family:var(--disp);font-size:.96rem}
+.enq .top span{font-size:.68rem;color:var(--muted)}
+.enq .facts{font-size:.78rem;color:var(--ink);line-height:1.5}
+.enq .facts em{font-style:normal;color:var(--muted)}
+.enq .foot{display:flex;justify-content:space-between;align-items:center;margin-top:9px}
+.pill{font-size:.68rem;padding:3px 9px;border:1px solid var(--hairline);color:var(--muted)}
+.pill.new{background:var(--vermillion);color:#fff;border-color:var(--vermillion);font-weight:700}
+.pill.act{background:var(--gold-tint);border-color:var(--turmeric);color:var(--ink)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.st{background:var(--surface);border:1px solid var(--hairline);padding:11px 12px;box-shadow:var(--e1)}
+.st b{display:block;font-family:var(--disp);font-size:1.6rem;line-height:1.1}
+.st span{font-size:.7rem;color:var(--muted)}
+.st.wide{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between}
+.st.wide b{font-size:1.25rem}
+.hero{background:var(--surface);border:1px solid var(--turmeric);padding:14px 13px;box-shadow:var(--e2);
+  position:relative;margin-bottom:12px}
+.hero::before{content:"";position:absolute;inset:4px;border:1px solid var(--gold-tint)}
+.hero .orn{text-align:center;color:var(--turmeric);font-size:.68rem;letter-spacing:.42em;margin-bottom:7px}
+.hero .big{text-align:center;font-family:var(--disp);font-size:2.1rem;line-height:1}
+.hero .cap{text-align:center;font-size:.72rem;color:var(--muted);margin-top:4px}
+.hero .row{display:flex;justify-content:space-between;margin-top:11px;padding-top:9px;
+  border-top:1px solid var(--gold-tint);font-size:.74rem}
+.hero .row b{font-family:var(--disp);font-size:.92rem;display:block}
+
+/* calendar */
+.cal{background:var(--surface);border:1px solid var(--hairline);padding:11px;box-shadow:var(--e1)}
+.cal .mh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
+.cal .mh b{font-family:var(--disp);font-size:1rem}
+.cal .mh span{font-size:.7rem;color:var(--muted)}
+.cal .dow,.cal .days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal .dow span{text-align:center;font-size:.58rem;color:var(--muted);padding-bottom:3px}
+.cal .days b{aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  font-size:.74rem;font-weight:400;border:1px solid transparent}
+.cal .days b.off{color:var(--muted);opacity:1}
+.cal .days b.eng{background:var(--vermillion);color:#fff;font-weight:700}
+.cal .days b.ask{background:var(--gold-tint);border-color:var(--turmeric);font-weight:700}
+.cal .days b.blk{background:var(--hairline);color:var(--muted);text-decoration:line-through}
+.key{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:.68rem;color:var(--muted)}
+.key i{width:9px;height:9px;display:inline-block;margin-right:4px;font-style:normal;vertical-align:-1px}
+.today{background:var(--surface);border:1px solid var(--hairline);border-left:3px solid var(--turmeric);
+  padding:10px 12px;margin-bottom:8px;box-shadow:var(--e1)}
+.today b{font-family:var(--disp);font-size:.92rem;display:block}
+.today span{font-size:.74rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>What does Dattatray open the app for?</h1>
+  <p>He owns Shubhmangal Lawns — an 800-capacity lawn and a 300-capacity AC hall in Shrirampur.
+     Your PRD says he is <em>"working from a phone between jobs."</em> He is also the only person
+     who pays you. Four theories of what he came here to do, each producing a different product.</p>
+  <p class="hint">Phone frames, because NFR 5.2 says the vendor portal is phone-first —
+     <em>"designed for that case rather than tolerating it"</em> — not a desktop dashboard that
+     shrinks. Built from <code>DESIGN.md</code> tokens; nothing new invented. Same identity as
+     Rutuja's app, as you chose. No banned vocabulary: Enquiry, Quote, Site Visit, never
+     <em>booking</em>.</p>
+</div>
+<div class="grid">
+
+<!-- ================= A · THE INBOX ================= -->
+<section class="col">
+  <div class="n">Surface A</div>
+  <h2>The Inbox</h2>
+  <p class="idea">He came to answer leads. The app opens on the ones nobody has replied to yet,
+     newest first, each carrying the whole wedding. Everything else is a tab away.</p>
+  <div class="phone"><div class="scr">
+    <div class="appbar"><div class="av">श</div><div class="biz"><b>Shubhmangal Lawns</b>
+      <span>Shrirampur · Verified</span></div></div>
+    <div class="body"><div class="pad">
+      <div class="eyebrow">Needs a reply <em>3</em></div>
+
+      <div class="enq unread"><div class="top"><b>Wedding · 27 Nov</b><span>18 min ago</span></div>
+        <div class="facts">600 guests · Haldi, Wedding, Reception<br>
+          <em>Budget ₹8,00,000 across the whole event</em><br>
+          <em>Haldi 26th morning · Wedding 27th evening · Reception 28th evening</em></div>
+        <div class="foot"><span class="pill new">New</span><span class="btn">Send a Quote</span></div></div>
+
+      <div class="enq unread"><div class="top"><b>Reception · 4 Dec</b><span>2 hours ago</span></div>
+        <div class="facts">300 guests · Reception only<br><em>Budget ₹2,50,000</em><br>
+          <em>AC hall · evening</em></div>
+        <div class="foot"><span class="pill new">New</span><span class="btn">Send a Quote</span></div></div>
+
+      <div class="enq unread"><div class="top"><b>Wedding · 22 Nov</b><span>Yesterday</span></div>
+        <div class="facts">450 guests · Wedding, Reception<br><em>Budget ₹6,00,000</em></div>
+        <div class="foot"><span class="pill new">New</span><span class="btn">Send a Quote</span></div></div>
+
+      <div class="eyebrow">In progress <em>4</em></div>
+      <div class="enq"><div class="top"><b>Wedding · 14 Dec</b><span>Quote sent</span></div>
+        <div class="facts">550 guests · <em>Site visit Sunday 4pm</em></div>
+        <div class="foot"><span class="pill act">Site visit arranged</span>
+          <span class="pill">Mark won / lost</span></div></div>
+      <div class="enq"><div class="top"><b>Wedding · 9 Jan</b><span>Quote sent · 6 days</span></div>
+        <div class="facts">700 guests · <em>No reply from the family yet</em></div>
+        <div class="foot"><span class="pill act">Contacted</span><span class="pill">Update</span></div></div>
+    </div></div>
+    <div class="tabs"><div class="tab on"><i class="ic">✉</i>Enquiries</div>
+      <div class="tab"><i class="ic">▦</i>Calendar</div><div class="tab"><i class="ic">◈</i>Listings</div>
+      <div class="tab"><i class="ic">◮</i>Performance</div><div class="tab"><i class="ic">◯</i>You</div></div>
+  </div></div>
+  <p class="verdict"><b>The obvious one, and probably the right one.</b> It matches the ninety seconds
+    he actually has — open, read a wedding, quote, back to work. Reply speed affects his ranking
+    (FR-20), so the product's incentives and his are aligned on this screen. What it costs: he never
+    sees what the subscription is buying him unless he goes looking, and he is paying you every month.</p>
+</section>
+
+<!-- ================= B · TODAY ================= -->
+<section class="col">
+  <div class="n">Surface B</div>
+  <h2>Today</h2>
+  <p class="idea">He came to find out what today needs from him. Enquiries waiting, a site visit at
+     four, a date the platform wants confirmed. The day, not the queue.</p>
+  <div class="phone"><div class="scr">
+    <div class="appbar"><div class="av">श</div><div class="biz"><b>Shubhmangal Lawns</b>
+      <span>Thursday, 6 September</span></div></div>
+    <div class="body"><div class="pad">
+      <div class="nudge"><b>Still free on 27 November?</b>
+        <p>3 families have enquired about that date this week. Confirming keeps you in their results.</p>
+        <div class="acts"><span class="btn">Still free</span><span class="btn ghost">Not available</span></div></div>
+
+      <div class="eyebrow">Today</div>
+      <div class="today"><b>Site visit · 4:00 pm</b><span>Wedding party for 14 December · 550 guests · the lawn</span></div>
+      <div class="today"><b>3 Enquiries need a reply</b><span>Oldest is from yesterday · 27 Nov, 4 Dec, 22 Nov</span></div>
+
+      <div class="eyebrow">This week</div>
+      <div class="today"><b>Sunday · Site visit 11:00 am</b><span>Reception for 4 December · the AC hall</span></div>
+      <div class="today"><b>Quote sent 6 days ago</b><span>9 January · no reply yet · nothing is held against you</span></div>
+
+      <div class="eyebrow">Waiting on you</div>
+      <div class="enq"><div class="top"><b>Wedding · 27 Nov</b><span>18 min ago</span></div>
+        <div class="facts">600 guests · Haldi, Wedding, Reception · <em>₹8,00,000</em></div>
+        <div class="foot"><span class="pill new">New</span><span class="btn">Send a Quote</span></div></div>
+    </div></div>
+    <div class="tabs"><div class="tab on"><i class="ic">◳</i>Today</div>
+      <div class="tab"><i class="ic">✉</i>Enquiries</div><div class="tab"><i class="ic">▦</i>Calendar</div>
+      <div class="tab"><i class="ic">◈</i>Listings</div><div class="tab"><i class="ic">◯</i>You</div></div>
+  </div></div>
+  <p class="verdict"><b>The one that respects his day.</b> It is the only surface where the
+    stale-calendar nudge has an obvious home rather than being an interruption, and site visits stop
+    being something he has to remember. What it costs: it is the most complex to build, and on a quiet
+    Tuesday it is a nearly empty screen — which is the worst first impression a paid tool can make.</p>
+</section>
+
+<!-- ================= C · THE PROOF ================= -->
+<section class="col">
+  <div class="n">Surface C</div>
+  <h2>The Proof</h2>
+  <p class="idea">He came to find out whether this is worth the money. The Lead Dashboard leads,
+     the enquiries sit underneath. Every open is an answer to "what am I paying for?"</p>
+  <div class="phone"><div class="scr">
+    <div class="appbar"><div class="av">श</div><div class="biz"><b>Shubhmangal Lawns</b>
+      <span>This season · since 1 June</span></div></div>
+    <div class="body"><div class="pad">
+      <div class="hero">
+        <div class="orn">❁❁❁</div>
+        <div class="big">34</div>
+        <div class="cap">Enquiries this season</div>
+        <div class="row"><span><b>6</b>site visits</span><span><b>2</b>weddings won</span>
+          <span><b>₹0</b>paid per lead</span></div>
+      </div>
+
+      <div class="stats">
+        <div class="st"><b>4.2 hrs</b><span>Your median reply time</span></div>
+        <div class="st"><b>11 hrs</b><span>Lawns in Shrirampur</span></div>
+        <div class="st wide"><span>Contact Reveals</span><b>19</b></div>
+        <div class="st wide"><span>Listing views</span><b>412</b></div>
+      </div>
+
+      <div class="eyebrow">Needs a reply <em>3</em></div>
+      <div class="enq unread"><div class="top"><b>Wedding · 27 Nov</b><span>18 min ago</span></div>
+        <div class="facts">600 guests · Haldi, Wedding, Reception · <em>₹8,00,000</em></div>
+        <div class="foot"><span class="pill new">New</span><span class="btn">Send a Quote</span></div></div>
+      <div class="enq unread"><div class="top"><b>Reception · 4 Dec</b><span>2 hours ago</span></div>
+        <div class="facts">300 guests · AC hall · <em>₹2,50,000</em></div>
+        <div class="foot"><span class="pill new">New</span><span class="btn">Send a Quote</span></div></div>
+    </div></div>
+    <div class="tabs"><div class="tab on"><i class="ic">◮</i>Performance</div>
+      <div class="tab"><i class="ic">✉</i>Enquiries</div><div class="tab"><i class="ic">▦</i>Calendar</div>
+      <div class="tab"><i class="ic">◈</i>Listings</div><div class="tab"><i class="ic">◯</i>You</div></div>
+  </div></div>
+  <p class="verdict"><b>The one that defends the subscription.</b> Renewal is decided by whether he
+    believes this worked, and this screen argues the case every time he opens it — including the
+    comparison against other lawns in Shrirampur, which is the number that actually persuades.
+    What it costs: a new vendor's first month reads <em>0 · 0 · 0</em>, and it puts vanity above the
+    job. Answering leads is one scroll down.</p>
+</section>
+
+<!-- ================= D · THE CALENDAR ================= -->
+<section class="col">
+  <div class="n">Surface D</div>
+  <h2>The Calendar</h2>
+  <p class="idea">He came to keep his dates straight — and a stale calendar is the one thing on his
+     side that quietly breaks the family's side. Availability is the home screen; everything hangs
+     off a date.</p>
+  <div class="phone"><div class="scr">
+    <div class="appbar"><div class="av">श</div><div class="biz"><b>Shubhmangal Lawns</b>
+      <span>The lawn · 800 capacity</span></div></div>
+    <div class="body"><div class="pad">
+      <div class="cal">
+        <div class="mh"><b>November 2026</b><span>The lawn</span></div>
+        <div class="dow"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+        <div class="days">
+          <b class="off">26</b><b class="off">27</b><b class="off">28</b><b class="off">29</b><b class="off">30</b><b class="off">31</b><b>1</b>
+          <b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b>
+          <b>9</b><b>10</b><b>11</b><b>12</b><b>13</b><b class="eng">14</b><b>15</b>
+          <b>16</b><b>17</b><b>18</b><b>19</b><b>20</b><b>21</b><b class="ask">22</b>
+          <b>23</b><b>24</b><b>25</b><b class="ask">26</b><b class="ask">27</b><b class="ask">28</b><b>29</b>
+          <b>30</b><b class="blk">1</b><b>2</b><b>3</b><b class="ask">4</b><b>5</b><b>6</b>
+        </div>
+        <div class="key">
+          <span><i style="background:var(--vermillion)"></i>Engaged — an Agreement holds it</span>
+          <span><i style="background:var(--gold-tint);border:1px solid var(--turmeric)"></i>Enquiries pending</span>
+          <span><i style="background:var(--hairline)"></i>You marked unavailable</span>
+        </div>
+      </div>
+
+      <div class="nudge" style="margin-top:12px"><b>27 November · 3 Enquiries</b>
+        <p>Families are asking about this date. Confirming keeps you in their results; it commits you to nothing.</p>
+        <div class="acts"><span class="btn">Still free</span><span class="btn ghost">Not available</span></div></div>
+
+      <div class="eyebrow">27 November</div>
+      <div class="enq unread"><div class="top"><b>600 guests</b><span>18 min ago</span></div>
+        <div class="facts">Haldi 26th · Wedding 27th · Reception 28th<br><em>₹8,00,000 across the event</em></div>
+        <div class="foot"><span class="pill new">New</span><span class="btn">Send a Quote</span></div></div>
+    </div></div>
+    <div class="tabs"><div class="tab on"><i class="ic">▦</i>Calendar</div>
+      <div class="tab"><i class="ic">✉</i>Enquiries</div><div class="tab"><i class="ic">◈</i>Listings</div>
+      <div class="tab"><i class="ic">◮</i>Performance</div><div class="tab"><i class="ic">◯</i>You</div></div>
+  </div></div>
+  <p class="verdict"><b>The one that protects the whole product.</b> UJ-1's cross-service matching is
+    only as good as the least disciplined vendor's calendar, and your own spine says the nudge is the
+    sole safeguard for dates agreed off-platform. Putting the calendar first makes keeping it honest
+    the path of least resistance. What it costs: it asks him to maintain something before it gives him
+    anything, and a vendor with one Space and few dates gets a mostly empty grid.</p>
+</section>
+
+</div>
+<div class="lede" style="margin-top:32px">
+  <p class="hint">Working artifact · <code>.working/direction-vendor-4.html</code> · 2026-09-06.
+    Requires network. All four use the same five-slot bar with a different tab promoted to first —
+    that choice is exactly what you are picking. Outcomes he records (contacted, site visit, won,
+    lost) appear only here and never reach the family, per FR-37.</p>
+</div>
+</div>
+</body>
+</html>

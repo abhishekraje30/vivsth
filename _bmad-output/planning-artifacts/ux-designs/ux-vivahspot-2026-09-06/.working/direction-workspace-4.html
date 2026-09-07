@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — where the wedding lives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&family=Inknut+Antiqua:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   WHERE THE WEDDING LIVES — FOUR STRUCTURES FOR THE WORKSPACE
+   Built FROM DESIGN.md tokens, not beside them. Requires network (Playfair,
+   Inknut). Content from UJ-1: Omkar & Snehal, Shrirampur, 27 Nov block locked,
+   3 Functions, 5 Services, Rs 4,20,000 of Rs 8,00,000.
+
+   CONTRAST RULES OBEYED (all four, deliberately):
+   - {colors.muted} #8C6A50 is NEVER faded by opacity. 4.77:1 is the floor.
+   - Every progress bar carries a text label. Turmeric on gold-tint is 1.36:1,
+     below the 3:1 non-text floor, so colour alone cannot carry state.
+   - Turmeric never carries white text (1.61:1). Dark ink only.
+   - Vermillion never sits on turmeric (2.99:1) or gold-tint (4.06:1).
+   - Undecided money reads "not yet estimated" -- never a zero, dash or symbol.
+   - Active tab = filled glyph + weight, never colour alone.
+   ========================================================================== */
+:root{
+  --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
+  --vermillion:#E01B33;--turmeric:#FFC300;--gold-tint:#FFEBB0;--hairline:#F6E2C2;
+  --on-turmeric:#2B0A0E;--foil:#FFEB96;
+  --e1:0 2px 9px rgba(190,30,50,.10);--e2:0 3px 12px rgba(190,30,50,.15);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --disp:'Playfair Display',Georgia,serif;--dev:'Inknut Antiqua',serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 16px 70px;font:15px/1.55 var(--sans)}
+.wrap{max-width:1620px;margin:0 auto}
+.lede{max-width:72ch;margin:0 auto 28px}
+.lede h1{font-family:var(--disp);font-size:1.8rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.grid{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.col{flex:1 1 340px;max-width:376px}
+.col > .n{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#8d868b}
+.col > h2{font-family:var(--disp);font-size:1.24rem;margin:3px 0 5px}
+.col > .idea{font-size:.85rem;color:#b3adb1;margin:0 0 12px;min-height:5.2em}
+.verdict{font-size:.79rem;color:#a9a3a8;margin:12px 0 0;line-height:1.55}
+.verdict b{color:#ddd8dc}
+
+.phone{background:#0c0b0d;border-radius:36px;padding:9px;box-shadow:0 18px 44px rgba(0,0,0,.5)}
+.scr{border-radius:28px;overflow:hidden;height:716px;display:flex;flex-direction:column;
+  background:var(--ground);color:var(--ink)}
+.body{flex:1;overflow-y:auto}
+.appbar{flex:none;display:flex;align-items:center;gap:9px;padding:12px 16px;
+  background:var(--surface);border-bottom:1px solid var(--hairline)}
+.back{font-size:15px;color:var(--muted)}
+.atitle{font-family:var(--disp);font-size:1.06rem}
+.tabs{flex:none;display:flex;background:var(--surface);border-top:1px solid var(--hairline);padding:7px 4px 9px}
+.tab{flex:1;text-align:center;font-size:.61rem;color:var(--muted);line-height:1.35}
+.tab .ic{display:block;font-size:15px;margin-bottom:2px}
+.tab.on{color:var(--vermillion);font-weight:600}
+.pad{padding:14px 16px 20px}
+.eyebrow{font-family:var(--disp);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);margin:18px 0 8px}
+.eyebrow:first-child{margin-top:0}
+
+/* wedding header, shared */
+.whead{flex:none;background:var(--surface);border-bottom:1px solid var(--hairline);padding:13px 16px 14px}
+.whead h3{font-family:var(--disp);font-size:1.35rem;margin:0;line-height:1.35}
+.whead h3 .amp{color:var(--vermillion)}
+.whead .pl{font-size:.74rem;color:var(--muted);margin-top:1px}
+.lock{display:inline-flex;align-items:center;gap:5px;background:var(--gold-tint);
+  border:1px solid var(--turmeric);color:var(--ink);padding:3px 10px;font-size:.7rem;margin-top:9px}
+.bud{margin-top:11px}
+.bud .l{display:flex;justify-content:space-between;align-items:baseline;font-size:.74rem;color:var(--muted)}
+.bud .l b{font-size:.88rem;font-weight:700;color:var(--ink);font-family:var(--sans)}
+.trk{height:3px;background:var(--gold-tint);margin-top:6px}
+.trk i{display:block;height:100%;width:52.5%;background:var(--turmeric)}
+.trklab{font-size:.68rem;letter-spacing:.06em;color:var(--muted);margin-top:4px}
+
+/* generic rows */
+.row{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;
+  padding:11px 12px;margin-bottom:8px;box-shadow:var(--e1)}
+.row .t{font-family:var(--disp);font-size:.95rem}
+.row .t.dv{font-family:var(--dev);font-weight:500}
+.row .m{font-size:.74rem;color:var(--muted);margin-top:2px}
+.amt{font-size:.88rem;font-weight:700;white-space:nowrap}
+.unest{font-size:.74rem;color:var(--muted);white-space:nowrap;text-align:right;line-height:1.3}
+.flex{display:flex;align-items:center;gap:10px}
+.grow{flex:1;min-width:0}
+.state{width:9px;height:9px;border-radius:50%;flex:none}
+.s-done{background:var(--vermillion)}.s-part{background:var(--turmeric)}
+.s-none{background:var(--hairline);border:1px solid var(--muted)}
+.glyph{font-size:.72rem;color:var(--muted);margin-right:4px}
+
+/* B ledger */
+.led{background:var(--surface);border:1px solid var(--hairline);box-shadow:var(--e1)}
+.led .lr{display:flex;gap:10px;padding:10px 12px;border-bottom:1px solid var(--hairline);align-items:baseline}
+.led .lr:last-child{border-bottom:0}
+.led .lr .t{flex:1;font-family:var(--disp);font-size:.92rem}
+.led .lr .st{font-size:.68rem;color:var(--muted);display:block;font-family:var(--sans)}
+.led .tot{background:var(--gold-tint);border-top:2px solid var(--turmeric);padding:11px 12px;
+  display:flex;justify-content:space-between;align-items:baseline}
+.led .tot span{font-family:var(--disp);font-size:.92rem}
+.led .tot b{font-size:1.06rem}
+.led .rem{padding:8px 12px;font-size:.72rem;color:var(--muted);background:var(--surface);
+  border-top:1px solid var(--hairline)}
+
+/* C by function */
+.fn{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;
+  margin-bottom:10px;box-shadow:var(--e1);overflow:hidden}
+.fn .fh{display:flex;gap:11px;padding:11px 12px;align-items:center;background:var(--gold-tint);
+  border-bottom:1px solid var(--turmeric)}
+.fn .fh .d{text-align:center;width:34px;flex:none}
+.fn .fh .d b{display:block;font-family:var(--disp);font-size:1.06rem;line-height:1}
+.fn .fh .d span{font-size:.6rem;text-transform:uppercase;color:var(--muted)}
+.fn .fh .nm{flex:1}
+.fn .fh .nm b{display:block;font-family:var(--disp);font-size:.98rem}
+.fn .fh .nm span{font-size:.7rem;color:var(--muted)}
+.fn .sv{display:flex;gap:8px;padding:8px 12px;border-bottom:1px solid var(--hairline);
+  align-items:center;font-size:.82rem}
+.fn .sv:last-child{border-bottom:0}
+.fn .sv .g{flex:1}
+
+/* D pipeline */
+.pl{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;
+  padding:11px 12px;margin-bottom:9px;box-shadow:var(--e1)}
+.pl .h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
+.pl .h b{font-family:var(--disp);font-size:.95rem}
+.pl .stg{display:flex;gap:3px}
+.pl .stg i{flex:1;height:5px;background:var(--hairline);font-style:normal}
+.pl .stg i.on{background:var(--turmeric)}
+.pl .stg i.now{background:var(--vermillion)}
+.pl .cap{font-size:.7rem;color:var(--muted);margin-top:6px;display:flex;justify-content:space-between}
+.pl .cap b{color:var(--ink);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>Where the wedding actually lives</h1>
+  <p>The invitation card on your home screen holds four facts. Rutuja's wedding has three functions,
+     five services, twelve shortlisted vendors, a running total against ₹8L and a photographer who
+     hasn't quoted yet. Here are four different rooms to keep that in.</p>
+  <p class="hint">All four are built from <code>DESIGN.md</code> tokens and obey the contrast rules
+     the distillation caught me breaking — muted is never faded, every progress bar carries a text
+     label because turmeric on gold-tint is 1.36:1, and undecided money always reads
+     <em>not yet estimated</em>. One vendor is named in Devanagari in each so you can see Inknut
+     doing its job in situ.</p>
+</div>
+<div class="grid">
+
+<!-- ============ A · ONE ROOM ============ -->
+<section class="col">
+  <div class="n">Structure A</div>
+  <h2>One Room</h2>
+  <p class="idea">Tap the card, get everything. A single scroll holding the block, the functions,
+     the services and the budget. One destination, nothing hidden, the wedding whole.</p>
+  <div class="phone"><div class="scr">
+    <div class="appbar"><span class="back">‹</span><span class="atitle">Your wedding</span></div>
+    <div class="whead">
+      <h3>Omkar <span class="amp">&</span> Snehal</h3>
+      <div class="pl">Shrirampur · ~600 guests</div>
+      <div class="lock">◆ 27 November block locked</div>
+      <div class="bud">
+        <div class="l"><span>Running total</span><b>₹4,20,000 of ₹8,00,000</b></div>
+        <div class="trk"><i></i></div>
+        <div class="trklab">2 of 5 services costed</div>
+      </div>
+    </div>
+    <div class="body"><div class="pad">
+      <div class="eyebrow">Functions</div>
+      <div class="row flex"><div class="grow"><div class="t">Haldi</div>
+        <div class="m">26 Nov · morning · 150 guests</div></div></div>
+      <div class="row flex"><div class="grow"><div class="t">Wedding</div>
+        <div class="m">27 Nov · evening · 600 guests</div></div></div>
+      <div class="row flex"><div class="grow"><div class="t">Reception</div>
+        <div class="m">28 Nov · evening · 400 guests</div></div></div>
+
+      <div class="eyebrow">Services</div>
+      <div class="row flex"><span class="state s-done"></span><div class="grow">
+        <div class="t">Venue</div><div class="m">Shubhmangal Lawns selected</div></div>
+        <div class="amt">₹1,80,000</div></div>
+      <div class="row flex"><span class="state s-done"></span><div class="grow">
+        <div class="t dv">अन्नपूर्णा केटरर्स</div><div class="m">Catering · ₹400 × 600</div></div>
+        <div class="amt">₹2,40,000</div></div>
+      <div class="row flex"><span class="state s-part"></span><div class="grow">
+        <div class="t">Photography</div><div class="m">3 shortlisted · 1 awaiting quote</div></div>
+        <div class="unest">not yet<br>estimated</div></div>
+      <div class="row flex"><span class="state s-none"></span><div class="grow">
+        <div class="t">Décor & Mandap</div><div class="m">Not started</div></div>
+        <div class="unest">not yet<br>estimated</div></div>
+      <div class="row flex"><span class="state s-none"></span><div class="grow">
+        <div class="t">Band Baaja Baraat</div><div class="m">Not started</div></div>
+        <div class="unest">not yet<br>estimated</div></div>
+    </div></div>
+    <div class="tabs"><div class="tab"><i class="ic">◳</i>Home</div>
+      <div class="tab on"><i class="ic">◆</i>Wedding</div><div class="tab"><i class="ic">♡</i>Shortlists</div>
+      <div class="tab"><i class="ic">✉</i>Enquiries</div><div class="tab"><i class="ic">◯</i>You</div></div>
+  </div></div>
+  <p class="verdict"><b>The safe one.</b> It is FR-10's original intent — the whole wedding in a
+    single view — just reached by tapping rather than on launch. Everything is findable because
+    everything is here. The cost is length: five services and three functions already fill a screen
+    and a half, and this is a small wedding.</p>
+</section>
+
+<!-- ============ B · THE LEDGER ============ -->
+<section class="col">
+  <div class="n">Structure B</div>
+  <h2>The Ledger</h2>
+  <p class="idea">The wedding as a running account. One line per service, its state and its amount,
+     totalled at the bottom like a passbook. Money is the spine; everything else hangs off it.</p>
+  <div class="phone"><div class="scr">
+    <div class="appbar"><span class="back">‹</span><span class="atitle">Your wedding</span></div>
+    <div class="whead">
+      <h3>Omkar <span class="amp">&</span> Snehal</h3>
+      <div class="pl">27 November · Shrirampur · ~600 guests</div>
+    </div>
+    <div class="body"><div class="pad">
+      <div class="eyebrow">The account</div>
+      <div class="led">
+        <div class="lr"><div class="t">Venue<span class="st">Shubhmangal Lawns · agreed</span></div>
+          <div class="amt">₹1,80,000</div></div>
+        <div class="lr"><div class="t dv">अन्नपूर्णा केटरर्स<span class="st">Catering · ₹400 × 600 guests</span></div>
+          <div class="amt">₹2,40,000</div></div>
+        <div class="lr"><div class="t">Photography<span class="st">3 shortlisted · awaiting quote</span></div>
+          <div class="unest">not yet estimated</div></div>
+        <div class="lr"><div class="t">Décor & Mandap<span class="st">Not started</span></div>
+          <div class="unest">not yet estimated</div></div>
+        <div class="lr"><div class="t">Band Baaja Baraat<span class="st">Not started</span></div>
+          <div class="unest">not yet estimated</div></div>
+        <div class="tot"><span>Committed so far</span><b>₹4,20,000</b></div>
+        <div class="rem">₹3,80,000 left of ₹8,00,000 · 3 services still to price</div>
+      </div>
+
+      <div class="eyebrow">The days</div>
+      <div class="row flex"><div class="grow"><div class="t">Haldi</div>
+        <div class="m">26 Nov · morning · 150</div></div></div>
+      <div class="row flex"><div class="grow"><div class="t">Wedding</div>
+        <div class="m">27 Nov · evening · 600</div></div></div>
+      <div class="row flex"><div class="grow"><div class="t">Reception</div>
+        <div class="m">28 Nov · evening · 400</div></div></div>
+    </div></div>
+    <div class="tabs"><div class="tab"><i class="ic">◳</i>Home</div>
+      <div class="tab on"><i class="ic">◆</i>Wedding</div><div class="tab"><i class="ic">♡</i>Shortlists</div>
+      <div class="tab"><i class="ic">✉</i>Enquiries</div><div class="tab"><i class="ic">◯</i>You</div></div>
+  </div></div>
+  <p class="verdict"><b>The honest one.</b> Rutuja's real anxiety is ₹8L, and this answers it in one
+    glance — what is committed, what is left, what is still unpriced. FR-8's per-head multiplication
+    sits right on the line where it belongs. The cost is that dates and functions become secondary,
+    and the wedding starts to feel like a spreadsheet rather than a celebration.</p>
+</section>
+
+<!-- ============ C · BY FUNCTION ============ -->
+<section class="col">
+  <div class="n">Structure C</div>
+  <h2>By Function</h2>
+  <p class="idea">Organised by event rather than by service. Haldi, Wedding, Reception — each one
+     opening to show exactly who is serving it and what is still missing. The way a family actually
+     talks about a wedding.</p>
+  <div class="phone"><div class="scr">
+    <div class="appbar"><span class="back">‹</span><span class="atitle">Your wedding</span></div>
+    <div class="whead">
+      <h3>Omkar <span class="amp">&</span> Snehal</h3>
+      <div class="pl">Shrirampur · ~600 guests</div>
+      <div class="bud">
+        <div class="l"><span>Running total</span><b>₹4,20,000 of ₹8,00,000</b></div>
+        <div class="trk"><i></i></div>
+        <div class="trklab">2 of 5 services costed</div>
+      </div>
+    </div>
+    <div class="body"><div class="pad">
+      <div class="fn">
+        <div class="fh"><div class="d"><b>26</b><span>Nov</span></div>
+          <div class="nm"><b>Haldi</b><span>Morning · 150 guests</span></div></div>
+        <div class="sv"><span class="state s-done"></span><span class="g">Venue — Shubhmangal Lawns</span></div>
+        <div class="sv"><span class="state s-none"></span><span class="g">Décor & Mandap</span>
+          <span class="unest">not yet estimated</span></div>
+      </div>
+      <div class="fn">
+        <div class="fh"><div class="d"><b>27</b><span>Nov</span></div>
+          <div class="nm"><b>Wedding</b><span>Evening · 600 guests</span></div></div>
+        <div class="sv"><span class="state s-done"></span><span class="g">Venue — Shubhmangal Lawns</span></div>
+        <div class="sv"><span class="state s-done"></span><span class="g dv">अन्नपूर्णा केटरर्स</span>
+          <span class="amt">₹2,40,000</span></div>
+        <div class="sv"><span class="state s-part"></span><span class="g">Photography — 3 shortlisted</span></div>
+        <div class="sv"><span class="state s-none"></span><span class="g">Band Baaja Baraat</span></div>
+      </div>
+      <div class="fn">
+        <div class="fh"><div class="d"><b>28</b><span>Nov</span></div>
+          <div class="nm"><b>Reception</b><span>Evening · 400 guests</span></div></div>
+        <div class="sv"><span class="state s-part"></span><span class="g">Photography — 3 shortlisted</span></div>
+        <div class="sv"><span class="state s-none"></span><span class="g">Décor & Mandap</span></div>
+      </div>
+    </div></div>
+    <div class="tabs"><div class="tab"><i class="ic">◳</i>Home</div>
+      <div class="tab on"><i class="ic">◆</i>Wedding</div><div class="tab"><i class="ic">♡</i>Shortlists</div>
+      <div class="tab"><i class="ic">✉</i>Enquiries</div><div class="tab"><i class="ic">◯</i>You</div></div>
+  </div></div>
+  <p class="verdict"><b>The natural one.</b> Nobody says "how is catering going" — they say "what's
+    sorted for the Haldi?" This matches the sentence in her head, and it makes a gap impossible to
+    miss because it sits inside the day it belongs to. The cost is repetition: the venue serves all
+    three days and appears three times, and the running total has nowhere obvious to live.</p>
+</section>
+
+<!-- ============ D · THE PIPELINE ============ -->
+<section class="col">
+  <div class="n">Structure D</div>
+  <h2>The Pipeline</h2>
+  <p class="idea">Every service is a track, and each one moves left to right — shortlisted, selected,
+     enquiry sent, quote in, agreed. The wedding as five things in motion rather than five things
+     to look up.</p>
+  <div class="phone"><div class="scr">
+    <div class="appbar"><span class="back">‹</span><span class="atitle">Your wedding</span></div>
+    <div class="whead">
+      <h3>Omkar <span class="amp">&</span> Snehal</h3>
+      <div class="pl">27 November · Shrirampur</div>
+      <div class="bud">
+        <div class="l"><span>Running total</span><b>₹4,20,000 of ₹8,00,000</b></div>
+        <div class="trk"><i></i></div>
+        <div class="trklab">2 of 5 services costed</div>
+      </div>
+    </div>
+    <div class="body"><div class="pad">
+      <div class="eyebrow">Five services in motion</div>
+
+      <div class="pl"><div class="h"><b>Venue</b><span class="amt">₹1,80,000</span></div>
+        <div class="stg"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="now"></i></div>
+        <div class="cap"><span>Shubhmangal Lawns</span><b>Agreed</b></div></div>
+
+      <div class="pl"><div class="h"><b>Catering</b><span class="amt">₹2,40,000</span></div>
+        <div class="stg"><i class="on"></i><i class="on"></i><i class="on"></i><i class="now"></i><i></i></div>
+        <div class="cap"><span class="dv" style="font-family:var(--dev)">अन्नपूर्णा केटरर्स</span><b>Quote in</b></div></div>
+
+      <div class="pl"><div class="h"><b>Photography</b><span class="unest">not yet estimated</span></div>
+        <div class="stg"><i class="on"></i><i class="on"></i><i class="now"></i><i></i><i></i></div>
+        <div class="cap"><span>3 shortlisted · Ravi Studios</span><b>Waiting on quote</b></div></div>
+
+      <div class="pl"><div class="h"><b>Décor & Mandap</b><span class="unest">not yet estimated</span></div>
+        <div class="stg"><i class="now"></i><i></i><i></i><i></i><i></i></div>
+        <div class="cap"><span>Nothing shortlisted</span><b>Not started</b></div></div>
+
+      <div class="pl"><div class="h"><b>Band Baaja Baraat</b><span class="unest">not yet estimated</span></div>
+        <div class="stg"><i class="now"></i><i></i><i></i><i></i><i></i></div>
+        <div class="cap"><span>Nothing shortlisted</span><b>Not started</b></div></div>
+    </div></div>
+    <div class="tabs"><div class="tab"><i class="ic">◳</i>Home</div>
+      <div class="tab on"><i class="ic">◆</i>Wedding</div><div class="tab"><i class="ic">♡</i>Shortlists</div>
+      <div class="tab"><i class="ic">✉</i>Enquiries</div><div class="tab"><i class="ic">◯</i>You</div></div>
+  </div></div>
+  <p class="verdict"><b>The momentum one.</b> It answers "what should I do next" without being asked,
+    and it turns five separate worries into one legible picture of progress. It also extends your
+    "complete your onboarding" instinct from the card down into the whole app. The cost is that it
+    imposes a single linear order on services that do not all move the same way — and it needs the
+    stage words spelled out, because five bars of colour mean nothing on their own.</p>
+</section>
+
+</div>
+<div class="lede" style="margin-top:32px">
+  <p class="hint">Working artifact · <code>.working/direction-workspace-4.html</code> · 2026-09-06.
+    Requires network for Playfair Display and Inknut Antiqua. Built from <code>DESIGN.md</code>
+    tokens; no new colours, sizes or components were invented for these screens.</p>
+</div>
+</div>
+</body>
+</html>

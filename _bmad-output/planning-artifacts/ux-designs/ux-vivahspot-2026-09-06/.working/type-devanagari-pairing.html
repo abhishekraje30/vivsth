@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — Devanagari pairing for the card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&family=Rozha+One&family=Tiro+Devanagari+Marathi&family=Martel:wght@200;400;700;900&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   DEVANAGARI PAIRING FOR THE INVITATION CARD
+   Palette: Kumkum & Turmeric (chosen). bg #FFFCF2 card #fff ink #2B0A0E
+   muted #8C6A50 vermillion #E01B33 turmeric #FFC300 rule2 #FFEBB0 line #F6E2C2
+
+   THIS FILE REQUIRES NETWORK -- the candidate faces load from Google Fonts.
+   Every other working artifact renders offline; this one cannot, because the
+   whole point is seeing real Devanagari letterforms. Nothing is installed into
+   apps/mobile or apps/vendor-web. Verified 2026-09-06 against fonts.googleapis.com:
+     Playfair Display  latin, latin-ext, cyrillic, vietnamese   NO devanagari  400-900 var
+     Rozha One         devanagari, latin, latin-ext            400 only
+     Tiro Dev. Marathi devanagari, latin, latin-ext            400 + italic
+     Martel            devanagari, latin, latin-ext            200/400/700/900
+
+   WHAT IS ACTUALLY MIXED ON THIS CARD (prd.md:1259 + prd.md:1264):
+     interface chrome + dates ... English, always        -> Playfair
+     couple names ............... user-entered content   -> may be Devanagari
+     venue name ................. vendor-entered Listing -> may be Devanagari
+   ========================================================================== */
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:30px 18px 70px;
+  font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1500px;margin:0 auto}
+.lede{max-width:72ch;margin:0 auto 30px}
+.lede h1{font-family:'Playfair Display',Georgia,serif;font-size:1.85rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.grid{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.sp{flex:1 1 280px;max-width:300px}
+.sp h2{font-size:1.05rem;margin:0 0 3px;font-family:'Playfair Display',serif}
+.sp .fx{font-size:.72rem;color:#8d868b;margin:0 0 11px;font-family:ui-monospace,monospace}
+.sp.bad h2{color:#ff8a8a}
+.verdict{font-size:.79rem;color:#a9a3a8;margin:11px 0 0;line-height:1.5}
+.verdict b{color:#ddd8dc}
+
+/* ---- the card, kumkum palette ---- */
+.card{background:#FFFCF2;padding:15px;border-radius:10px}
+.inv{background:#fff;border:1px solid #FFC300;padding:16px 14px 14px;position:relative;
+  box-shadow:0 3px 12px rgba(190,30,50,.15);color:#2B0A0E}
+.inv::before{content:"";position:absolute;inset:4px;border:1px solid #FFEBB0;pointer-events:none}
+.orn{text-align:center;color:#FFC300;font-size:.74rem;letter-spacing:.45em;margin-bottom:8px}
+.nm{text-align:center;font-size:1.42rem;line-height:1.3;margin-bottom:2px}
+.nm .amp{color:#E01B33}
+.sub{text-align:center;font-size:.63rem;letter-spacing:.18em;text-transform:uppercase;
+  color:#8C6A50;margin-bottom:10px;font-family:'Playfair Display',serif}
+.ln{text-align:center;font-size:.86rem;padding:2px 0}
+.ln.en{font-family:'Playfair Display',serif}
+.ln.todo{color:#8C6A50;opacity:.8;font-size:.78rem;font-family:'Playfair Display',serif}
+.pg{margin-top:10px;display:flex;align-items:center;gap:7px}
+.pg .b{flex:1;height:3px;background:#FFEBB0}
+.pg .b i{display:block;height:100%;width:60%;background:#FFC300}
+.pg span{font-size:.62rem;color:#8C6A50;letter-spacing:.06em;font-family:'Playfair Display',serif}
+
+/* ---- vendor Rules, long-form Marathi ---- */
+.rules{background:#fff;border:1px solid #F6E2C2;padding:12px 13px;margin-top:12px;
+  border-radius:6px;color:#2B0A0E}
+.rules .h{font-family:'Playfair Display',serif;font-size:.78rem;letter-spacing:.1em;
+  text-transform:uppercase;color:#8C6A50;margin-bottom:7px}
+.rules p{margin:0;font-size:.84rem;line-height:1.75}
+
+/* ---- per-candidate faces ---- */
+.f-play .nm,.f-play .ln.dev,.f-play .rules p{font-family:'Playfair Display',serif}
+.f-rozha .nm,.f-rozha .ln.dev,.f-rozha .rules p{font-family:'Rozha One',serif}
+.f-tiro  .nm,.f-tiro  .ln.dev,.f-tiro  .rules p{font-family:'Tiro Devanagari Marathi',serif}
+.f-martel .nm,.f-martel .ln.dev,.f-martel .rules p{font-family:'Martel',serif}
+.f-martel .nm{font-weight:700}
+.f-fallback .nm,.f-fallback .ln.dev,.f-fallback .rules p{font-family:system-ui,sans-serif}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>Which Devanagari serif goes on the card</h1>
+  <p>The same invitation card, in Kumkum &amp; Turmeric, with the couple named
+     <b>ओंकार आणि स्नेहल</b> and the venue <b>शुभमंगल लॉन्स</b> — both of which are
+     user-entered content and can arrive in any script. Underneath each card, a vendor's
+     Rules in Marathi, because that is where Devanagari appears at length and small sizes.</p>
+  <p class="hint">The English lines — the date, the labels, the progress count — stay in Playfair
+     on every card, because the interface itself is English-only (<code>prd.md:1259</code>).
+     What you are judging is whether the two faces look like one design or like two fonts
+     sharing a box. The first card is the do-nothing case.</p>
+</div>
+<div class="grid">
+
+  <section class="sp bad f-fallback">
+    <h2>Do nothing</h2>
+    <p class="fx">system fallback · Playfair has no Devanagari</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>The failure mode.</b> The names drop to the phone's default UI sans while
+      the date beside them stays in Playfair. Two unrelated voices inside one gold rule.</p>
+  </section>
+
+  <section class="sp f-rozha">
+    <h2>Rozha One</h2>
+    <p class="fx">devanagari · 400 only</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>The tonal match.</b> Same thick-thin drama as Playfair — on the card
+      they read as one family. Watch the Rules paragraph: one weight, high contrast, built for
+      display not for reading a wall of text on a cheap screen.</p>
+  </section>
+
+  <section class="sp f-tiro">
+    <h2>Tiro Devanagari Marathi</h2>
+    <p class="fx">devanagari · 400 + italic · Marathi letterforms</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>The correct one.</b> Cut for Marathi rather than Hindi, and a proper book
+      face — the Rules paragraph is the most readable of the four. Quieter than Playfair on the
+      card, so the names sit calmer than the English would.</p>
+  </section>
+
+  <section class="sp f-martel">
+    <h2>Martel</h2>
+    <p class="fx">devanagari · 200 / 400 / 700 / 900</p>
+    <div class="card">
+      <div class="inv">
+        <div class="orn">❁❁❁</div>
+        <div class="nm">ओंकार <span class="amp">आणि</span> स्नेहल</div>
+        <div class="sub">Shrirampur</div>
+        <div class="ln en">27 November 2026</div>
+        <div class="ln dev">शुभमंगल लॉन्स</div>
+        <div class="ln todo">· · · caterer not chosen · · ·</div>
+        <div class="pg"><div class="b"><i></i></div><span>3 OF 5</span></div>
+      </div>
+      <div class="rules">
+        <div class="h">Rules</div>
+        <p>बाहेरील केटरर परवानगी नाही. मंडप सजावट संध्याकाळी ६ नंतर सुरू करता येईल. फटाके पूर्णपणे बंद.</p>
+      </div>
+    </div>
+    <p class="verdict"><b>The workhorse.</b> Names set at 700 here to hold their own against Playfair.
+      Four weights means this one face can carry the card, the Rules, a review and a vendor's
+      business name across the whole app — one file instead of a special case.</p>
+  </section>
+
+</div>
+
+<div class="lede" style="margin-top:34px">
+  <p class="hint">Working artifact · <code>.working/type-devanagari-pairing.html</code> · 2026-09-06.
+    Requires network; fonts load from Google. Nothing installed into either app — adding a font
+    file is a separate step and needs your explicit yes.</p>
+</div>
+</div>
+</body>
+</html>

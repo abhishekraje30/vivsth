@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vivah Spot — vendor portal at width</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..700&family=Inknut+Antiqua:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   THE VENDOR PORTAL AT DESKTOP WIDTH
+   apps/vendor-web is Next.js 16.3.0 + React 19 + Tailwind 4, deploying to
+   vendor.vivahspot.com. It is a RESPONSIVE WEB APP. NFR 5.2 says phone-first
+   -- "designed for that case rather than tolerating it" -- which sets the
+   priority, not the ceiling. These are the same four surfaces at >=1024px.
+   Below 768px each collapses to the phone in direction-vendor-4.html.
+   Built from DESIGN.md tokens. Requires network.
+   ========================================================================== */
+:root{
+  --ground:#FFFCF2;--surface:#FFFFFF;--ink:#2B0A0E;--muted:#8C6A50;
+  --vermillion:#E01B33;--turmeric:#FFC300;--gold-tint:#FFEBB0;--hairline:#F6E2C2;
+  --e1:0 2px 9px rgba(190,30,50,.10);--e2:0 3px 12px rgba(190,30,50,.15);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --disp:'Playfair Display',Georgia,serif;--dev:'Inknut Antiqua',serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#17161a;color:#e8e4e6;padding:28px 18px 70px;font:15px/1.55 var(--sans)}
+.wrap{max-width:1240px;margin:0 auto}
+.lede{max-width:76ch;margin:0 auto 30px}
+.lede h1{font-family:var(--disp);font-size:1.85rem;margin:0 0 10px}
+.lede p{margin:0 0 8px;color:#b3adb1}
+.lede .hint{font-size:.85rem;color:#8d868b;border-left:2px solid #46414a;padding-left:12px}
+.block{margin-bottom:38px}
+.block > .n{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#8d868b}
+.block > h2{font-family:var(--disp);font-size:1.3rem;margin:3px 0 6px}
+.block > .idea{font-size:.87rem;color:#b3adb1;margin:0 0 13px;max-width:80ch}
+.verdict{font-size:.82rem;color:#a9a3a8;margin:12px 0 0;line-height:1.55;max-width:88ch}
+.verdict b{color:#ddd8dc}
+
+/* browser chrome */
+.win{background:#0c0b0d;border-radius:11px;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.chrome{display:flex;align-items:center;gap:7px;padding:9px 12px;background:#232128}
+.chrome i{width:10px;height:10px;border-radius:50%;background:#4a4652;font-style:normal}
+.chrome .url{flex:1;background:#17161a;border-radius:5px;padding:4px 11px;font-size:.7rem;
+  color:#8d868b;margin-left:8px;font-family:ui-monospace,monospace}
+.app{display:flex;background:var(--ground);color:var(--ink);height:620px}
+
+/* left rail */
+.side{width:206px;flex:none;background:var(--surface);border-right:1px solid var(--hairline);
+  display:flex;flex-direction:column;padding:14px 0}
+.side .biz{padding:0 15px 13px;border-bottom:1px solid var(--hairline);margin-bottom:10px}
+.side .biz b{display:block;font-family:var(--disp);font-size:1rem;line-height:1.25}
+.side .biz span{font-size:.69rem;color:var(--muted)}
+.side a{display:flex;align-items:center;gap:9px;padding:9px 15px;font-size:.82rem;color:var(--ink);
+  text-decoration:none}
+.side a .ic{width:16px;text-align:center;color:var(--muted)}
+.side a .ct{margin-left:auto;background:var(--vermillion);color:#fff;font-size:.64rem;
+  font-weight:700;padding:1px 6px}
+.side a.on{background:var(--gold-tint);border-left:3px solid var(--vermillion);
+  padding-left:12px;font-weight:600}
+.side a.on .ic{color:var(--vermillion)}
+.side .sub{margin-top:auto;padding:12px 15px 0;border-top:1px solid var(--hairline);
+  font-size:.7rem;color:var(--muted)}
+.side .sub b{display:block;font-family:var(--disp);font-size:.82rem;color:var(--ink)}
+
+.main{flex:1;display:flex;min-width:0}
+.pri{flex:1;min-width:0;overflow-y:auto;padding:18px 20px}
+.rail{width:290px;flex:none;border-left:1px solid var(--hairline);background:var(--surface);
+  overflow-y:auto;padding:16px 16px}
+.h1{font-family:var(--disp);font-size:1.24rem;margin:0 0 3px}
+.h1s{font-size:.76rem;color:var(--muted);margin:0 0 15px}
+.eyebrow{font-family:var(--disp);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);margin:18px 0 9px;display:flex;justify-content:space-between;align-items:baseline}
+.eyebrow:first-child{margin-top:0}
+.eyebrow em{font-style:normal;font-family:var(--sans);letter-spacing:0;text-transform:none;font-size:.72rem}
+
+.enq{background:var(--surface);border:1px solid var(--hairline);border-radius:6px;
+  padding:12px 13px;margin-bottom:9px;box-shadow:var(--e1);display:flex;gap:14px;align-items:flex-start}
+.enq.unread{border-left:3px solid var(--vermillion)}
+.enq .g{flex:1;min-width:0}
+.enq .g b{font-family:var(--disp);font-size:1rem}
+.enq .g .f{font-size:.8rem;margin-top:4px;line-height:1.55}
+.enq .g .f em{font-style:normal;color:var(--muted)}
+.enq .r{flex:none;text-align:right}
+.enq .r .t{font-size:.68rem;color:var(--muted);display:block;margin-bottom:7px}
+.btn{background:var(--vermillion);color:#fff;padding:8px 15px;font-size:.78rem;font-weight:700;
+  display:inline-block;border:0}
+.btn.ghost{background:transparent;color:var(--vermillion);border:1px solid var(--vermillion)}
+.pill{font-size:.68rem;padding:3px 9px;border:1px solid var(--hairline);color:var(--muted)}
+.pill.act{background:var(--gold-tint);border-color:var(--turmeric);color:var(--ink)}
+
+.nudge{background:var(--gold-tint);border:1px solid var(--turmeric);padding:12px 13px;margin-bottom:14px}
+.nudge b{display:block;font-family:var(--disp);font-size:.94rem;margin-bottom:3px}
+.nudge p{margin:0 0 10px;font-size:.79rem}
+.nudge .acts{display:flex;gap:7px}
+
+.stat{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;
+  border-bottom:1px solid var(--hairline);font-size:.78rem;color:var(--muted)}
+.stat:last-child{border-bottom:0}
+.stat b{font-family:var(--disp);font-size:1.06rem;color:var(--ink)}
+.strip{display:flex;gap:12px;background:var(--surface);border:1px solid var(--turmeric);
+  padding:14px 16px;box-shadow:var(--e2);margin-bottom:18px;position:relative}
+.strip::before{content:"";position:absolute;inset:4px;border:1px solid var(--gold-tint);pointer-events:none}
+.strip .s{flex:1;text-align:center}
+.strip .s b{display:block;font-family:var(--disp);font-size:1.9rem;line-height:1}
+.strip .s span{font-size:.7rem;color:var(--muted)}
+.strip .s.cmp b{font-size:1.2rem}
+
+.cal{background:var(--surface);border:1px solid var(--hairline);padding:14px;box-shadow:var(--e1)}
+.cal .mh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}
+.cal .mh b{font-family:var(--disp);font-size:1.06rem}
+.cal .dow,.cal .days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal .dow span{text-align:center;font-size:.62rem;color:var(--muted);padding-bottom:4px}
+.cal .days b{aspect-ratio:1.25;display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:400;border:1px solid transparent}
+.cal .days b.off{color:var(--muted)}
+.cal .days b.eng{background:var(--vermillion);color:#fff;font-weight:700}
+.cal .days b.ask{background:var(--gold-tint);border-color:var(--turmeric);font-weight:700}
+.cal .days b.blk{background:var(--hairline);color:var(--muted);text-decoration:line-through}
+.key{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:.7rem;color:var(--muted)}
+.key i{width:10px;height:10px;display:inline-block;margin-right:5px;font-style:normal;vertical-align:-1px}
+.today{background:var(--surface);border:1px solid var(--hairline);border-left:3px solid var(--turmeric);
+  padding:11px 13px;margin-bottom:9px;box-shadow:var(--e1)}
+.today b{font-family:var(--disp);font-size:.94rem;display:block}
+.today span{font-size:.76rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="lede">
+  <h1>The vendor portal at width</h1>
+  <p>You're right — <code>apps/vendor-web</code> is a Next.js app deploying to
+     <code>vendor.vivahspot.com</code>. NFR 5.2's "phone-first" sets the <em>priority</em>, not the
+     ceiling: Dattatray reads an enquiry standing in someone else's mandap, and prices it properly at
+     his desk that night. Both are real. Here are the same four surfaces at ≥1024px.</p>
+  <p class="hint">A persistent left rail replaces the tab bar above 768px — the five destinations are
+     the same five, just always visible. Below 768px each of these collapses to the phone in
+     <code>direction-vendor-4.html</code>. <b>Notice what width does to the argument:</b> the tension
+     between "answer leads" and "prove the subscription is worth it" mostly dissolves here, because a
+     right rail can hold the season's numbers without displacing the inbox. That tension is a phone
+     problem, not a web one.</p>
+</div>
+
+<!-- ============== A ============== -->
+<div class="block">
+  <div class="n">Surface A · at width</div>
+  <h2>The Inbox</h2>
+  <p class="idea">Enquiries own the main column. The rail carries the season's numbers and the
+     stale-date nudge, so the subscription argues for itself without taking the screen.</p>
+  <div class="win">
+    <div class="chrome"><i></i><i></i><i></i><div class="url">vendor.vivahspot.com/enquiries</div></div>
+    <div class="app">
+      <div class="side">
+        <div class="biz"><b>Shubhmangal Lawns</b><span>Shrirampur · Verified</span></div>
+        <a class="on"><span class="ic">✉</span>Enquiries<span class="ct">3</span></a>
+        <a><span class="ic">▦</span>Calendar</a>
+        <a><span class="ic">◈</span>Listings</a>
+        <a><span class="ic">◮</span>Performance</a>
+        <a><span class="ic">◯</span>Account</a>
+        <div class="sub"><b>Tier 2 · renews 1 June</b>Twelve months, paid in full</div>
+      </div>
+      <div class="main">
+        <div class="pri">
+          <h2 class="h1">Enquiries</h2>
+          <p class="h1s">Three families are waiting on you. Replying quickly lifts where you appear.</p>
+          <div class="eyebrow">Needs a reply <em>3</em></div>
+          <div class="enq unread"><div class="g"><b>Wedding · 27 November</b>
+            <div class="f">600 guests · Haldi, Wedding, Reception<br>
+            <em>Haldi 26th morning · Wedding 27th evening · Reception 28th evening</em><br>
+            <em>Budget ₹8,00,000 across the whole event · the lawn</em></div></div>
+            <div class="r"><span class="t">18 minutes ago</span><span class="btn">Send a Quote</span></div></div>
+          <div class="enq unread"><div class="g"><b>Reception · 4 December</b>
+            <div class="f">300 guests · Reception only<br><em>AC hall · evening · ₹2,50,000</em></div></div>
+            <div class="r"><span class="t">2 hours ago</span><span class="btn">Send a Quote</span></div></div>
+          <div class="enq unread"><div class="g"><b>Wedding · 22 November</b>
+            <div class="f">450 guests · Wedding, Reception<br><em>₹6,00,000</em></div></div>
+            <div class="r"><span class="t">Yesterday</span><span class="btn">Send a Quote</span></div></div>
+          <div class="eyebrow">In progress <em>4</em></div>
+          <div class="enq"><div class="g"><b>Wedding · 14 December</b>
+            <div class="f">550 guests · <em>Site visit Sunday 4:00 pm</em></div></div>
+            <div class="r"><span class="t">Quote sent</span><span class="pill act">Site visit arranged</span></div></div>
+          <div class="enq"><div class="g"><b>Wedding · 9 January</b>
+            <div class="f">700 guests · <em>No reply from the family yet — nothing is held against you</em></div></div>
+            <div class="r"><span class="t">6 days ago</span><span class="pill">Update</span></div></div>
+        </div>
+        <div class="rail">
+          <div class="nudge"><b>Still free on 27 November?</b>
+            <p>3 families have asked about that date this week. Confirming keeps you in their results
+               and commits you to nothing.</p>
+            <div class="acts"><span class="btn">Still free</span><span class="btn ghost">Not available</span></div></div>
+          <div class="eyebrow">This season</div>
+          <div class="stat"><span>Enquiries</span><b>34</b></div>
+          <div class="stat"><span>Site visits</span><b>6</b></div>
+          <div class="stat"><span>Weddings won</span><b>2</b></div>
+          <div class="stat"><span>Paid per lead</span><b>₹0</b></div>
+          <div class="eyebrow">Your reply time</div>
+          <div class="stat"><span>You</span><b>4.2 hrs</b></div>
+          <div class="stat"><span>Lawns in Shrirampur</span><b>11 hrs</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="verdict"><b>At width this is close to unbeatable.</b> The job is front and centre, the
+    nudge is present without interrupting, and the number that justifies renewal — 4.2 hours against
+    the town's 11 — sits in the corner of his eye every single visit. It is also the layout that
+    degrades most gracefully: on the phone the rail simply stacks under the list.</p>
+</div>
+
+<!-- ============== B ============== -->
+<div class="block">
+  <div class="n">Surface B · at width</div>
+  <h2>Today</h2>
+  <p class="idea">The day owns the main column — what needs answering, who is visiting, which date
+     the platform wants confirmed. Enquiries sit in the rail as a queue.</p>
+  <div class="win">
+    <div class="chrome"><i></i><i></i><i></i><div class="url">vendor.vivahspot.com</div></div>
+    <div class="app">
+      <div class="side">
+        <div class="biz"><b>Shubhmangal Lawns</b><span>Thursday, 6 September</span></div>
+        <a class="on"><span class="ic">◳</span>Today</a>
+        <a><span class="ic">✉</span>Enquiries<span class="ct">3</span></a>
+        <a><span class="ic">▦</span>Calendar</a>
+        <a><span class="ic">◈</span>Listings</a>
+        <a><span class="ic">◯</span>Account</a>
+        <div class="sub"><b>Tier 2 · renews 1 June</b>Twelve months, paid in full</div>
+      </div>
+      <div class="main">
+        <div class="pri">
+          <h2 class="h1">Today</h2>
+          <p class="h1s">One site visit, three replies owed, one date to confirm.</p>
+          <div class="nudge"><b>Still free on 27 November?</b>
+            <p>3 families have asked about that date this week. Confirming keeps you in their results.</p>
+            <div class="acts"><span class="btn">Still free</span><span class="btn ghost">Not available</span></div></div>
+          <div class="eyebrow">Today</div>
+          <div class="today"><b>Site visit · 4:00 pm</b><span>Wedding party for 14 December · 550 guests · the lawn</span></div>
+          <div class="today"><b>3 Enquiries need a reply</b><span>Oldest from yesterday · 27 Nov, 4 Dec, 22 Nov</span></div>
+          <div class="eyebrow">This week</div>
+          <div class="today"><b>Sunday · Site visit 11:00 am</b><span>Reception for 4 December · the AC hall</span></div>
+          <div class="today"><b>Quote sent 6 days ago</b><span>9 January · no reply yet · nothing is held against you</span></div>
+          <div class="today"><b>Verification expires in 3 weeks</b><span>Re-submit your licence to keep the Verified mark</span></div>
+        </div>
+        <div class="rail">
+          <div class="eyebrow">Waiting on you <em>3</em></div>
+          <div class="enq unread" style="display:block"><div class="g"><b>27 November</b>
+            <div class="f">600 guests · ₹8,00,000</div></div>
+            <div style="margin-top:8px"><span class="btn">Send a Quote</span></div></div>
+          <div class="enq unread" style="display:block"><div class="g"><b>4 December</b>
+            <div class="f">300 guests · ₹2,50,000</div></div>
+            <div style="margin-top:8px"><span class="btn">Send a Quote</span></div></div>
+          <div class="enq unread" style="display:block"><div class="g"><b>22 November</b>
+            <div class="f">450 guests · ₹6,00,000</div></div>
+            <div style="margin-top:8px"><span class="btn">Send a Quote</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="verdict"><b>The most human, and the most fragile.</b> Verification expiry, site visits and
+    the nudge all have a natural home here, which no other surface manages. But on a quiet week the
+    main column is nearly empty while the rail is full — the layout inverts, and the thing he pays for
+    looks idle.</p>
+</div>
+
+<!-- ============== D ============== -->
+<div class="block">
+  <div class="n">Surface D · at width</div>
+  <h2>The Calendar</h2>
+  <p class="idea">The month owns the main column, enquiries for the selected date fill the rail.
+     Keeping the calendar honest becomes the thing he does rather than the thing he forgets.</p>
+  <div class="win">
+    <div class="chrome"><i></i><i></i><i></i><div class="url">vendor.vivahspot.com/calendar</div></div>
+    <div class="app">
+      <div class="side">
+        <div class="biz"><b>Shubhmangal Lawns</b><span>The lawn · 800 capacity</span></div>
+        <a class="on"><span class="ic">▦</span>Calendar</a>
+        <a><span class="ic">✉</span>Enquiries<span class="ct">3</span></a>
+        <a><span class="ic">◈</span>Listings</a>
+        <a><span class="ic">◮</span>Performance</a>
+        <a><span class="ic">◯</span>Account</a>
+        <div class="sub"><b>Tier 2 · renews 1 June</b>Twelve months, paid in full</div>
+      </div>
+      <div class="main">
+        <div class="pri">
+          <h2 class="h1">November 2026</h2>
+          <p class="h1s">The lawn · switch to the AC hall to see its own dates</p>
+          <div class="cal">
+            <div class="mh"><b>November</b><span class="h1s" style="margin:0">4 dates with Enquiries pending</span></div>
+            <div class="dow"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+            <div class="days">
+              <b class="off">26</b><b class="off">27</b><b class="off">28</b><b class="off">29</b><b class="off">30</b><b class="off">31</b><b>1</b>
+              <b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b>
+              <b>9</b><b>10</b><b>11</b><b>12</b><b>13</b><b class="eng">14</b><b>15</b>
+              <b>16</b><b>17</b><b>18</b><b>19</b><b>20</b><b>21</b><b class="ask">22</b>
+              <b>23</b><b>24</b><b>25</b><b class="ask">26</b><b class="ask">27</b><b class="ask">28</b><b>29</b>
+              <b>30</b><b class="blk">1</b><b>2</b><b>3</b><b class="ask">4</b><b>5</b><b>6</b>
+            </div>
+            <div class="key">
+              <span><i style="background:var(--vermillion)"></i>Engaged — an Agreement holds it</span>
+              <span><i style="background:var(--gold-tint);border:1px solid var(--turmeric)"></i>Enquiries pending</span>
+              <span><i style="background:var(--hairline)"></i>You marked unavailable</span>
+            </div>
+          </div>
+        </div>
+        <div class="rail">
+          <div class="nudge"><b>27 November · 3 Enquiries</b>
+            <p>Families are asking about this date. Confirming keeps you in their results; it commits
+               you to nothing.</p>
+            <div class="acts"><span class="btn">Still free</span><span class="btn ghost">Not available</span></div></div>
+          <div class="eyebrow">27 November</div>
+          <div class="enq unread" style="display:block"><div class="g"><b>600 guests</b>
+            <div class="f">Haldi 26th · Wedding 27th · Reception 28th<br><em>₹8,00,000 across the event</em></div></div>
+            <div style="margin-top:8px"><span class="btn">Send a Quote</span></div></div>
+          <div class="enq unread" style="display:block"><div class="g"><b>420 guests</b>
+            <div class="f">Wedding only · evening<br><em>₹4,50,000</em></div></div>
+            <div style="margin-top:8px"><span class="btn">Send a Quote</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="verdict"><b>The one that protects the whole product.</b> Your spine says UJ-1's matching is
+    only as accurate as the least disciplined vendor's calendar, and that the nudge is its sole
+    safeguard. At width the month grid finally has room to be readable — six weeks, three states,
+    two Spaces — which it never quite does on a phone. What it costs is unchanged: it asks him to
+    maintain something before it hands him anything.</p>
+</div>
+
+<div class="lede" style="margin-top:6px">
+  <p class="hint">Working artifact · <code>.working/direction-vendor-desktop.html</code> · 2026-09-06.
+    Surface C is deliberately absent: at width its argument is a rail, not a screen — you can see it
+    doing exactly that inside Surface A. Requires network. Built from <code>DESIGN.md</code> tokens;
+    no new colours or components invented.</p>
+</div>
+</div>
+</body>
+</html>
