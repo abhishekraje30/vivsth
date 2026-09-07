@@ -385,7 +385,7 @@ Rutuja states which Functions the wedding has, in what relative order and in whi
 - Nothing about the arrangement is inferred by the platform. Even the near-universal pattern of Haldi on the morning before the Wedding is assigned explicitly by the Family, never assumed.
 - The Family can adjust an individual Candidate Block where one Anchor Date needs a different arrangement, without disturbing the others. `[ASSUMPTION A-1]`
 
-#### FR-68: The Family chooses its Services at the Wedding, before browsing any of them
+#### FR-68: The Family chooses its Services at the Wedding, and that choice scopes everything downstream
 
 The Family decides which Services the wedding needs at the Wedding level, and everything downstream is scoped by that choice. Realizes UJ-1.
 
@@ -393,7 +393,7 @@ The Family decides which Services the wedding needs at the Wedding level, and ev
 - The Family selects Services onto the Wedding — Venue, Catering, Photography and whatever else this wedding requires — and can add or remove one at any time.
 - A Service may be selected for the whole Wedding or for particular Functions.
 - **The selected Services are what exists downstream.** A Shortlist exists only for a selected Service; Block matching runs across the selected Services and no others; the running budget totals them; and SM-5 measures against them.
-- Discovery begins inside a selected Service. **The Family never browses the catalog category by category** looking for what a wedding might need.
+- Discovery begins on the home screen, which is the catalog: search, Service categories and featured Listings, browsable before a Wedding exists. Selecting Services onto the Wedding remains what scopes Shortlists, Block matching and the running budget — that is unchanged. *(Amended 2026-09-06 by the UX run. This consequence previously read "Discovery begins inside a selected Service. The Family never browses the catalog category by category looking for what a wedding might need." The remaining consequences of FR-68 stand: Services are still chosen at the Wedding and still determine what exists downstream.)*
 - Removing a Service from a Wedding removes its Shortlist. Where an Agreement exists for it, FR-32's warn-and-accept applies before anything is removed.
 
 #### FR-10: One view of the whole wedding
@@ -402,7 +402,7 @@ The Workspace shows the entire wedding in a single view. Realizes UJ-1.
 
 **Consequences (testable):**
 - The view carries the Services selected for this Wedding, every Function with its day and Slot, every Shortlist and the Selection made from it, every Enquiry and its current status, the running total against the budget ceiling, and the Chosen Block once locked.
-- It is the first thing the Family reaches after sign-in, not a screen they navigate to.
+- It is reached in one tap from the invitation card on the home screen, or from the Wedding tab. *(Amended 2026-09-06 by the UX run. This consequence previously read "It is the first thing the Family reaches after sign-in, not a screen they navigate to." The home screen is now the browsable catalog with the invitation card above it; see the amendment note under FR-68.)*
 - It reflects a change the moment the change is made, including changes made by the platform on the Family's behalf.
 
 #### FR-8: The budget fills itself in
@@ -1346,10 +1346,10 @@ The verification staffing is the one to watch. Every trust claim this platform m
 
 ### 5.10 Identity and voice
 
-*Recorded here because this PRD is the chain-top artifact and the identity currently exists only in code. It is not restated in full — `packages/shared/src/tokens.js` calls itself the single source of truth for colour and type, and it remains so. Downstream UX work reads that file; it does not invent a palette.*
+*Recorded here because this PRD is the chain-top artifact. The identity is owned by `_bmad-output/planning-artifacts/ux-designs/ux-vivahspot-2026-09-06/DESIGN.md`, which is the single source of truth for colour and type; `packages/shared/src/tokens.js` is its projection and is regenerated from it. This section records the register, not the values.* *(Amended 2026-09-06 by the UX run. This note previously named `tokens.js` as the source and instructed downstream UX work not to invent a palette. That instruction was written when the published prototype was all that existed; the prototype's palette was a placeholder and has been replaced.)*
 
 - **The product is Vivah Spot.** The tagline is **"Big day, sorted."** — the tone the whole product is written in: calm, capable, unfussy. Not romantic, not corporate.
-- **The palette is festive, not corporate.** A vivid rose-pink accent, a pink-to-marigold gradient, a warm pink-tinted shadow rather than a neutral grey one, and a soft pink-tinted white ground. Headings are set in a display serif, body text in the system sans stack. Exact values live in the tokens file.
+- **The palette is festive, not corporate.** Kumkum vermillion carries every action, turmeric carries celebration, on a warm cream ground with a warm-tinted shadow rather than a neutral grey one. Headings are set in a display serif, body text in the system sans stack, and Devanagari user content in a paired Devanagari serif. Exact values live in `DESIGN.md`. *(Amended 2026-09-06 by the UX run; previously described the placeholder rose-pink palette.)*
 - **One token in the palette is an accessibility decision, not an aesthetic one.** The muted text colour was deliberately darkened to meet contrast on white. It must not be lightened, whatever a future design pass prefers.
 - **The voice is plain and confident.** It states what is true — "vendor shows available", not "available"; "we recorded what you both agreed", not "your booking is protected". The restraint the legal posture demands is also the tone the brand wants, which is convenient: this product's credibility comes from not overclaiming.
 - **Cultural specificity is a feature, not a localisation problem.** Muhurat, Chaturmas, Haldi, Sangeet, Vidaai, Griha Pravesh, Sakharpuda, Kelvan, aaher, baraat — these are the vocabulary of the market, and the product uses them plainly rather than translating them into generic wedding-industry English. The Function set is not limited to the five named in FR-9; those are a starting set, and Families name their own.
