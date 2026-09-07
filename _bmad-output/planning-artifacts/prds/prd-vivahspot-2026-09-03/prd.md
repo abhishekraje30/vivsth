@@ -1228,6 +1228,7 @@ After the wedding, the Family can publish it for others. Realizes UJ-1, UJ-3.
 - **Only Vendors with an Agreement for that Wedding can be named as having worked on it.** A Family cannot credit a Vendor they did not engage, and cannot omit the Agreement record to credit another.
 - Published weddings are browsable by others, and a Vendor named in one gains verified evidence of real work on their Listing.
 - Publishing is entirely optional and never a condition of anything, including any tier or benefit.
+- **The Creator can publish short vertical video of their own Wedding**, under the same FR-66 consent and alongside the photographs. Only the Creator uploads, and only of their own concluded Wedding. Clips name the Space and the credited Vendors and are tappable through to those Listings. **The ordering of any feed of published clips is disclosed in plain language on the same terms as FR-20's search ordering, and no position can be paid for** — an undisclosed ordering would be the platform's own editorial selection rather than hosted third-party content. *(Added 2026-09-06 by the UX run. Video appeared nowhere in this document before this date; §11 therefore excluded it. Behaviour is specified in EXPERIENCE.md under Real Weddings.)*
 
 #### FR-66: Consent governs what is published
 
