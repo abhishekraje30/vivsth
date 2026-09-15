@@ -10,18 +10,15 @@ Read before planning. Append when a finding arrives that is real but not what wa
 
 ## Blocking the quality gate
 
-### D-1 · `npm run lint` crashes in vendor-web
-`apps/vendor-web` resolves its own `eslint` 10.9.1 while the root has 9.39.5. `eslint-plugin-react`
-7.37.5, pulled in by `eslint-config-next` 16.3.0, calls an API ESLint 10 removed:
-`TypeError: contextOrFilename.getFilename is not a function`.
-Fix is a version decision, not a code change: pin one ESLint major across the workspace, or wait for
-`eslint-config-next` to support 10. Until then the lint gate does not exist.
+### D-1 · ~~`npm run lint` crashes in vendor-web~~ — RESOLVED 2026-09-15
+`apps/vendor-web` now declares `eslint` `^9.39.5`, matching the root. Waiting was never an option:
+`eslint-plugin-react` 7.37.5 is its latest release and supports ESLint up to `^9.7` only. A stale
+nested ESLint 10.9.1 survived `npm install` and needed an explicit `npm install -D eslint@9.39.5`.
 
-### D-2 · `react-hooks/set-state-in-effect` in the mobile app
-`apps/mobile/src/hooks/use-color-scheme.web.ts:11` sets state directly in an effect to detect
-hydration. This is the Expo template's own pattern. Either replace it with
-`useSyncExternalStore`, or suppress it on the line with a comment naming why. Do not silence the rule
-globally.
+### D-2 · ~~`react-hooks/set-state-in-effect` in the mobile app~~ — RESOLVED 2026-09-15
+`apps/mobile/src/hooks/use-color-scheme.web.ts` now reads hydration state through
+`useSyncExternalStore` instead of setting it inside an effect. `npm run lint` passes in the mobile app
+with no suppression.
 
 ## Decisions with a deadline
 
@@ -39,8 +36,8 @@ resolved, and the input unit is rupees.
 ## Infrastructure not yet built
 
 ### D-5 · No commit gate
-No formatter, no CI, no secret scanning, no duplication threshold, no tests. `npm run typecheck` is
-the only working gate. Highest value first: secret scanning as a pre-commit hook, since MSG91,
+No formatter, no CI, no secret scanning, no duplication threshold, no tests. `npm run typecheck` and
+`npm run lint` work, but nothing runs them automatically. Highest value first: secret scanning as a pre-commit hook, since MSG91,
 Razorpay, WhatsApp and R2 keys are the live exposure and rotation is the only remedy after a push.
 
 ### D-6 · Backend has no gate at all
@@ -67,11 +64,10 @@ borrowed from a neighbouring paper, and one claim is unsupported: the over-engin
 empty-classes finding attributed to arXiv 2605.01392 does not appear in that paper. Re-point or drop
 the numbers in §0 before quoting them anywhere.
 
-### D-9 · `expo lint` silently adds a dependency
-Running `npm run lint --workspace=@vivahspot/mobile` installs `eslint-config-expo` and edits
-`apps/mobile/package.json` and `package-lock.json` without asking. Observed 2026-09-06 and reverted.
-Any agent or CI job that runs the mobile lint will produce an unrequested lockfile diff. Either add
-`eslint-config-expo` deliberately as part of fixing D-1, or expect to revert this every time.
+### D-9 · ~~`expo lint` silently adds a dependency~~ — RESOLVED 2026-09-15
+`eslint-config-expo` `~57.0.2` is now declared in `apps/mobile/package.json`. `expo lint` was run
+afterwards with both files backed up and changed neither. Until then the package sat in `node_modules`
+undeclared, so an `npm install` pruned it and broke the mobile lint outright.
 
 ## From the architecture spine
 

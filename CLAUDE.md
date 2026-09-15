@@ -90,9 +90,6 @@ syntax does not transfer between them.
 - User media goes to **R2/S3 + CDN**, never Frappe's file store.
 - `search_listings()` is a deliberate seam. MariaDB filtering is fine for one city; keep the swap to
   Meilisearch/Typesense a one-file change.
-- `expo lint` **silently installs `eslint-config-expo`** and edits `apps/mobile/package.json`
-  plus the lockfile. Running it produces an unrequested dependency diff. Check `git status`
-  after, and revert unless the addition was deliberate.
 - Phone + OTP via MSG91 is a **custom** Frappe login flow. Frappe has no phone auth built in, so
   there is no framework default to lean on.
 
@@ -184,26 +181,18 @@ conversation. Context is compacted and discarded; this file is not.
 
 ## 8 · What is actually enforced today
 
-Honest scorecard, verified 2026-09-06. A rule with no gate is a convention, not a guarantee — do not
+Honest scorecard, verified 2026-09-15. A rule with no gate is a convention, not a guarantee — do not
 describe the rules above as enforced.
 
-| Gate                        | Command             | Status                                                     |
-| --------------------------- | ------------------- | ---------------------------------------------------------- |
-| Typecheck, all 3 workspaces | `npm run typecheck` | **Works.** Passes clean.                                    |
-| Lint                        | `npm run lint`      | **Broken.** Fails in both apps for two unrelated reasons.   |
-| Formatter                   | —                   | None configured.                                            |
-| CI                          | —                   | No `.github/workflows`.                                     |
-| Secret scanning             | —                   | None. `.gitignore` covers `.env` and nothing checks commits. |
-| Tests                       | —                   | None.                                                       |
-| Duplication threshold       | —                   | None.                                                       |
+| Path                                                          | What it is                                                                                |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Typecheck, all 3 workspaces                                   | `npm run typecheck`                                                                       |
+| Lint, both apps                                               | `npm run lint`                                                                            |
+| Formatter                                                     | —                                                                                         |
+| CI                                                            | —                                                                                         |
+| Secret scanning                                               | —                                                                                         |
+| Tests                                                         | —                                                                                         |
+| Duplication threshold                                         | —                                                                                         |
 
-The two lint failures:
-
-1. **vendor-web** crashes before linting. `apps/vendor-web/node_modules/eslint` is 10.9.1 while the
-   root has 9.39.5, and `eslint-plugin-react` 7.37.5 (pulled in by `eslint-config-next` 16.3.0) calls
-   an API that ESLint 10 removed: `TypeError: contextOrFilename.getFilename is not a function`.
-2. **mobile** reports one real error: `react-hooks/set-state-in-effect` at
-   `apps/mobile/src/hooks/use-color-scheme.web.ts:11`.
-
-Until `npm run lint` passes, `npm run typecheck` is the only gate that exists. Say so rather than
-implying more.
+Typecheck and lint are the gates that exist. Nothing runs either automatically, because there is no
+CI. Say so rather than implying more.
