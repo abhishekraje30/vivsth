@@ -8,7 +8,9 @@ amended: 2026-09-06
 
 # PRD: Vivah Spot
 
-> Final, with one amendment. **[AMENDED 2026-09-06]** FR-62 and UJ-4 overstated what Admin can ship without a release; the architecture spine chose per-Service handler modules, so a Service's *declarations* are configuration while its *behaviour* and *field set* are code. The affected sentences are marked inline. See `../../architecture/architecture-vivahspot-2026-09-06/ARCHITECTURE-SPINE.md`, AD-5, AD-6 and AD-8.
+> Final, with amendments. **[AMENDED 2026-09-08]** FR-1 asserted that no password exists anywhere and that one sign-in mechanism serves Families, Vendors and Admin alike. Admin's surface has since been settled as Frappe Desk, which authenticates against Frappe's own login, so Admin staff sign in with a password while Families and Vendors still never hold one. Two consequences are marked inline. See `../../architecture/architecture-vivahspot-2026-09-06/ARCHITECTURE-SPINE.md`, AD-28.
+>
+> **[AMENDED 2026-09-06]** FR-62 and UJ-4 overstated what Admin can ship without a release; the architecture spine chose per-Service handler modules, so a Service's *declarations* are configuration while its *behaviour* and *field set* are code. The affected sentences are marked inline. See `../../architecture/architecture-vivahspot-2026-09-06/ARCHITECTURE-SPINE.md`, AD-5, AD-6 and AD-8.
 >
 > Produced in a journey-led coaching session with Abhishek Bankar, 2026-09-03 to 2026-09-06. Five correctness audits, one editorial pass and a closure pass were run against it; the reviews are retained alongside this file. The closure pass verified the last unaudited edit set by walking the term-to-consumer table rather than re-reading, added UJ-4 and UJ-5, and indexed every inferred value at §7.10. Every decision, and the reasoning behind it, is recorded in `.memlog.md`. Supporting analysis: `service-shapes-analysis.md`, `research-india-regulatory.md`, `research-landscape.md`.
 
@@ -296,7 +298,7 @@ The person planning a wedding is very often not the person getting married. Rutu
 Any person can create an account and sign in without ever setting a password. Realizes UJ-1, UJ-2.
 
 **Consequences (testable):**
-- **No password is ever set, stored or requested.** No password field exists on any surface, and there is no password reset flow to attack.
+- **[AMENDED 2026-09-08]** **No password is ever set, stored or requested for a Family or a Vendor.** No password field exists on any surface either of them reaches, and no password reset flow is offered to them. **Admin staff are the exception, and sign in to Frappe Desk with a password.** *(This consequence previously read "No password is ever set, stored or requested. No password field exists on any surface, and there is no password reset flow to attack." Amended when Admin's surface was settled: Desk is the Admin panel per NFR 5.2 and AD-2, Desk authenticates against Frappe's own login, and building a phone-OTP route into Desk was weighed against passwords for a handful of staff and rejected as a surface nobody owns. Family and Vendor accounts hold no password and are Frappe Website Users, so they cannot reach Desk at all. See `ARCHITECTURE-SPINE.md` AD-28.)*
 - Sign-in is offered by: **a mobile number and a one-time code**; **a passkey** on devices that support one; **Google**; and **Apple**. The mobile number route always works and is never the only option offered.
 - **Sign in with Apple is offered wherever Google is**, on iOS. This is Apple's condition for shipping at all, not a preference.
 - A one-time code is **six digits, valid for ten minutes**, with at most **five attempts** and **three resends per hour** on a number.
@@ -308,7 +310,7 @@ Any person can create an account and sign in without ever setting a password. Re
 - **One person may be both a Family and a Vendor on one account.** A venue owner planning his own daughter's wedding does not need a second identity, and the platform does not make him invent one. What he can do at any moment follows from what he is acting as, not from which account he signed into.
 - **A person can change the mobile number on their account**, by proving control of both the old number and the new one. Numbers change constantly in India, and an account that cannot follow its owner is an account they lose.
 - **Losing the number is a recoverable state, not a dead end.** Where the old number is gone, recovery goes through Admin, who verifies the person by other means and records what was done and by whom. It is deliberately manual: there is no password to reset, so an automated route here would be the whole platform's weakest point.
-- The same mechanism serves Families, Vendors and Admin. There is not a separate sign-in system per surface.
+- **[AMENDED 2026-09-08]** The same mechanism serves **Families and Vendors**, across the mobile application and the vendor portal alike. There is not a separate sign-in system per client surface. **Admin staff are served by Frappe Desk and sign in with a password**, which is a second sign-in system and is stated as such rather than implied. *(This consequence previously read "The same mechanism serves Families, Vendors and Admin. There is not a separate sign-in system per surface." Amended alongside the first consequence above, for the same reason.)*
 - A person who abandons sign-up partway resumes without creating a duplicate account.
 
 #### FR-2: A Wedding belongs to the person who created it

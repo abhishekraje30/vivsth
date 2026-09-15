@@ -151,6 +151,39 @@ emoji presentation on several Android builds — unchosen colour in a system whe
 meaning. The app-bar brand mark is still `♥`, eleven times. `favicon.svg` already draws that heart as
 a path; the app bar does not use it. Converting it is a brand decision, not a remediation.
 
+## From the Admin surface decision, 2026-09-08
+
+### D-22 · A Desk read of Guest contact data cannot be logged
+FR-61 requires that access to Guest contact data be confined to those with an operational need and
+be logged. AD-32 implements that log in `api/`, because Frappe logs no reads of its own: `Access Log`
+records exports only, and `View Log` records Desk form opens without recording which fields were
+seen. AD-32 already accepted the gap and named it a residual risk carried by attribution and
+operational discipline rather than by a technical control.
+
+That risk was small while Desk had no routine users. Admin is now Pravin's staff working in Desk
+daily, so the unlogged path is the normal one for exactly the data NFR 5.5 protects most. Nothing
+here is broken — the decision stands and the alternative was a custom Admin console the architecture
+deliberately does not build. What changes is the size of the gap between what NFR 5.5 promises and
+what the system enforces, and it is recorded rather than discovered later.
+
+Compounding it: `Administrator` is exempt from `permlevel` entirely (`document.py:959`), so the field
+restriction protecting Guest contact fields does not bind the one account that reaches everything.
+
+Revisit if the staff count grows beyond a handful, or if a breach notification ever needs to
+enumerate what a person actually read.
+
+### D-23 · Password reset is off, so a forgotten staff password is a developer's job
+AD-28 keeps `reset_password` / `update_password` disabled, because both mint access keyed on an email
+address the account holder does not control. Staff hold Desk passwords, so a forgotten one is reset
+by a developer from the User form. Cheap at a handful of staff; it stops being cheap if the operator
+grows a real support team, and the answer then is a reset flow scoped to staff accounts alone, never
+one reachable by a Family or Vendor.
+
+**Unverified.** That a disabled `reset_password` still leaves `Administrator` able to set a password
+from the User form is taken from Frappe's documented behaviour and has not been checked against the
+bench at v16.33.0. Check it before the first staff account exists, because the fallback if it is
+wrong is that nobody can recover a staff login.
+
 ## Blocking the end-user test suite
 
 ### D-24 · No backend test mode for phone + OTP sign-in
