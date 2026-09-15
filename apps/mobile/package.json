@@ -44,7 +44,10 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:flows": "maestro test .maestro/flows",
+    "test:flows:p0": "maestro test .maestro/flows --include-tags P0",
+    "maestro:studio": "maestro studio"
   },
   "private": true
 }

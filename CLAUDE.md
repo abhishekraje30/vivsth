@@ -184,15 +184,16 @@ conversation. Context is compacted and discarded; this file is not.
 Honest scorecard, verified 2026-09-15. A rule with no gate is a convention, not a guarantee — do not
 describe the rules above as enforced.
 
-| Path                                                          | What it is                                                                                |
-| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Typecheck, all 3 workspaces                                   | `npm run typecheck`                                                                       |
-| Lint, both apps                                               | `npm run lint`                                                                            |
-| Formatter                                                     | —                                                                                         |
-| CI                                                            | —                                                                                         |
-| Secret scanning                                               | —                                                                                         |
-| Tests                                                         | —                                                                                         |
-| Duplication threshold                                         | —                                                                                         |
+| Gate                        | Command                         | Status                                                          |
+| --------------------------- | ------------------------------- | --------------------------------------------------------------- |
+| Typecheck, all 3 workspaces | `npm run typecheck`             | **Works.** Passes clean. Test code excluded by decision.        |
+| Lint, both apps             | `npm run lint`                  | **Works.** Passes clean. Test code excluded by decision.        |
+| End-user tests              | `npm run test:e2e`              | **Framework only.** No product tests yet; see `TESTING.md`.     |
+| Test-quality hook           | `.claude/hooks/tea-enforce.cjs` | **Works.** Blocks focused tests, hard waits, undocumented skips. |
+| Formatter                   | —                               | None configured.                                                |
+| CI                          | —                               | No `.github/workflows`.                                         |
+| Secret scanning             | —                               | None. `.gitignore` covers `.env` and nothing checks commits.    |
+| Duplication threshold       | —                               | None.                                                           |
 
-Typecheck and lint are the gates that exist. Nothing runs either automatically, because there is no
-CI. Say so rather than implying more.
+Typecheck and lint are the gates that exist. Neither covers test code, and nothing runs either
+automatically, because there is no CI. Say so rather than implying more.

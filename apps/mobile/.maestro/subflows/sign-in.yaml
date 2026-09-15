@@ -1,0 +1,31 @@
+# Reusable sign-in for the family app.
+#
+# Lives in subflows/ because roughly every journey needs a signed-in account and copying
+# these nine steps into each flow means fixing sign-in in twelve places the day the screen
+# changes. Invoked with `runFlow`, which passes env through.
+#
+# The number and code are environment variables, never literals. An inlined credential in a
+# committed YAML is a leaked credential even when the account is fake.
+appId: ${MAESTRO_APP_ID}
+name: Sign in as the test family account
+---
+- tapOn:
+    id: 'auth_mobile_input'
+- inputText: ${FAMILY_TEST_MOBILE}
+
+- tapOn:
+    id: 'auth_request_code_button'
+
+# The code screen appears only after the backend accepts the number, so waiting on the
+# input itself is waiting on the real condition rather than on a guess about latency.
+- extendedWaitUntil:
+    visible:
+      id: 'auth_code_input'
+    timeout: 15000
+
+- tapOn:
+    id: 'auth_code_input'
+- inputText: ${FAMILY_TEST_OTP}
+
+- tapOn:
+    id: 'auth_verify_code_button'

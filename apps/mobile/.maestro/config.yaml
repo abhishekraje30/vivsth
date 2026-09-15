@@ -1,0 +1,14 @@
+# Maestro workspace for the Vivah Spot family app.
+#
+# `flows` deliberately globs only flows/, never subflows/. A subflow is shared setup, and
+# counting it as a flow inflates the suite and reports a login helper as a passing test.
+#
+# Tags are how CI buys back the cost of a device suite: the pull request gate runs P0 only,
+# the nightly run takes everything. Every flow must carry a priority tag or it runs nowhere.
+flows:
+  - 'flows/*.yaml'
+
+# Flows are order-independent by design — each one clears state and launches fresh — so
+# sequential execution buys nothing but determinism when a failure needs reproducing.
+executionOrder:
+  continueOnFailure: true

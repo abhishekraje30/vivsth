@@ -1,0 +1,38 @@
+# Reference flow: a person signs in and reaches their Wedding.
+#
+# Read this for the pattern rather than the feature. Four things are deliberate:
+#
+#   1. clearState before launchApp. The flow owns its starting state, so it passes whether
+#      it runs first, last, or alone. A flow that depends on the one before it fails in a
+#      different order and nobody can tell why.
+#   2. Every selector is an accessibility id, which React Native sets from `testID`. Visible
+#      text is the wrong anchor here: every string in this app goes through i18n, so a flow
+#      matching English copy breaks the day a Marathi locale ships.
+#   3. extendedWaitUntil on a named condition, never sleep. A long wait on a specific
+#      element states a real expectation. A long sleep states nothing and is both flaky and
+#      slow.
+#   4. It ends on an assertion about the destination. A flow that taps through five screens
+#      without asserting passes while the feature is broken.
+appId: ${MAESTRO_APP_ID}
+name: Sign in and reach the Wedding workspace
+tags:
+  - P0
+  - auth
+---
+- clearState
+- launchApp
+
+- assertVisible:
+    id: 'auth_mobile_input'
+
+- runFlow:
+    file: '../subflows/sign-in.yaml'
+
+# Verification round-trips to the backend, so the destination is waited for, not assumed.
+- extendedWaitUntil:
+    visible:
+      id: 'wedding_workspace_screen'
+    timeout: 20000
+
+- assertVisible:
+    id: 'wedding_workspace_screen'

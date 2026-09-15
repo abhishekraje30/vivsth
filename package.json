@@ -14,6 +14,8 @@
     "web": "npm run dev --workspace=@vivahspot/vendor-web",
     "mobile": "npm run start --workspace=@vivahspot/mobile",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "lint": "npm run lint --workspaces --if-present",
+    "test:e2e": "npm run test:e2e --workspace=@vivahspot/vendor-web",
+    "test:flows": "npm run test:flows --workspace=@vivahspot/mobile"
   }
 }

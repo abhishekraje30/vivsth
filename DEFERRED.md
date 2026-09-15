@@ -14,6 +14,7 @@ Read before planning. Append when a finding arrives that is real but not what wa
 `apps/vendor-web` now declares `eslint` `^9.39.5`, matching the root. Waiting was never an option:
 `eslint-plugin-react` 7.37.5 is its latest release and supports ESLint up to `^9.7` only. A stale
 nested ESLint 10.9.1 survived `npm install` and needed an explicit `npm install -D eslint@9.39.5`.
+Playwright tests and generated test output are excluded from both lint and typecheck by decision.
 
 ### D-2 · ~~`react-hooks/set-state-in-effect` in the mobile app~~ — RESOLVED 2026-09-15
 `apps/mobile/src/hooks/use-color-scheme.web.ts` now reads hydration state through
@@ -36,8 +37,9 @@ resolved, and the input unit is rupees.
 ## Infrastructure not yet built
 
 ### D-5 · No commit gate
-No formatter, no CI, no secret scanning, no duplication threshold, no tests. `npm run typecheck` and
-`npm run lint` work, but nothing runs them automatically. Highest value first: secret scanning as a pre-commit hook, since MSG91,
+No formatter, no CI, no secret scanning, no duplication threshold. `npm run typecheck` and
+`npm run lint` work, but nothing runs them automatically, and the end-user suite has no product tests
+yet. Highest value first: secret scanning as a pre-commit hook, since MSG91,
 Razorpay, WhatsApp and R2 keys are the live exposure and rotation is the only remedy after a push.
 
 ### D-6 · Backend has no gate at all
@@ -148,3 +150,64 @@ Every state and navigation glyph in the prototypes is inline SVG, because `♥` 
 emoji presentation on several Android builds — unchosen colour in a system where colour carries
 meaning. The app-bar brand mark is still `♥`, eleven times. `favicon.svg` already draws that heart as
 a path; the app bar does not use it. Converting it is a brand decision, not a remediation.
+
+## Blocking the end-user test suite
+
+### D-24 · No backend test mode for phone + OTP sign-in
+Sign-in is a mobile number and a six-digit code over MSG91 (FR-1). No test runner can read an
+SMS, and every end-user journey on both surfaces starts behind that gate, so the whole suite
+stops at screen one.
+
+Needed in `vivahspot_backend`, not here: a small set of reserved mobile numbers whose code is
+fixed and whose issuance never reaches MSG91, refused outright when the site is production.
+`apps/vendor-web/tests/support/auth-provider.ts` already calls
+`vivahspot_backend.api.vendor.request_login_code` and `...verify_login_code` and fails with
+that method name when they 404, so the shape is decided and only the backend half is missing.
+
+`verify_login_code` is also assumed to return the session's CSRF token as `csrf_token` in its
+`data`. Frappe refuses any POST under session auth without `X-Frappe-CSRF-Token`, and a client
+outside a desk page has no other way to learn the token. If the backend supplies it differently,
+`auth-provider.ts` is the one place that changes.
+
+The suite also needs two seeding methods, gated the same way and refused on production:
+`vivahspot_backend.api.vendor.seed_test_enquiry` and `...delete_test_enquiry`. The reference
+journey creates an Enquiry through the first and removes it in `afterEach` through the second,
+because a suite that leaves its fixtures behind poisons every later inbox count.
+
+This is security-critical surface: OTP issuance and verification are on the list in CLAUDE.md
+§7 that gets human review line by line. A test mode that can be reached on production is worse
+than having no tests.
+
+### D-25 · Mobile flows cannot run on this machine yet
+`apps/mobile/.maestro/` holds a reference flow that has never executed. Three prerequisites,
+none satisfied:
+
+- `adb` is not installed, so Maestro cannot reach an Android device.
+- `MAESTRO_APP_ID` is `com.vivahspot.app`, which needs a dev client or release build. Expo Go
+  is `host.exp.exponent`, and `clearState` would wipe Expo Go instead of the app. A dev client
+  is required regardless once Razorpay's native SDK lands.
+- The screens carry no `testID`, so the accessibility ids the flow selects on do not exist.
+
+### D-26 · Playwright's Chromium has no system libraries
+`npx playwright install chromium` succeeded; `--with-deps` needs sudo and was not run. If a
+run fails to launch a browser, `sudo npx playwright install-deps chromium` once.
+
+### D-27 · Namespace drift between the shared contract and CLAUDE.md
+`packages/shared/src/index.js` documents the whitelisted namespace as
+`vivahspot_backend.api.mobile.v1.*`. CLAUDE.md §2 says `...api.family.v1.search_listings`.
+The test suite followed CLAUDE.md. One of the two is stale and they must not both stand.
+
+
+### D-28 · The mobile app gets no narrated guide
+Narrated how-to guides exist only for the vendor portal. The pipeline reads step markers from the
+Playwright reporter and a recording start stamp from the page fixture, and Maestro has neither.
+Maestro's own recording command was never verified here, because this machine has no device
+(D-25). Once flows can run, the same idea applies — voice each step, hold the frame until the line
+ends — with Maestro's step timing as the source.
+
+### D-29 · Guides show the Next.js dev-mode badge
+Guides are recorded against `next dev`, which draws its "N" indicator in the bottom-left corner of
+every frame. Two fixes, and the choice is about the product rather than the tests:
+`devIndicators: false` in `apps/vendor-web/next.config`, which hides it for every developer too,
+or recording guides against a production build, which is slower to start but closer to what a
+vendor actually sees.
